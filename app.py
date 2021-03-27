@@ -1,13 +1,12 @@
-import os
+import config.constants
 from flask import Flask, render_template
 from config.dbConnect import setupdb
 from controllers.auth.register import auth_bp
 
 
 setupdb()
-template_dir = os.path.abspath('views')
-static_dir = os.path.abspath('public')
-app = Flask(__name__, template_folder=template_dir, static_folder=static_dir, static_url_path='/public')
+app = Flask(__name__, template_folder=config.constants.template_dir,
+            static_folder=config.constants.static_dir, static_url_path='/public')
 
 
 @app.route("/")

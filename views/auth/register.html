@@ -1,4 +1,180 @@
 {% extends 'layouts/base.html' %}
 {% block body %}
-Hello World
+<section class="register container">
+	<ul class="nav nav-tabs md-tabs primary-gradient z-depth-3 mx-auto" role="tablist">
+		<li class="nav-item nav-item flex-fill text-center">
+			<a class="nav-link active" data-toggle="tab" href="#cTab" role="tab">
+				Client Account
+			</a>
+		</li>
+		<li class="nav-item nav-item flex-fill text-center">
+			<a class="nav-link" data-toggle="tab" href="#spTab" role="tab">
+				Service Provider Account
+			</a>
+		</li>
+	</ul>
+
+	<div class="tab-content card z-depth-3 px-0 pb-0">
+		<div class="tab-pane fade show active" id="cTab" role="tabpanel">
+			<div class="card-body px-5">
+				<h5 class="card-title text-center mb-4">Join As Client</h5>
+
+				<form class="needs-validation" method="post" novalidate>
+					<div class="input-group">
+						<div class="input-group-prepend">
+							<span class="input-group-text primary-light-gradient white-text">
+								<i class="far fa-user"></i>
+							</span>
+						</div>
+
+						<div class="md-form md-outline">
+							<input id="cUser" type="text" class="form-control" name="username" value="{{forms.username}}" required>
+							<label for="cUser">Username</label>
+						</div>
+					</div>
+
+					<div class="input-group">
+						<div class="input-group-prepend">
+							<span class="input-group-text primary-light-gradient white-text">
+								<i class="far fa-envelope"></i>
+							</span>
+						</div>
+
+						<div class="md-form md-outline">
+							<input id="cEmail" type="email" name="email" class="form-control" value="{{forms.email}}" required>
+							<label for="cEmail">Email</label>
+						</div>
+					</div>
+
+					<div class="input-group">
+						<div class="input-group-prepend">
+							<span class="input-group-text primary-light-gradient white-text">
+								<i class="far fa-lock-alt"></i>
+							</span>
+						</div>
+
+						<div class="md-form md-outline">
+							<input id="cPass" type="password" name="password" class="form-control"value="{{forms.password}}" required>
+							<label for="cPass">Password</label>
+						</div>
+					</div>
+
+					<div class="input-group mb-4">
+						<div class="input-group-prepend">
+							<span class="input-group-text primary-light-gradient white-text">
+								<i class="far fa-lock-alt"></i>
+							</span>
+						</div>
+
+						<div class="md-form md-outline">
+							<input id="cCfmPass" type="password" name="cfmPassword" class="form-control"value="{{forms.cfmPassword}}" required>
+							<label for="cCfmPass">Confirm Password</label>
+						</div>
+					</div>
+
+					<input class="d-none" type="hidden" name="accType" value="client" />
+
+					<button class="btn btn-md btn-outline-primary btn-rounded btn-block" type="submit">
+						<i class="far fa-user-plus mr-2"></i>  Join
+					</button>
+				</form>
+
+				<h5 class="card-title mt-5">SOCIAL SIGN UP</h5>
+				<hr class="my-2">
+
+				<div class="flex-fill text-center">
+					<a class="btn-floating btn-lg btn-fb" href="/register/client/facebook/callback">
+						<i class="fab fa-facebook-f"></i> Facebook
+					</a>
+				</div>
+			</div>
+
+			<div class="card-footer">
+				<p class="text-center small m-0">
+					Already a member? <a href="" data-toggle="modal" data-target="#loginModel">Sign In</a>
+				</p>
+			</div>
+		</div>
+
+		<div class="tab-pane fade" id="spTab" role="tabpanel">
+			<div class="card-body px-5">
+				<h5 class="card-title text-center mb-4">Join As Service Provider</h5>
+
+				<form class="needs-validation" method="post" novalidate>
+					<div class="input-group">
+						<div class="input-group-prepend">
+							<span class="input-group-text primary-light-gradient white-text">
+								<i class="far fa-user"></i>
+							</span>
+						</div>
+
+						<div class="md-form md-outline">
+							<input id="sUser" type="text" class="form-control" name="username" value="{{username}}" required>
+							<label for="sUser">Username</label>
+						</div>
+					</div>
+					<div class="input-group">
+						<div class="input-group-prepend">
+							<span class="input-group-text primary-light-gradient white-text">
+								<i class="far fa-envelope"></i>
+							</span>
+						</div>
+
+						<div class="md-form md-outline">
+							<input id="sEmail" type="email" name="email" class="form-control" value="{{email}}" required>
+							<label for="sEmail">Email</label>
+						</div>
+					</div>
+
+					<div class="input-group">
+						<div class="input-group-prepend">
+							<span class="input-group-text primary-light-gradient white-text">
+								<i class="far fa-lock-alt"></i>
+							</span>
+						</div>
+
+						<div class="md-form md-outline">
+							<input id="sPass" type="password" name="password" class="form-control" value="{{password}}" required>
+							<label for="sPass">Password</label>
+						</div>
+					</div>
+
+					<div class="input-group mb-4">
+						<div class="input-group-prepend">
+							<span class="input-group-text primary-light-gradient white-text">
+								<i class="far fa-lock-alt"></i>
+							</span>
+						</div>
+
+						<div class="md-form md-outline">
+							<input id="sCfmPass" type="password" name="cfmPassword" class="form-control" value="{{cfmPassword}}" required>
+							<label for="sCfmPass">Confirm Password</label>
+						</div>
+					</div>
+
+					<input class="d-none" type="hidden" name="accType" value="service" />
+
+					<button class="btn btn-md btn-outline-primary btn-rounded btn-block" type="submit">
+						<i class="far fa-user-plus mr-2"></i> Join
+					</button>
+				</form>
+
+				<h5 class="card-title mt-5">SOCIAL SIGN UP</h5>
+				<hr class="my-2">
+
+				<div class="flex-fill text-center">
+					<a class="btn-floating btn-lg btn-fb" href="/register/service/facebook/callback">
+						<i class="fab fa-facebook-f"></i> Facebook
+					</a>
+				</div>
+			</div>
+
+			<div class="card-footer">
+				<p class="text-center small m-0">
+					Already a member? <a href="" data-toggle="modal" data-target="#loginModel">Sign In</a>
+				</p>
+			</div>
+		</div>
+	</div>
+</section>
 {% endblock %}
