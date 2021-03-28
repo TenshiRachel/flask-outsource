@@ -1,0 +1,81 @@
+/* Navbar */
+nav.navbar .navbar-brand {
+    min-width: 93px;
+    min-height: 30px;
+    background-image: url("/img/logo/normal.png"), url("/img/logo/darker.png");
+    background-repeat: no-repeat;
+    background-size: 100% auto;
+    background-position: center;
+}
+
+nav.navbar.top-nav-collapse .navbar-brand {
+    min-width: 93px;
+    min-height: 30px;
+    background-image: url("/img/logo/darker.png"), url("/img/logo/normal.png");
+    background-repeat: no-repeat;
+    background-size: 100% auto;
+    background-position: center;
+}
+
+nav.navbar .dropdown-menu .dropdown-item i {
+    min-width: 20px;
+}
+
+nav.navbar .dropdown-menu .dropdown-item.text-danger:hover {
+    color: #ffffff !important;
+    background-color: #dc3545 !important;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 12px !important;
+    background: #ffffff !important;
+}
+
+::-webkit-scrollbar-track {
+    background-color: #ffffff !important;
+    border-radius: 1rem !important;
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5) !important;
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5) !important;
+}
+
+::-webkit-scrollbar-thumb {
+    /* background-color: #651fff !important; */
+    background-image: -webkit-gradient(linear, left top, right top, from(#7c4dff), to(#6200ea)) !important;
+    background-image: -webkit-linear-gradient(left, #7c4dff 0%, #6200ea 100%) !important;
+    background-image: linear-gradient(to right, #7c4dff 0%, #6200ea 100%) !important;
+    border: 2px solid #d4d4d4 !important;
+    border-radius: 1rem !important;
+}
+
+::-webkit-scrollbar-button {
+    display: none !important;
+}
+
+/* Home */
+
+main {
+    padding-top: 70px;
+    padding-bottom: 10px;
+}
+
+section.home-hero .carousel-caption {
+    bottom: 0;
+    height: 100%;
+}
+
+.register #confirmPW {
+    display: none;
+}
+
+/*Auth*/
+
+.register .tab-content {
+    max-width: 766px;
+    margin: 0 auto;
+    opacity: 0.93;
+}
+
+.register .nav {
+    max-width: 766px;
+}

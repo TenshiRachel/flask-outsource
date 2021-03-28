@@ -3,7 +3,7 @@ from config.dbConfig import Base
 
 
 class User(Base):
-    id = IntegerField()
+    id = AutoField()
     username = CharField()
     password = CharField()
 
