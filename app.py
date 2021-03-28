@@ -1,6 +1,7 @@
 import config.constants
-from flask import Flask, render_template
+from flask import Flask
 from config.dbConnect import setupdb
+from controllers.index import index_bp
 from controllers.auth.register import auth_bp
 
 
@@ -9,11 +10,7 @@ app = Flask(__name__, template_folder=config.constants.template_dir,
             static_folder=config.constants.static_dir, static_url_path='/public')
 
 
-@app.route("/")
-def index():
-    return render_template("index.html")
-
-
+app.register_blueprint(index_bp)
 app.register_blueprint(auth_bp)
 
 
