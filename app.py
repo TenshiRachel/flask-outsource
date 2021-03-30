@@ -1,10 +1,11 @@
 import config.constants
 from flask import Flask
 from flask_toastr import Toastr
+from datetime import timedelta
 from config.dbConnect import setupdb
 from config.constants import app_secret_key
 from controllers.index import index_bp
-from controllers.auth.register import auth_bp
+from controllers.auth import auth_bp
 
 
 setupdb()
@@ -19,5 +20,6 @@ app.register_blueprint(auth_bp)
 
 if __name__ == "__main__":
     app.debug = True
+    app.permanent_session_lifetime = timedelta(hours=2)
     app.secret_key = app_secret_key
     app.run()
