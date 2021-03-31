@@ -87,3 +87,10 @@ def login():
         return redirect(url_for('index.index'))
 
     return render_template('auth/login.html')
+
+
+@auth_bp.route('/logout')
+def logout():
+    session.clear()
+    flash('You have signed out successfully', 'success')
+    return redirect(url_for('index.index'))

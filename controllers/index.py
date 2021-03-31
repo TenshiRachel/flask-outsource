@@ -1,5 +1,6 @@
 import config.constants
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, session
+from models.user import User
 
 
 index_bp = Blueprint('index', __name__, template_folder=config.constants.template_dir,
@@ -8,4 +9,8 @@ index_bp = Blueprint('index', __name__, template_folder=config.constants.templat
 
 @index_bp.route('/')
 def index():
+    if session.get('user_id') is not None:
+        user = User.get_or_none(User.id == session['user_id'])
+        return render_template('index.html', user=user)
+
     return render_template("index.html")
