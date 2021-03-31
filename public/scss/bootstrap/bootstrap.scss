@@ -1,0 +1,231 @@
+// bootstrap by Joel
+// VARIABLES
+$primary:       #651fff !default;
+$secondary:     #7c4dff !default;
+$success:       #009688 !default;
+$info:          #00bcd4 !default;
+$warning:       #ff9100 !default;
+// $danger:        #dc3545 !default;
+
+$theme-colors: (
+  "primary":    $primary,
+  "secondary":  $secondary,
+  "success":    $success,
+  "info":       $info,
+  "warning":    $warning,
+  // "danger":     #ff3547
+);
+
+// spacing
+$spacer: 1rem !default;
+$spacers: (
+  6: ($spacer * 3.5),
+  7: ($spacer * 4),
+  8: ($spacer * 4.5),
+  9: ($spacer * 5)
+);
+
+// .h-* and .w-* class.
+$sizes: (
+  5 : 5%,
+  10: 10%,
+  20: 20%,
+  30: 30%,
+  35: 35%,
+  40: 40%,
+  45: 45%,
+  55: 55%,
+  60: 60%,
+  65: 65%,
+  70: 70%,
+  80: 80%,
+  85: 85%,
+  90: 90%,
+  95: 95%
+);
+
+// grid containers, .container max width
+$container-max-widths: (
+  sm: 540px,
+  md: 720px,
+  lg: 960px,
+  xl: 1920px
+);
+
+// tables
+$table-accent-bg: lighten(#b388ff, 20%);
+$table-hover-bg: lighten(#651fff, 37.5%);
+$dropdown-border-color: rgba(101, 31, 255, 0.15);
+
+// dropdowns
+// $dropdown-box-shadow: 0 5px 11px 0 rgba(92, 141, 255, 0.18), 0 4px 15px 0 rgba(23, 35, 64, 0.15) !default;
+
+// breadcrumbs
+$breadcrumb-divider: "\f105" !default;
+
+
+// STYLES
+// DROPDOWN
+.dropdown-menu {
+  box-shadow: 0 5px 11px 0 rgba(92, 141, 255, 0.18), 0 4px 15px 0 rgba(23, 35, 64, 0.15);
+}
+
+// BREADCRUMBS
+.breadcrumb-item {
+  + .breadcrumb-item {
+    &::before {
+      font-family: "Font Awesome 5 Pro";
+      font-weight: 900;
+      padding-right: .25rem;
+      padding-left: .25rem;
+    }
+  }
+}
+
+// CODE
+$kbd-bg: $primary;
+
+// CUSTOM
+.vw-0 { width: 0vw !important; }
+.vw-5 { width: 5vw !important; }
+.vw-10 { width: 10vw !important; }
+.vw-15 { width: 15vw !important; }
+.vw-20 { width: 20vw !important; }
+.vw-25 { width: 25vw !important; }
+.vw-30 { width: 30vw !important; }
+.vw-35 { width: 35vw !important; }
+.vw-40 { width: 40vw !important; }
+.vw-45 { width: 45vw !important; }
+.vw-50 { width: 50vw !important; }
+.vw-55 { width: 55vw !important; }
+.vw-60 { width: 60vw !important; }
+.vw-65 { width: 65vw !important; }
+.vw-70 { width: 70vw !important; }
+.vw-75 { width: 75vw !important; }
+.vw-80 { width: 80vw !important; }
+.vw-85 { width: 85vw !important; }
+.vw-90 { width: 90vw !important; }
+.vw-95 { width: 95vw !important; }
+
+.vh-0 { height: 0vh !important; }
+.vh-5 { height: 5vh !important; }
+.vh-10 { height: 10vh !important; }
+.vh-15 { height: 15vh !important; }
+.vh-20 { height: 20vh !important; }
+.vh-25 { height: 25vh !important; }
+.vh-30 { height: 30vh !important; }
+.vh-35 { height: 35vh !important; }
+.vh-40 { height: 40vh !important; }
+.vh-45 { height: 45vh !important; }
+.vh-50 { height: 50vh !important; }
+.vh-55 { height: 55vh !important; }
+.vh-60 { height: 60vh !important; }
+.vh-65 { height: 65vh !important; }
+.vh-70 { height: 70vh !important; }
+.vh-75 { height: 75vh !important; }
+.vh-80 { height: 80vh !important; }
+.vh-85 { height: 85vh !important; }
+.vh-90 { height: 90vh !important; }
+.vh-95 { height: 95vh !important; }
+
+.min-vw-0 { min-width: 0vw !important; }
+.min-vw-5 { min-width: 5vw !important; }
+.min-vw-10 { min-width: 10vw !important; }
+.min-vw-15 { min-width: 15vw !important; }
+.min-vw-20 { min-width: 20vw !important; }
+.min-vw-25 { min-width: 25vw !important; }
+.min-vw-30 { min-width: 30vw !important; }
+.min-vw-35 { min-width: 35vw !important; }
+.min-vw-40 { min-width: 40vw !important; }
+.min-vw-45 { min-width: 45vw !important; }
+.min-vw-50 { min-width: 50vw !important; }
+.min-vw-55 { min-width: 55vw !important; }
+.min-vw-60 { min-width: 60vw !important; }
+.min-vw-65 { min-width: 65vw !important; }
+.min-vw-70 { min-width: 70vw !important; }
+.min-vw-75 { min-width: 75vw !important; }
+.min-vw-80 { min-width: 80vw !important; }
+.min-vw-85 { min-width: 85vw !important; }
+.min-vw-85 { min-width: 90vw !important; }
+.min-vw-95 { min-width: 95vw !important; }
+
+.min-vh-0 { min-height: 0vh !important; }
+.min-vh-5 { min-height: 5vh !important; }
+.min-vh-10 { min-height: 10vh !important; }
+.min-vh-15 { min-height: 15vh !important; }
+.min-vh-20 { min-height: 20vh !important; }
+.min-vh-25 { min-height: 25vh !important; }
+.min-vh-30 { min-height: 30vh !important; }
+.min-vh-35 { min-height: 35vh !important; }
+.min-vh-40 { min-height: 40vh !important; }
+.min-vh-45 { min-height: 45vh !important; }
+.min-vh-50 { min-height: 50vh !important; }
+.min-vh-55 { min-height: 55vh !important; }
+.min-vh-60 { min-height: 60vh !important; }
+.min-vh-65 { min-height: 65vh !important; }
+.min-vh-70 { min-height: 70vh !important; }
+.min-vh-75 { min-height: 75vh !important; }
+.min-vh-80 { min-height: 80vh !important; }
+.min-vh-85 { min-height: 85vh !important; }
+.min-vh-85 { min-height: 90vh !important; }
+.min-vh-95 { min-height: 95vh !important; }
+
+.max-vw-0 { max-width: 0vw !important; }
+.max-vw-5 { max-width: 5vw !important; }
+.max-vw-10 { max-width: 10vw !important; }
+.max-vw-15 { max-width: 15vw !important; }
+.max-vw-20 { max-width: 20vw !important; }
+.max-vw-25 { max-width: 25vw !important; }
+.max-vw-30 { max-width: 30vw !important; }
+.max-vw-35 { max-width: 35vw !important; }
+.max-vw-40 { max-width: 40vw !important; }
+.max-vw-45 { max-width: 45vw !important; }
+.max-vw-50 { max-width: 50vw !important; }
+.max-vw-55 { max-width: 55vw !important; }
+.max-vw-60 { max-width: 60vw !important; }
+.max-vw-65 { max-width: 65vw !important; }
+.max-vw-70 { max-width: 70vw !important; }
+.max-vw-75 { max-width: 75vw !important; }
+.max-vw-80 { max-width: 80vw !important; }
+.max-vw-85 { max-width: 85vw !important; }
+.max-vw-85 { max-width: 90vw !important; }
+.max-vw-95 { max-width: 95vw !important; }
+
+.max-vh-0 { max-height: 0vh !important; }
+.max-vh-5 { max-height: 5vh !important; }
+.max-vh-10 { max-height: 10vh !important; }
+.max-vh-15 { max-height: 15vh !important; }
+.max-vh-20 { max-height: 20vh !important; }
+.max-vh-25 { max-height: 25vh !important; }
+.max-vh-30 { max-height: 30vh !important; }
+.max-vh-35 { max-height: 35vh !important; }
+.max-vh-40 { max-height: 40vh !important; }
+.max-vh-45 { max-height: 45vh !important; }
+.max-vh-50 { max-height: 50vh !important; }
+.max-vh-55 { max-height: 55vh !important; }
+.max-vh-60 { max-height: 60vh !important; }
+.max-vh-65 { max-height: 65vh !important; }
+.max-vh-70 { max-height: 70vh !important; }
+.max-vh-75 { max-height: 75vh !important; }
+.max-vh-80 { max-height: 80vh !important; }
+.max-vh-85 { max-height: 85vh !important; }
+.max-vh-85 { max-height: 90vh !important; }
+.max-vh-95 { max-height: 95vh !important; }
+
+.font-weight-100 { font-weight: 100 !important }
+.font-weight-200 { font-weight: 200 !important }
+.font-weight-300 { font-weight: 300 !important }
+.font-weight-400 { font-weight: 400 !important }
+.font-weight-500 { font-weight: 500 !important }
+.font-weight-600 { font-weight: 600 !important }
+.font-weight-700 { font-weight: 700 !important }
+.font-weight-800 { font-weight: 800 !important }
+.font-weight-900 { font-weight: 900 !important }
+
+.overflow-x-hidden { overflow-x: hidden !important; }
+.overflow-y-hidden { overflow-y: hidden !important; }
+
+.cursor-default { cursor: default !important; }
+.cursor-pointer { cursor: pointer !important; }
+
+@import "main";

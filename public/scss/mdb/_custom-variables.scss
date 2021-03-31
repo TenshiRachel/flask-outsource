@@ -1,0 +1,139 @@
+// _custom-variables by Joel
+// COLORS
+$primary-color       : #651fff !default;  // deep-purple accent-3
+$primary-color-dark  : #6200ea !default;  // deep-purple accent-4
+$secondary-color     : #b388ff !default;  // deep-purple accent-1
+$secondary-color-dark: #7c4dff !default;  // deep-purple accent-2
+$info-color          : #00bcd4 !default;  // cyan base
+$info-color-dark     : #0097a7 !default;  // cyan base-2
+$success-color       : #009688 !default;  // teal base
+$success-color-dark  : #00796b !default;  // teal darken-2
+$warning-color       : #ff9100 !default;
+$warning-color-dark  : #ff6d00 !default;
+
+$white-base: #fff !default;
+
+$material-colors: (
+  "primary-color"       : $primary-color,
+  "primary-color-dark"  : $primary-color-dark,
+  "secondary-color"     : $secondary-color,
+  "secondary-color-dark": $secondary-color-dark,
+  "default-color"       : $primary-color,
+  "default-color-dark"  : $primary-color-dark,
+  "info-color"          : $info-color,
+  "info-color-dark"     : $info-color-dark,
+  "success-color"       : $success-color,
+  "success-color-dark"  : $success-color-dark,
+  "warning-color"       : $warning-color,
+  "warning-color-dark"  : $warning-color-dark
+);
+
+$social-colors: (
+  "fb"      : #1877f2,
+  "tw"      : #1DA1F2,
+  "yt"      : #FF0000,
+  "li"      : #2867b2,
+  "pin"     : #E60023,
+  "ins"     : #f00075,
+  "git"     : #151013,
+  "vk"      : #4680C2,
+  "dribbble": #ea4c89,
+  "so"      : #f48023,
+  "slack"   : #4A154B,
+  "reddit"  : #FF4500,
+  "twitch"  : #6441a4,
+  "discord" : #7289da
+);
+
+$mdb-colors: (
+  "primary": $primary-color,
+  "warning": $warning-color,
+  "success": $success-color,
+  "info"   : $info-color
+);
+
+$basic: (
+  "primary": $primary-color,
+  "success": $success-color,
+  "warning": $warning-color,
+  "info"   : $info-color
+);
+
+$basic-mdb-colors: (
+  "primary"  : $primary-color,
+  "warning": $warning-color,
+  "success"  : $success-color,
+  "info"     : $info-color,
+  "default"  : $primary-color,
+  "secondary": $secondary-color
+);
+
+$pagination-colors: (
+  "primary": $primary-color
+);
+
+$ctbc: (
+  "tabs-primary": $primary-color,
+  "tabs-white"  : $white-base
+);
+
+$switch-colors: (
+  "bg"              : $primary-color,
+  "checked-lever-bg": desaturate(lighten($primary-color, 25%), 25%)
+);
+
+$dropdown-colors: (
+  "primary"  : $primary-color,
+  "secondary": $secondary-color,
+  "success"  : $success-color,
+  "info"     : $info-color,
+  "ins"      : map-get($social-colors, "ins")
+);
+
+$gradients: (
+  "primary": (
+    "start": $secondary-color,
+    "end"  : $primary-color
+  ),
+  "primary-reverse": (
+    "start": $primary-color,
+    "end"  : $secondary-color
+  ),
+  "primary-light": (
+    "start": desaturate(lighten($secondary-color, 5%), 5%),
+    "end"  : desaturate(lighten($primary-color, 10%), 10%)
+  ),
+  "primary-reverse-light": (
+    "start": desaturate(lighten($primary-color, 10%), 10%),
+    "end"  : desaturate(lighten($secondary-color, 5%), 5%)
+  )
+);
+
+// VARABILES
+// fonts
+$roboto-font-path: "/fonts/roboto/";
+
+// border-radius
+$border-radius-base: .175rem !default;
+
+// shadows
+$z-depth-1     : 0 2px 5px 0 rgba(101, 31, 255, 0.16),   0 2px 10px 0 rgba(23, 35, 64, 0.12) !default;
+$z-depth-1-half: 0 5px 11px 0 rgba(101, 31, 255, 0.18),  0 4px 15px 0 rgba(23, 35, 64, 0.15) !default;
+$z-depth-2     : 0 8px 17px 0 rgba(101, 31, 255, 0.2),   0 6px 20px 0 rgba(23, 35, 64, 0.19) !default;
+// $z-depth-3     : 0 12px 15px 0 rgba(101, 31, 255, 0.24), 0 17px 50px 0 rgba(23, 35, 64, 0.19) !default;
+// $z-depth-4     : 0 16px 28px 0 rgba(101, 31, 255, 0.22), 0 25px 55px 0 rgba(23, 35, 64, 0.21) !default;
+// $z-depth-5     : 0 27px 24px 0 rgba(101, 31, 255, 0.2),  0 40px 77px 0 rgba(23, 35, 64, 0.22) !default;
+// $z-test: 0 12px 15px 0 rgba(92, 141, 255, 0.24), 0 17px 50px 0 rgba(23, 35, 64, 0.19) !default;
+
+// link color
+$link-color: $primary-color !default;
+$link-hover-color: lighten($link-color, 15%) !default;
+
+// navbars
+$navbar-font-weight: 400 !default;
+
+// chips
+$chip-img-margin-left: -10px !default;
+
+// autocomplete
+$autocomplete-wrap-li-hover-bg: $primary-color;

@@ -1,4 +1,77 @@
 {% extends 'layouts/base.html' %}
 {% block body %}
-Hello World
+<section class="home-hero">
+    <div id="carousel" class="carousel slide carousel-fade z-depth-3" data-ride="carousel">
+        <div class="carousel-inner" role="listbox">
+            <div class="carousel-item active">
+                <div class="view">
+                    <video class="video-fluid" autoplay loop muted>
+                        <source src="{{ url_for('static', filename='/vid/home/forest.mp4') }}" type="video/mp4" />
+                    </video>
+                </div>
+
+                <div class="carousel-caption d-flex align-items-center">
+                    <div class="animated fadeInDown mask rgba-black-light rounded z-depth-1 p-4 w-100">
+                        <h1 class="h1-responsive mb-0 mb-md-2">Welcome to OutSource</h1>
+                        <p class="d-none d-md-block">
+                            A platform for freelancers to offer services to clients worldwide.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="carousel-item">
+                <div class="view">
+                    <video class="video-fluid" autoplay loop muted>
+                        <source src="{{ url_for('static', filename='/vid/home/photography.mp4') }}" type="video/mp4" />
+                    </video>
+                    <div class="mask rgba-deep-purple-light"></div>
+                </div>
+
+                <div class="carousel-caption d-flex align-items-center">
+                    <div class="animated fadeInDown mask rgba-black-light rounded z-depth-1 p-4  w-100">
+                        <h1 class="h1-responsive">Looking for Services?</h1>
+                        <p class="d-none d-md-block">
+                            Are you looking to hire someone for their services, look no further.<br />
+                            OutSource provides you a platform where freelancers offer a wide range of services.
+                        </p>
+
+                        <a class="btn btn-md primary-gradient" href="/services/list">
+                            <i class="far fa-eye"></i> View Marketplace
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="carousel-item">
+                <div class="view">
+                    <video class="video-fluid" autoplay loop muted>
+                        <source src="{{ url_for('static', filename='/vid/home/typing.mp4') }}" type="video/mp4" />
+                    </video>
+                    <div class="mask rgba-deep-purple-light"></div>
+                </div>
+
+                <div class="carousel-caption d-flex align-items-center">
+                    <div class="animated fadeInDown mask rgba-black-light rounded z-depth-1 p-4  w-100">
+                        <h1 class="h1-responsive">Register on OutSource</h1>
+                        <p class="d-none d-md-block">
+                            Register an account with us today as a service provider or as a client.<br />
+                        </p>
+
+                        <a class="btn btn-md primary-gradient" href="/auth/register">
+                            <i class="far fa-user-plus"></i> Register
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <a class="carousel-control-prev" href="#carousel" role="button" data-slide="prev">
+            <i class="fas fa-chevron-left fa-lg"></i>
+        </a>
+        <a class="carousel-control-next" href="#carousel" role="button" data-slide="next">
+            <i class="fas fa-chevron-right fa-lg"></i>
+        </a>
+    </div>
+</section>
 {% endblock %}

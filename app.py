@@ -1,19 +1,25 @@
-import os
-from flask import Flask, render_template
+import config.constants
+from flask import Flask
+from flask_toastr import Toastr
+from datetime import timedelta
 from config.dbConnect import setupdb
+from config.constants import app_secret_key
+from controllers.index import index_bp
+from controllers.auth import auth_bp
 
 
 setupdb()
-template_dir = os.path.abspath('views')
-static_dir = os.path.abspath('public')
-app = Flask(__name__, template_folder=template_dir, static_folder=static_dir, static_url_path='/public')
+app = Flask(__name__, template_folder=config.constants.template_dir,
+            static_folder=config.constants.static_dir, static_url_path='/public')
 
 
-@app.route("/")
-def index():
-    return render_template("index.html")
+toastr = Toastr(app)
+app.register_blueprint(index_bp)
+app.register_blueprint(auth_bp)
 
 
 if __name__ == "__main__":
     app.debug = True
+    app.permanent_session_lifetime = timedelta(hours=2)
+    app.secret_key = app_secret_key
     app.run()
