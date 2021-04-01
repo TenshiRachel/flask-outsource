@@ -6,6 +6,7 @@ from config.dbConnect import setupdb
 from config.constants import app_secret_key
 from controllers.index import index_bp
 from controllers.auth import auth_bp
+from controllers.service import service_bp
 
 
 setupdb()
@@ -16,6 +17,7 @@ app = Flask(__name__, template_folder=config.constants.template_dir,
 toastr = Toastr(app)
 app.register_blueprint(index_bp)
 app.register_blueprint(auth_bp)
+app.register_blueprint(service_bp)
 
 
 if __name__ == "__main__":
