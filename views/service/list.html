@@ -1,8 +1,10 @@
+{% extends 'layouts/base.html' %}
+{% block body %}
 <section class="services container mx-auto">
     <div class="row">
         <div class="col-12 col-md-4 order-2 order-md-1 mt-2 mt-md-0">
             <div id="filters" class="select-outline">
-                <select class="mdb-select md-form md-outline colorful-select dropdown-primary category-select">
+                <select class="custom-select md-form md-outline category-select">
                     <option selected>Show All</option>
                     <option>Graphics &amp; Design</option>
                     <option>Writing &amp; Translation</option>
@@ -16,7 +18,7 @@
 
         <div class="col-12 col-md-4 order-3 order-md-2">
             <div id="sort" class="select-outline">
-                <select class="mdb-select md-form md-outline colorful-select dropdown-primary sort-select">
+                <select class="custom-select md-form md-outline sort-select">
                     <option selected disabled>None</option>
                     <option>Oldest first</option>
                     <option>Newest first</option>
@@ -47,7 +49,7 @@
     {% if services %}
     <div class="row" id="servcon">
         {% for service in services %}
-        <div class="servicecards col-12 col-md-4 col-lg-3 d-flex align-items-stretch mt-4 servicecards {{replacecommas category}}" data-views="{{views}}" data-date="{{time}}" data-favs="{{favourites}}">
+        <div class="servicecards col-12 col-md-4 col-lg-3 d-flex align-items-stretch mt-4 servicecards {{this.categories}}" data-views="{{views}}" data-date="{{time}}" data-favs="{{favourites}}">
             <div class="card w-100">
                 <div class="view overlay border-bottom border-primary rounded-top">
                     <img loading="lazy" onerror='this.src = "/img/services/default.jpg"' class="card-img-top" src="/uploads/services/{{uid}}/{{id}}.png" alt="Image not available">
@@ -121,3 +123,4 @@
     </div>
     {% endif %}
 </section>
+{% endblock %}
