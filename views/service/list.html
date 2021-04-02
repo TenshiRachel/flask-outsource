@@ -1,8 +1,10 @@
+{% extends 'layouts/base.html' %}
+{% block body %}
 <section class="services container mx-auto">
     <div class="row">
         <div class="col-12 col-md-4 order-2 order-md-1 mt-2 mt-md-0">
             <div id="filters" class="select-outline">
-                <select class="mdb-select md-form md-outline colorful-select dropdown-primary category-select">
+                <select class="custom-select md-form md-outline category-select">
                     <option selected>Show All</option>
                     <option>Graphics &amp; Design</option>
                     <option>Writing &amp; Translation</option>
@@ -16,7 +18,7 @@
 
         <div class="col-12 col-md-4 order-3 order-md-2">
             <div id="sort" class="select-outline">
-                <select class="mdb-select md-form md-outline colorful-select dropdown-primary sort-select">
+                <select class="custom-select md-form md-outline sort-select">
                     <option selected disabled>None</option>
                     <option>Oldest first</option>
                     <option>Newest first</option>
@@ -44,10 +46,10 @@
     </div>
 
     <!-- services cards -->
-    {{#if services}}
+    {% if services %}
     <div class="row" id="servcon">
-        {{#each services}}
-        <div class="servicecards col-12 col-md-4 col-lg-3 d-flex align-items-stretch mt-4 servicecards {{replacecommas category}}" data-views="{{views}}" data-date="{{time}}" data-favs="{{favourites}}">
+        {% for service in services %}
+        <div class="servicecards col-12 col-md-4 col-lg-3 d-flex align-items-stretch mt-4 servicecards {{this.categories}}" data-views="{{views}}" data-date="{{time}}" data-favs="{{favourites}}">
             <div class="card w-100">
                 <div class="view overlay border-bottom border-primary rounded-top">
                     <img loading="lazy" onerror='this.src = "/img/services/default.jpg"' class="card-img-top" src="/uploads/services/{{uid}}/{{id}}.png" alt="Image not available">
@@ -64,11 +66,7 @@
                 <div class="card-body d-flex flex-column">
                     <div class="d-flex mt-2">
                         <div class="flex-fill">
-                            {{#ifFile (concat './public/uploads/profile/' this.uid '/profilePic.png')}}
                                 <img loading="lazy" src="/uploads/profile/{{uid}}/profilePic.png" class="rounded-circle img-fluid z-depth-1" style="max-width: 2rem;">
-                            {{else}}
-                                <img loading="lazy" src="/img/profile/default.png" class="rounded-circle img-fluid z-depth-1" style="max-width: 2rem;">
-                            {{/ifFile}}
 
                             <a class="align-middle ml-1" href="/profile/view/{{uid}}">{{username}}</a>
                         </div>
@@ -102,7 +100,7 @@
                         <form class="flex-fill text-right" method="post" action="/services/fav/{{this.id}}">
                             <button class="btn btn-sm btn-red mr-0 material-tooltip-sm" data-tooltip="tooltip" data-placement="top" title="Favourite/Unfavourite">
                                 <span class="font-weight-bold">
-                                    {{this.favourites}}<i class="fas fa-heart ml-2"></i>
+                                    {{this.favs}}<i class="fas fa-heart ml-2"></i>
                                 </span>
                             </button>
                         </form>
@@ -111,17 +109,18 @@
 
                 <div class="card-footer deep-purple accent-2 white-text text-center">
                     <h5 class="m-0">
-                        ${{price}}
+                        ${{this.price}}
                     </h5>
                 </div>
 
             </div>
         </div>
-        {{/each}}
+        {% endfor %}
     </div>
-    {{else}}
+    {% else %}
     <div>
         <h3 class="text-center font-weight-bold">No services at the moment</h3>
     </div>
-    {{/if}}
+    {% endif %}
 </section>
+{% endblock %}
