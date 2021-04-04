@@ -27,6 +27,12 @@ def manage():
 def add():
     if request.method == 'POST':
         req = request.form
+
+        name = req.get('name')
+        desc = req.get('desc')
+        price = req.get('price')
+        categories = req.get('categories')
+
         pass
 
     return render_template('service/add.html')
