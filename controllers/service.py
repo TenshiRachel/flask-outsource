@@ -35,7 +35,7 @@ def add():
     user_id = session['user_id']
 
     if User.get(User.id == user_id).acc_type == 'client':
-        flash('You need a service provider account to add service', 'error')
+        flash('You need a service provider account to add services', 'error')
         redirect(url_for('index.index'))
 
     if request.method == 'POST':
@@ -54,3 +54,29 @@ def add():
         redirect(url_for('service.manage'))
 
     return render_template('service/add.html')
+
+
+@service_bp.route('/edit/<id>', methods=['GET', 'POST'])
+@is_auth
+def edit(id):
+    services = Service.get(Service.id == id)
+    user_id = session['user_id']
+
+    if User.get(User.id == user_id).acc_type == 'client':
+        flash('You need a service provider account to edit services', 'error')
+        redirect(url_for('index.index'))
+
+    if request.method == 'POST':
+        req = request.form
+
+        name = req.get('name')
+        desc = req.get('desc')
+        price = req.get('price')
+        categories = req.getlist('categories')
+
+        query = Service.update(name=name, desc=desc, price=price, categories=categories).where(Service.id == id)
+        query.execute()
+        flash('Changes saved successfully', 'success')
+        redirect(url_for('service.manage'))
+
+    return render_template('service/edit.html', services=services)
