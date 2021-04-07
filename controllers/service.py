@@ -23,7 +23,7 @@ def manage():
 
     if User.get(User.id == user_id).acc_type == 'client':
         flash('You need a service provider account to manage services', 'error')
-        redirect(url_for('index.index'))
+        return redirect(url_for('index.index'))
 
     services = Service.select().where(Service.uid == user_id)
     return render_template('service/manage.html', services=services)
@@ -36,7 +36,7 @@ def add():
 
     if User.get(User.id == user_id).acc_type == 'client':
         flash('You need a service provider account to add services', 'error')
-        redirect(url_for('index.index'))
+        return redirect(url_for('index.index'))
 
     if request.method == 'POST':
         req = request.form
@@ -51,7 +51,7 @@ def add():
                        views=0, favs=0, uid=user_id)
 
         flash('Service created successfully', 'success')
-        redirect(url_for('service.manage'))
+        return redirect(url_for('service.manage'))
 
     return render_template('service/add.html')
 
@@ -59,12 +59,16 @@ def add():
 @service_bp.route('/edit/<id>', methods=['GET', 'POST'])
 @is_auth
 def edit(id):
-    services = Service.get(Service.id == id)
+    services = Service.get_or_none(Service.id == id)
     user_id = session['user_id']
 
     if User.get(User.id == user_id).acc_type == 'client':
         flash('You need a service provider account to edit services', 'error')
-        redirect(url_for('index.index'))
+        return redirect(url_for('index.index'))
+
+    if services is None:
+        flash('Service not found', 'error')
+        return redirect(url_for('service.manage'))
 
     if request.method == 'POST':
         req = request.form
@@ -77,6 +81,19 @@ def edit(id):
         query = Service.update(name=name, desc=desc, price=price, categories=categories).where(Service.id == id)
         query.execute()
         flash('Changes saved successfully', 'success')
-        redirect(url_for('service.manage'))
+        return redirect(url_for('service.manage'))
 
     return render_template('service/edit.html', services=services)
+
+
+@service_bp.route('/delete/<id>')
+@is_auth
+def delete(id):
+    if Service.get_or_none(Service.id == id) is None:
+        flash('Service not found', 'error')
+        return redirect(url_for('service.manage'))
+
+    query = Service.delete().where(Service.id == id)
+    query.execute()
+    flash('Service deleted successfully', 'success')
+    return redirect(url_for('service.manage'))
