@@ -12,6 +12,7 @@ class Service(Base):
     date_created = CharField()
     views = IntegerField()
     favs = IntegerField()
+    username = CharField()
     uid = ForeignKeyField(User)
 
     class Meta:

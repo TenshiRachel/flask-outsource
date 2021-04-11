@@ -20,8 +20,9 @@ def list_service():
 @is_auth
 def manage():
     user_id = session['user_id']
+    user = User.get_by_id(user_id).acc_type
 
-    if User.get(User.id == user_id).acc_type == 'client':
+    if user == 'client':
         flash('You need a service provider account to manage services', 'error')
         return redirect(url_for('index.index'))
 
@@ -33,8 +34,9 @@ def manage():
 @is_auth
 def add():
     user_id = session['user_id']
+    user = User.get_by_id(user_id).acc_type
 
-    if User.get(User.id == user_id).acc_type == 'client':
+    if user == 'client':
         flash('You need a service provider account to add services', 'error')
         return redirect(url_for('index.index'))
 
@@ -48,7 +50,7 @@ def add():
 
         Service.create(name=name, desc=desc, price=price, categories=categories,
                        date_created=date.today().strftime('%d/%m/%Y'),
-                       views=0, favs=0, uid=user_id)
+                       views=0, favs=0, username=user.username, uid=user_id)
 
         flash('Service created successfully', 'success')
         return redirect(url_for('service.manage'))
@@ -61,8 +63,9 @@ def add():
 def edit(id):
     services = Service.get_or_none(Service.id == id)
     user_id = session['user_id']
+    user = User.get_by_id(user_id).acc_type
 
-    if User.get(User.id == user_id).acc_type == 'client':
+    if user == 'client':
         flash('You need a service provider account to edit services', 'error')
         return redirect(url_for('index.index'))
 

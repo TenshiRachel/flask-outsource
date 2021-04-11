@@ -17,6 +17,7 @@ def register():
         email = req.get('email')
         password = req.get('password')
         cfm_pass = req.get('cfmPassword')
+        acc_type = req.get('accType')
 
         if username == '':
             errors['username'] = 'Username is required'
@@ -40,7 +41,7 @@ def register():
             flash(', '.join(errors.values()), 'error')
             return redirect(url_for('auth.register'))
 
-        User.create(username=username, email=email, password=password, acc_type='client')
+        User.create(username=username, email=email, password=password, acc_type=acc_type)
 
         flash('You have registered successfully and can now log in', 'success')
         return redirect(url_for('index.index'))

@@ -14,23 +14,23 @@
                         <div class="card w-100">
                             <div class="view overlay border-bottom border-primary rounded-top">
                                 <img loading="lazy" onerror='this.src = "/img/services/default.jpg"' class="card-img-top"
-                                    src="/uploads/services/{{uid}}/{{id}}.png" alt="Image not available">
+                                    src="/uploads/services/{{service.uid}}/{{service.id}}.png" alt="Image not available">
 
                                 <a><div class="mask rgba-black-light"></div></a>
                             </div>
 
                             <div class="btn-action ml-auto mr-3">
-                                <a class="btn-floating btn-danger m-0 mr-2 material-tooltip-sm" href="/services/delete/{{id}}"
+                                <a class="btn-floating btn-danger m-0 mr-2 material-tooltip-sm" href="/services/delete/{{service.id}}"
                                     data-tooltip="tooltip" data-placement="top" title="Delete">
                                     <i class="far fa-trash-alt"></i>
                                 </a>
 
-                                <a class="btn-floating btn-success m-0 mr-2 material-tooltip-sm" href="/services/edit/{{id}}"
+                                <a class="btn-floating btn-success m-0 mr-2 material-tooltip-sm" href="/services/edit/{{service.id}}"
                                     data-tooltip="tooltip" data-placement="top" title="Edit">
                                     <i class="far fa-edit"></i>
                                 </a>
 
-                                <a class="btn-floating btn-primary m-0 material-tooltip-sm" href="/services/view/{{uid}}/{{id}}"
+                                <a class="btn-floating btn-primary m-0 material-tooltip-sm" href="/services/view/{{service.uid}}/{{service.id}}"
                                     data-tooltip="tooltip" data-placement="top" title="View More Details">
                                     <i class="far fa-eye"></i>
                                 </a>
@@ -40,23 +40,23 @@
                                 <div class="d-flex mt-2">
                                     <div class="flex-fill">
                                             <img loading="lazy" src="/uploads/profile/{{uid}}/profilePic.png" class="rounded-circle img-fluid z-depth-1" style="max-width: 2rem;">
-                                        <a class="align-middle ml-1" href="/profile/view/{{uid}}">{{username}}</a>
+                                        <a class="align-middle ml-1" href="/profile/view/{{service.uid}}">{{service.username}}</a>
                                     </div>
 
                                     <div class="d-flex align-items-center">
                                         <span class="text-muted small">
-                                            <i class="far fa-clock mr-2"></i>{{this.date}}
+                                            <i class="far fa-clock mr-2"></i>{{service.date_created}}
                                         </span>
                                     </div>
                                 </div>
 
                                 <div class="d-flex mt-4">
                                     <div class="flex-fill">
-                                        <h4 class="card-title mb-0">{{this.name}}</h4>
+                                        <h4 class="card-title mb-0">{{service.name}}</h4>
                                     </div>
 
                                     <div class="d-flex align-items-center font-weight-bold ml-3">
-                                        {{this.views}}<i class="far fa-eye ml-2"></i>
+                                        {{service.views}}<i class="far fa-eye ml-2"></i>
                                     </div>
                                 </div>
 
@@ -64,15 +64,15 @@
 
                                 <div class="flex-fill">
                                     <p class="card-text">
-                                        {{this.desc}}
+                                        {{service.desc}}
                                     </p>
                                 </div>
 
                                 <div class="d-flex">
-                                    <form class="flex-fill text-right" method="post" action="/services/fav/{{this.id}}">
+                                    <form class="flex-fill text-right" method="post" action="/services/fav/{{service.id}}">
                                         <button class="btn btn-sm btn-red mr-0 material-tooltip-sm" data-tooltip="tooltip" data-placement="top" title="Favourite/Unfavourite">
                                             <span class="font-weight-bold">
-                                                {{this.favourites}}<i class="fas fa-heart ml-2"></i>
+                                                {{service.favs}}<i class="fas fa-heart ml-2"></i>
                                             </span>
                                         </button>
                                     </form>
@@ -81,7 +81,7 @@
 
                             <div class="card-footer deep-purple accent-3 white-text text-center">
                                 <h5 class="m-0">
-                                    ${{price}}
+                                    ${{service.price}}
                                 </h5>
                             </div>
                         </div>
