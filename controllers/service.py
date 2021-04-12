@@ -16,13 +16,20 @@ def list_service():
     return render_template('service/list.html', services=services)
 
 
+@service_bp.route('/view')
+def view(id):
+    service = Service.get_by_id(id)
+    service_user = User.get_by_id(service.uid)
+    return render_template('service/index.html', services=service, service_user=service_user)
+
+
 @service_bp.route('/manage')
 @is_auth
 def manage():
     user_id = session['user_id']
-    user = User.get_by_id(user_id).acc_type
+    user = User.get_by_id(user_id)
 
-    if user == 'client':
+    if user.acc_type == 'client':
         flash('You need a service provider account to manage services', 'error')
         return redirect(url_for('index.index'))
 
@@ -34,9 +41,9 @@ def manage():
 @is_auth
 def add():
     user_id = session['user_id']
-    user = User.get_by_id(user_id).acc_type
+    user = User.get_by_id(user_id)
 
-    if user == 'client':
+    if user.acc_type == 'client':
         flash('You need a service provider account to add services', 'error')
         return redirect(url_for('index.index'))
 
@@ -63,9 +70,9 @@ def add():
 def edit(id):
     services = Service.get_or_none(Service.id == id)
     user_id = session['user_id']
-    user = User.get_by_id(user_id).acc_type
+    user = User.get_by_id(user_id)
 
-    if user == 'client':
+    if user.acc_type == 'client':
         flash('You need a service provider account to edit services', 'error')
         return redirect(url_for('index.index'))
 
