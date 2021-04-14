@@ -58,7 +58,7 @@
 
                 <div class="btn-action ml-auto mr-3">
                     <a class="btn-floating btn-primary m-0 material-tooltip-sm" data-tooltip="tooltip"
-                        data-placement="top" title="View More Details" href="/services/view/{{service.uid}}/{{service.id}}">
+                        data-placement="top" title="View More Details" href="/service/view/{{service.uid}}/{{service.id}}">
                         <i class="far fa-eye"></i>
                     </a>
                 </div>
@@ -97,7 +97,7 @@
                     </div>
 
                     <div class="d-flex">
-                        <form class="flex-fill text-right" method="post" action="/services/fav/{{service.id}}">
+                        <form class="flex-fill text-right" method="post" action="/service/fav/{{service.id}}">
                             <button class="btn btn-sm btn-red mr-0 material-tooltip-sm" data-tooltip="tooltip" data-placement="top" title="Favourite/Unfavourite">
                                 <span class="font-weight-bold">
                                     {{service.favs}}<i class="fas fa-heart ml-2"></i>

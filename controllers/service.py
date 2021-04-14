@@ -12,15 +12,32 @@ service_bp = Blueprint('service', __name__, template_folder=config.constants.tem
 
 @service_bp.route('/list')
 def list_service():
+    user_id = session['user_id']
+    user = User.get_by_id(user_id)
     services = Service.select()
-    return render_template('service/list.html', services=services)
+    return render_template('service/list.html', services=services, user=user)
 
 
-@service_bp.route('/view')
-def view(id):
+@service_bp.route('/view/<uid>/<id>')
+def view(uid, id):
+    user_id = session['user_id']
+    user = User.get_by_id(user_id)
     service = Service.get_by_id(id)
-    service_user = User.get_by_id(service.uid)
-    return render_template('service/index.html', services=service, service_user=service_user)
+    service_user = User.get_by_id(uid)
+    return render_template('service/index.html', services=service, service_user=service_user, user=user)
+
+
+@service_bp.route('/fav/<id>')
+@is_auth
+def fav(id):
+    service = Service.get_or_none(Service.id == id)
+
+    if service is None:
+        flash('Service not found', 'error')
+        return redirect(url_for('service.list'))
+
+    flash('Service favorited', 'success')
+    return redirect(url_for('service.list'))
 
 
 @service_bp.route('/manage')
@@ -34,7 +51,7 @@ def manage():
         return redirect(url_for('index.index'))
 
     services = Service.select().where(Service.uid == user_id)
-    return render_template('service/manage.html', services=services)
+    return render_template('service/manage.html', services=services, user=user)
 
 
 @service_bp.route('/add', methods=['GET', 'POST'])
@@ -62,7 +79,7 @@ def add():
         flash('Service created successfully', 'success')
         return redirect(url_for('service.manage'))
 
-    return render_template('service/add.html')
+    return render_template('service/add.html', user=user)
 
 
 @service_bp.route('/edit/<id>', methods=['GET', 'POST'])
@@ -93,7 +110,7 @@ def edit(id):
         flash('Changes saved successfully', 'success')
         return redirect(url_for('service.manage'))
 
-    return render_template('service/edit.html', services=services)
+    return render_template('service/edit.html', services=services, user=user)
 
 
 @service_bp.route('/delete/<id>')
