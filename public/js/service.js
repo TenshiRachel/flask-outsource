@@ -36,9 +36,21 @@ function search() {
 
 $(function() {
     let searchbut = document.getElementById('searchbut');
+    let chkboxes = $('input[name="categories"]');
 
     if (searchbut) {
         searchbut.addEventListener('click', search);
+    }
+
+    if (chkboxes){
+        for (let i = 0, n = chkboxes.length; i < n; i++){
+            let focus = $(chkboxes[i]);
+            let categories = ['Graphics&Design', 'Writing&Translation', 'Video&Animation', 'Music&Audio', 'Programming&Tech']
+
+            if (focus.hasClass(categories[i])){
+                focus.prop('checked', true);
+            }
+        }
     }
 });
 

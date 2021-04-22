@@ -36,7 +36,7 @@
                         <a class="dropdown-item" href="">
                             <i class="far fa-folder mr-1"></i>Files Management
                         </a>
-                        {% if user.acctype == 'service' %}
+                        {% if user.acc_type == 'service' %}
                             <a class="dropdown-item" href="/service/manage">
                                 <i class="far fa-user-tie mr-1"></i>Services Management
                             </a>
@@ -44,10 +44,11 @@
                             <a class="dropdown-item" href="">
                                 <i class="far fa-briefcase mr-1"></i>Jobs Management
                             </a>
-                        {% endif %}
+                        {% else %}
                         <a class="dropdown-item" href="">
                             <i class="far fa-money-check mr-1"></i>Service Requests Management
                         </a>
+                        {% endif %}
                         <a class="dropdown-item" href="">
                             <i class="far fa-file-invoice-dollar mr-1"></i> Transaction History
                         </a>

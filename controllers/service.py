@@ -71,6 +71,7 @@ def add():
         desc = req.get('desc')
         price = req.get('price')
         categories = req.getlist('categories')
+        categories = ' '.join(categories)
 
         Service.create(name=name, desc=desc, price=price, categories=categories,
                        date_created=date.today().strftime('%d/%m/%Y'),
@@ -104,6 +105,7 @@ def edit(id):
         desc = req.get('desc')
         price = req.get('price')
         categories = req.getlist('categories')
+        categories = ' '.join(categories)
 
         query = Service.update(name=name, desc=desc, price=price, categories=categories).where(Service.id == id)
         query.execute()

@@ -49,8 +49,8 @@
                                 <button id="butreq" type="submit" class="btn btn-success">Request
                                     Service
                                 </button>
-                                {{#if job}}<a href="/jobs/delete/{{job.id}}" class="btn btn-danger">Cancel
-                                    Request</a>{{/if}}
+                                {% if job %}<a href="/jobs/delete/{{job.id}}" class="btn btn-danger">Cancel
+                                    Request</a>{% endif %}
                             </div>
                         </form>
                     </div>
@@ -95,13 +95,13 @@
                                 <h3 class="card-title">{{service_user.username}}</h3>
                             </a>
                             <h5 class="card-title text-muted">{% if service_user.jobTitle %}
-                                {% service_user.jobTitle %}
+                                {{ service_user.jobTitle }}
                                 {% else %}
                                 Service Provider
                                 {% endif %}</h5>
                             <br>
-                            <p class="text-left"> <b>Followers:</b> {{getNum serviceuser.followers}} </p>
-                            <p class="text-left"> <b>Following:</b> {{getNum serviceuser.following}}</p>
+                            <p class="text-left"> <b>Followers:</b> {{serviceuser.followers}} </p>
+                            <p class="text-left"> <b>Following:</b> {{serviceuser.following}}</p>
                             <hr class="hr-primary">
 
                             <p class="text-left"><b>Email:</b> {{service_user.email}}</p>
