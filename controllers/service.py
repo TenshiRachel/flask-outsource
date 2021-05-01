@@ -24,20 +24,23 @@ def view(uid, id):
     user = User.get_by_id(user_id)
     service = Service.get_by_id(id)
     service_user = User.get_by_id(uid)
+    query = Service.update(views=service.views + 1).where(Service.id == id)
+    query.execute()
     return render_template('service/index.html', services=service, service_user=service_user, user=user)
 
 
-@service_bp.route('/fav/<id>')
+@service_bp.route('/fav/<id>', methods=['POST'])
 @is_auth
 def fav(id):
-    service = Service.get_or_none(Service.id == id)
+    if request.method == 'POST':
+        service = Service.get_or_none(Service.id == id)
 
-    if service is None:
-        flash('Service not found', 'error')
+        if service is None:
+            flash('Service not found', 'error')
+            return redirect(url_for('service.list'))
+
+        flash('Service favorited', 'success')
         return redirect(url_for('service.list'))
-
-    flash('Service favorited', 'success')
-    return redirect(url_for('service.list'))
 
 
 @service_bp.route('/manage')

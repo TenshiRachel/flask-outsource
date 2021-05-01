@@ -7,7 +7,7 @@
                 <div class="card w-100">
                     <div class="view overlay border-bottom border-primary rounded-top">
                         <img loading="lazy" onerror='this.src = "/img/services/default.jpg"' class="card-img-top"
-                            src="/uploads/services/{{services.uid}}/{{services.id}}.png" alt="Image not available">
+                            src="" alt="Image not available">
                         <a>
                             <div class="mask rgba-black-light"></div>
                         </a>
@@ -74,7 +74,7 @@
                         <div style="height:auto;" class="card-up indigo view lighten-1 rounded-0">
 
                             <img loading="lazy" class="img-fluid jarallax-img " onerror='this.src="/img/profile/banner.png"'
-                                src="/uploads/profile/{{serviceuser.id}}/banner.png" alt="">
+                                src="/uploads/profile/{{service_user.id}}/banner.png" alt="">
 
                             <div class="mask flex-center waves-effect waves-light">
 
@@ -84,14 +84,14 @@
                         <!-- Avatar -->
                         <div class="avatar mx-auto white mt-4">
                             <img loading="lazy" onerror='this.src = "/img/profile/default.png"'
-                                src="/uploads/profile/{{serviceuser.id}}/profilePic.png" class="rounded-circle "
+                                src="/uploads/profile/{{service_user.id}}/profilePic.png" class="rounded-circle "
                                 alt="">
                         </div>
 
                         <!-- Content -->
                         <div class="card-body">
                             <!-- Name -->
-                            <a href="/profile/view/{{serviceuser.id}}">
+                            <a href="/profile/view/{{service_user.id}}">
                                 <h3 class="card-title">{{service_user.username}}</h3>
                             </a>
                             <h5 class="card-title text-muted">{% if service_user.jobTitle %}
@@ -100,8 +100,8 @@
                                 Service Provider
                                 {% endif %}</h5>
                             <br>
-                            <p class="text-left"> <b>Followers:</b> {{serviceuser.followers}} </p>
-                            <p class="text-left"> <b>Following:</b> {{serviceuser.following}}</p>
+                            <p class="text-left"> <b>Followers:</b> {{service_user.followers}} </p>
+                            <p class="text-left"> <b>Following:</b> {{service_user.following}}</p>
                             <hr class="hr-primary">
 
                             <p class="text-left"><b>Email:</b> {{service_user.email}}</p>
