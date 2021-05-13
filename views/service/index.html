@@ -1,0 +1,123 @@
+{% extends 'layouts/base.html' %}
+{% block body %}
+<section class="viewservice container mx-auto">
+    <div class="col-10 mx-auto row justify-content-around">
+        <div class="col-lg-6">
+            <div class="service-overview">
+                <div class="card w-100">
+                    <div class="view overlay border-bottom border-primary rounded-top">
+                        <img loading="lazy" onerror='this.src = "/img/services/default.jpg"' class="card-img-top"
+                            src="" alt="Image not available">
+                        <a>
+                            <div class="mask rgba-black-light"></div>
+                        </a>
+                    </div>
+
+                    <div class="card-body d-flex flex-column">
+                        <div class="d-flex mt-2">
+                            <div class="d-flex align-items-center">
+                                <span class="text-muted small">
+                                    <i class="far fa-clock mr-2"></i>{{services.date}}
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="d-flex mt-4">
+                            <div class="flex-fill">
+                                <h4 class="card-title mb-0">{{services.name}}</h4>
+                            </div>
+
+                            <div class="d-flex align-items-center font-weight-bold ml-3">
+                                {{services.views}}<i class="far fa-eye ml-2"></i>
+                            </div>
+                        </div>
+
+                        <hr class="w-100">
+
+                        <div class="flex-fill">
+                            <p class="card-text">
+                                {{services.desc}}
+                            </p>
+                        </div>
+                        <div class="remarks">
+                        <form method="post" action="/jobs/add/{{services.id}}">
+                            <div class="md-form md-outline">
+                                <label class="font-italic card-text" for="remarks">Remarks</label>
+                                <textarea class="form-control" id="remarks" name="remarks" rows="7"></textarea>
+                            </div>
+                            <div class="butcon text-right">
+                                <button id="butreq" type="submit" class="btn btn-success">Request
+                                    Service
+                                </button>
+                                {% if job %}<a href="/jobs/delete/{{job.id}}" class="btn btn-danger">Cancel
+                                    Request</a>{% endif %}
+                            </div>
+                        </form>
+                    </div>
+                    </div>
+                    <div class="card-footer deep-purple accent-2 white-text text-center">
+                        <h5 class="m-0">
+                            ${{services.price}}
+                        </h5>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="user-overview">
+                <div class="">
+                    <!-- Card -->
+                    <div class="card testimonial-card">
+
+                        <!-- Background color -->
+                        <div style="height:auto;" class="card-up indigo view lighten-1 rounded-0">
+
+                            <img loading="lazy" class="img-fluid jarallax-img " onerror='this.src="/img/profile/banner.png"'
+                                src="/uploads/profile/{{service_user.id}}/banner.png" alt="">
+
+                            <div class="mask flex-center waves-effect waves-light">
+
+                            </div>
+
+                        </div>
+                        <!-- Avatar -->
+                        <div class="avatar mx-auto white mt-4">
+                            <img loading="lazy" onerror='this.src = "/img/profile/default.png"'
+                                src="/uploads/profile/{{service_user.id}}/profilePic.png" class="rounded-circle "
+                                alt="">
+                        </div>
+
+                        <!-- Content -->
+                        <div class="card-body">
+                            <!-- Name -->
+                            <a href="/profile/view/{{service_user.id}}">
+                                <h3 class="card-title">{{service_user.username}}</h3>
+                            </a>
+                            <h5 class="card-title text-muted">{% if service_user.jobTitle %}
+                                {{ service_user.jobTitle }}
+                                {% else %}
+                                Service Provider
+                                {% endif %}</h5>
+                            <br>
+                            <p class="text-left"> <b>Followers:</b> {{service_user.followers}} </p>
+                            <p class="text-left"> <b>Following:</b> {{service_user.following}}</p>
+                            <hr class="hr-primary">
+
+                            <p class="text-left"><b>Email:</b> {{service_user.email}}</p>
+
+                            <hr class="hr-primary">
+
+
+                        </div>
+                    </div>
+
+                    <br>
+                    <br>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</section>
+{% endblock %}

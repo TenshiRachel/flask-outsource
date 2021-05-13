@@ -1,0 +1,75 @@
+{% extends 'layouts/base.html' %}
+{% block body %}
+<div class="container">
+	<div class="card card-body">
+		<h3 class="text-info font-weight-bold">Add Service</h3>
+		<form method="post" id="addService" action="/service/add" enctype="multipart/form-data">
+			<div class="row">
+				<div class="col-lg-9">
+					<div class="md-form md-outline">
+						<label for="name">Service name</label>
+						<input class="form-control w-50" type="text" name="name" id="name" required>
+					</div>
+					<div class="md-form md-outline">
+						<label for="desc">Service Description</label>
+						<textarea class="form-control" id="desc" name="desc" rows="7"></textarea>
+					</div>
+					<div class="md-form md-outline">
+						<label for="price">Price ($)</label>
+						<input class="form-control w-20" type="number" name="price" id="price" required>
+					</div>
+				</div>
+				<div class="col-lg-3">
+					<label class="font-italic">Service poster (Optional)</label>
+					<div class="custom-file">
+						<div class="file-upload" data-autosubmit="false">
+							<input type="file" name="serviceposter" accept="image/png,image/jpeg,image/jpg,image/gif">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="row">
+					<div class="col-lg-9">
+						<label class="font-italic">Category(s)</label>
+						<br>
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" type="checkbox" name="categories" id="graphics"
+								value="Graphics&Design" onclick="categoryCheck()">
+							<label class="form-check-label" for="graphics">Graphics & Design</label>
+						</div>
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" type="checkbox" name="categories" id="writing"
+								value="Writing&Translation" onclick="categoryCheck()">
+							<label class="form-check-label" for="writing">Writing & Translation</label>
+						</div>
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" type="checkbox" name="categories" id="video"
+								value="Video&Animation" onclick="categoryCheck()">
+							<label class="form-check-label" for="video">Video & Animation</label>
+						</div>
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" type="checkbox" name="categories" id="music"
+								value="Music&Audio" onclick="categoryCheck()">
+							<label class="form-check-label" for="music">Music & Audio</label>
+						</div>
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" type="checkbox" name="categories" id="tech"
+								value="Programming&Tech" onclick="categoryCheck()">
+							<label class="form-check-label" for="tech">Programming & Tech</label>
+						</div>
+						<p class="font-weight-bold text-info" id="categoryErr">Please select
+							at least one category</p>
+					</div>
+				</div>
+			</div>
+			<br>
+			<a href="/services/manage" class="btn btn-danger">Cancel</a>
+			<button id="butaddService" type="submit" class="btn btn-info" disabled>Add
+				Service
+			</button>
+		</form>
+	</div>
+</div>
+<script src="{{ url_for('static', filename='/js/service.js') }}"></script>
+{% endblock %}

@@ -1,5 +1,6 @@
 from peewee import *
 from config.dbConfig import Base
+from models.user import User
 
 
 class Service(Base):
@@ -11,6 +12,8 @@ class Service(Base):
     date_created = CharField()
     views = IntegerField()
     favs = IntegerField()
+    username = CharField()
+    uid = ForeignKeyField(User)
 
     class Meta:
         database = Base._meta.db

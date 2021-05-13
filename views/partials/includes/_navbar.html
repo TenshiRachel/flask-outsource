@@ -15,56 +15,62 @@
             </li>
         </ul>
         <ul class="navbar-nav ml-auto">
-            <li class="nav-item mr-2 d-none d-md-block">
-                <a class="nav-link rounded" href="">
-                    <i class="far fa-bell"></i><span class=""></span>
-                </a>
-            </li>
-            <li class="nav-item dropdown my-auto d-none d-md-block">
-                <a class="nav-link dropdown-toggle m-0 z-depth-1-half" data-toggle="dropdown">
-                    <img src="" class="deep-purple lighten-5 z-depth-1-half avatar"/>
-
-                    <i class="far fa-user animated faster"></i>
-
-                </a>
-
-                <div class="dropdown-menu dropdown-menu-right mt-1">
-                    <a class="dropdown-item" href="">
-                        <i class="far fa-id-card mr-1"></i>My Profile
+            {% if user %}
+                <li class="nav-item mr-2 d-none d-md-block">
+                    <a class="nav-link rounded" href="">
+                        <i class="far fa-bell"></i><span class=""></span>
                     </a>
-                    <a class="dropdown-item" href="">
-                        <i class="far fa-folder mr-1"></i>Files Management
-                    </a>
-                    <a class="dropdown-item" href="">
-                        <i class="far fa-user-tie mr-1"></i>Services Management
+                </li>
+                <li class="nav-item dropdown my-auto d-none d-md-block">
+                    <a class="nav-link dropdown-toggle m-0 z-depth-1-half" data-toggle="dropdown">
+                        <img src="" class="deep-purple lighten-5 z-depth-1-half avatar"/>
+
+                        <i class="far fa-user animated faster"></i>
+
                     </a>
 
-                    <a class="dropdown-item" href="">
-                        <i class="far fa-briefcase mr-1"></i>Jobs Management
+                    <div class="dropdown-menu dropdown-menu-right mt-1">
+                        <a class="dropdown-item" href="">
+                            <i class="far fa-id-card mr-1"></i>My Profile
+                        </a>
+                        <a class="dropdown-item" href="">
+                            <i class="far fa-folder mr-1"></i>Files Management
+                        </a>
+                        {% if user.acc_type == 'service' %}
+                            <a class="dropdown-item" href="/service/manage">
+                                <i class="far fa-user-tie mr-1"></i>Services Management
+                            </a>
+
+                            <a class="dropdown-item" href="">
+                                <i class="far fa-briefcase mr-1"></i>Jobs Management
+                            </a>
+                        {% else %}
+                        <a class="dropdown-item" href="">
+                            <i class="far fa-money-check mr-1"></i>Service Requests Management
+                        </a>
+                        {% endif %}
+                        <a class="dropdown-item" href="">
+                            <i class="far fa-file-invoice-dollar mr-1"></i> Transaction History
+                        </a>
+                        <hr class="mt-0 mb-3">
+                        <a class="dropdown-item text-danger" href="/auth/logout">
+                            <i class="far fa-power-off mr-1"></i>Sign Out
+                        </a>
+                    </div>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <hr class="hr-light d-md-none mt-3 mb-4">
+                    <a class="btn btn-md btn-block dusty-grass-gradient black-text" href="/auth/register">
+                        <i class="far fa-user-plus mr-1"></i>Join
                     </a>
-                    <a class="dropdown-item" href="">
-                        <i class="far fa-money-check mr-1"></i>Service Requests Management
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-md primary-gradient d-none d-md-block m-0 ml-3" href="/auth/login">
+                        <i class="far fa-sign-in-alt mr-1"></i>Sign In
                     </a>
-                    <a class="dropdown-item" href="">
-                        <i class="far fa-file-invoice-dollar mr-1"></i> Transaction History
-                    </a>
-                    <hr class="mt-0 mb-3">
-                    <a class="dropdown-item text-danger" href="/auth/logout">
-                        <i class="far fa-power-off mr-1"></i>Sign Out
-                    </a>
-                </div>
-            </li>
-            <li class="nav-item">
-                <hr class="hr-light d-md-none mt-3 mb-4">
-                <a class="btn btn-md btn-block dusty-grass-gradient black-text" href="/auth/register">
-                    <i class="far fa-user-plus mr-1"></i>Join
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="btn btn-md primary-gradient d-none d-md-block m-0 ml-3" href="/auth/login">
-                    <i class="far fa-sign-in-alt mr-1"></i>Sign In
-                </a>
-            </li>
+                </li>
+            {% endif %}
         </ul>
     </div>
 </nav>

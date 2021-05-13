@@ -9,5 +9,7 @@ def is_auth(f):
             return f(*args, **kwargs)
 
         else:
-            flash('Please sign in to view the page')
+            flash('Please sign in to view the page', 'error')
             return redirect(url_for('auth.login'))
+
+    return wrap
