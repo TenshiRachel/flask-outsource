@@ -14,3 +14,14 @@ def profile():
     user_id = session['user_id']
     user = User.get_by_id(user_id)
     return render_template('profile/index.html', user=user)
+
+
+@profile_bp.route('/profile/edit', methods=['GET', 'POST'])
+@is_auth
+def edit():
+    if request.method == 'POST':
+        pass
+
+    user_id = session['user_id']
+    user = User.get_by_id(user_id)
+    return render_template('profile/edit.html', user=user)
