@@ -10,27 +10,27 @@
             <div class="mask flex-center waves-effect waves-light">
                 <div class="h-100 w-100 col-12 align-items-end row justify-content-end p-0">
                     <div id="socialmedias" class="d-flex justify-content-center p-1 mr-2">
-                        {% if social_medias.[0] %}
-                        <a href="{{ social_medias.[0] }}" class="col text-center "><i
+                        {% if social_medias[0] %}
+                        <a href="{{ social_medias[0] }}" class="col text-center "><i
                                 class="fab fa-twitter fa-2x text-white text-center"></i></a>
                         {% endif %}
-                        {% if social_medias.[1] %}
-                        <a href="{{ social_medias.[1] }}" class="col text-center "><i
+                        {% if social_medias[1] %}
+                        <a href="{{ social_medias[1] }}" class="col text-center "><i
                                 class="fab fa-instagram fa-2x text-white text-center"></i></a>
                         {% endif %}
 
-                        {% if social_medias.[2] %}
-                        <a href="{{ social_medias.[2] }}" class="col text-center "><i
+                        {% if social_medias[2] %}
+                        <a href="{{ social_medias[2] }}" class="col text-center "><i
                                 class="fab fa-facebook fa-2x text-white text-center"></i></a>
                         {% endif %}
 
-                        {% if social_medias.[3] %}
-                        <a href="{{ social_medias.[3] }}" class="col text-center "><i
+                        {% if social_medias[3] %}
+                        <a href="{{ social_medias[3] }}" class="col text-center "><i
                                 class="fab fa-youtube fa-2x text-white text-center"></i></a>
                         {% endif %}
 
-                        {% if social_medias.[4] %}
-                        <a href="{{ social_medias.[4] }}" class="col text-center "><i
+                        {% if social_medias[4] %}
+                        <a href="{{ social_medias[4] }}" class="col text-center "><i
                                 class="fab fa-deviantart fa-2x text-white text-center"></i></a>
                         {% endif %}
                     </div>
@@ -149,7 +149,7 @@
                             <div class="row justify-content-start pl-2">
                                 {% if skills %}
                                     {% for skill in skills %}
-                                        <button type="button" class="btn btn-outline-secondary btn-rounded waves-effect skill-button">{% this %}</button>
+                                        <button type="button" class="btn btn-outline-secondary btn-rounded waves-effect skill-button">{{ skill }}</button>
                                     {% endfor %}
                                 {% else %}
                                     <p class="text-left text-muted">
@@ -203,32 +203,32 @@
                     </ul>
 
                     <div class="tab-content min-vh-80 p-0" id="myClassicTabContentShadow">
-                        {% !-- =============================== Portfolio =============================== -- %}
+<!--                        < !-- =============================== Portfolio =============================== -->
                         <div class="tab-pane fade active show profile-content" id="portfolio-classic-shadow"
                             role="tabpanel" aria-labelledby="portfolio-tab-classic-shadow">
-                            {% > profile/_portfolioItem %}
+<!--                             > profile/_portfolioItem -->
                         </div>
                         {% if user.accType == "service" %}
-                        {% !-- =============================== Services =============================== -- %}
+<!--                        < !-- =============================== Services =============================== -->
                         <div class="tab-pane fade profile-content" id="services-classic-shadow" role="tabpanel"
                             aria-labelledby="services-tab-classic-shadow">
-                            {% > profile/_servicesItem %}
+<!--                             > profile/_servicesItem -->
 
                         </div>
                         {% else %}
 
                         {% endif %}
 
-                        {% !-- =============================== Favourites =============================== -- %}
+<!--                        < !-- =============================== Favourites =============================== -->
                         <div class="tab-pane fade profile-content" id="favs-classic-shadow" role="tabpanel"
                             aria-labelledby="favs-tab-classic-shadow">
-                            {% > profile/_favItem %}
+<!--                             > profile/_favItem -->
                         </div>
 
-                        {% !-- =============================== Likes =============================== -- %}
+<!--                        < !-- =============================== Likes =============================== -->
                         <div class="tab-pane fade profile-content" id="likes-classic-shadow" role="tabpanel"
                             aria-labelledby="likes-tab-classic-shadow">
-                            {% > profile/_likeItem %}
+<!--                             > profile/_likeItem -->
                         </div>
                     </div>
 
@@ -256,19 +256,19 @@
                 <p class="text-center">You have no followers ;-;</p>
                 {% else %}
                 {% for follower in followers %}
-                <a href="/profile/view/{% id %}">
+                <a href="/profile/view/{{ id }}">
                     <div class="row justify-content-start">
                         <div class="col-2">
                             <img loading="lazy" onerror='this.src = "/img/profile/default.png"'
-                                src="/uploads/profile/{{id}}/profilePic.png" class="rounded-circle border w-100" alt="">
+                                src="/uploads/profile/{{follower.id}}/profilePic.png" class="rounded-circle border w-100" alt="">
                         </div>
                         <div class="col-5">
 
-                            {{ username }}
+                            {{ follower.username }}
 
                             <br>
                             <p>
-                                {{ accType }}
+                                {{ follower.accType }}
                             </p>
                         </div>
 
@@ -305,15 +305,15 @@
                     <div class="row justify-content-start">
                         <div class="col-2">
                             <img loading="lazy" onerror='this.src = "/img/profile/default.png"'
-                                src="/uploads/profile/{{id}}/profilePic.png" class="rounded-circle w-100 border" alt="">
+                                src="/uploads/profile/{{follower.id}}/profilePic.png" class="rounded-circle w-100 border" alt="">
                         </div>
                         <div class="col-5">
 
-                            <b>{{ username }}</b>
+                            <b>{{ follower.username }}</b>
 
                             <br>
                             <p>
-                                {{ accType }}
+                                {{ follower.accType }}
                             </p>
                         </div>
 
