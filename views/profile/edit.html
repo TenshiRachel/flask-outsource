@@ -7,7 +7,7 @@
     </div>
 
     <form method="POST" class="row justify-content-around">
-        {{!-- Banner --}}
+        <!-- Banner -->
         <div class="col-12">
 
             <div class="card testimonial-card z-depth-2 py-0 mb-5">
@@ -25,7 +25,7 @@
             </div>
         </div>
 
-        {{!-- Profile Details --}}
+        <!-- Profile Details -->
         <div class="col-md-12 col-lg-4">
             <!-- Card -->
             <div class="card testimonial-card z-depth-2 pt-2 mb-5">
@@ -64,10 +64,10 @@
 
                     <div class="md-form md-outline">
                         {% if user.dob %}
-                        <input placeholder="Selected date" type="text" id="dob" name="dob"
-                            class="form-control datepicker" value="{{formatDate user.dob 'DD/MM/YYYY'}}">
+                            <input placeholder="Selected date" type="text" id="dob" name="dob"
+                            class="form-control" value="{{ user.dob }}">
                         {% else %}
-                        <input type="text" id="dob" name="dob" class="form-control datepicker">
+                            <input type="text" id="dob" name="dob" class="form-control">
                         {% endif %}
                         <label for="dob" class="text-left">Birthday</label>
 
@@ -81,7 +81,7 @@
                             <option value="{{user.gender}}" selected>{{user.gender}}</option>
                             <hr>
                             {% else %}
-                            <option value="Not Set" selected>Not Set</option>}
+                            <option value="Not Set" selected>Not Set</option>
                             {% endif %}
 
                             <option value="Male">Male</option>
@@ -131,7 +131,7 @@
 
 
         </div>
-        {{!-- Social Medias --}}
+        <!-- Social Medias -->
         <div class="col-md-12 col-lg-4">
             <!-- Card -->
             <div class="card testimonial-card z-depth-2 pt-2 mb-5">
@@ -155,34 +155,34 @@
 
                     <div class="md-form md-outline">
                         <input type="url" class="form-control" name="twitter" id="twitter" aria-describedby="helpId"
-                            placeholder="e.g. https:///www.twitter.com/{{user.username}}123" value="{{social_medias.[0]}}">
+                            placeholder="e.g. https:///www.twitter.com/{{user.username}}123" value="{{social_medias[0]}}">
                         <label for="twitter" class="text-left"> Twitter </label>
                     </div>
 
                     <div class="md-form md-outline">
                         <input type="url" class="form-control" name="instagram" id="instagram" aria-describedby="helpId"
                             placeholder="e.g. https:///www.instagram.com/{{user.username}}123"
-                            value="{{social_medias.[1]}}">
+                            value="{{social_medias[1]}}">
                         <label for="instagram" class="text-left"> Instagram </label>
                     </div>
 
                     <div class="md-form md-outline">
                         <input type="url" class="form-control" name="facebook" id="facebook" aria-describedby="helpId"
-                            placeholder="e.g. https:///www.facebook.com/{{user.username}}123" value="{{social_medias.[2]}}">
+                            placeholder="e.g. https:///www.facebook.com/{{user.username}}123" value="{{social_medias[2]}}">
                         <label for="facebook" class="text-left"> Facebook </label>
                     </div>
 
                     <div class="md-form md-outline">
                         <input type="url" class="form-control" name="youtube" id="youtube" aria-describedby="helpId"
                             placeholder="e.g. https:///www.youtube.com/channel/UCFKDEp9si4RmHFWJW1vYsMA"
-                            value="{{social_medias.[3]}}">
+                            value="{{social_medias[3]}}">
                         <label for="youtube" class="text-left"> YouTube </label>
                     </div>
 
                     <div class="md-form md-outline">
                         <input type="url" class="form-control" name="deviantart" id="deviantart"
                             aria-describedby="helpId" placeholder="e.g. https://www.deviantart.com/{{user.username}}123"
-                            value="{{social_medias.[4]}}">
+                            value="{{social_medias[4]}}">
                         <label for="deviantart" class="text-left"> Deviantart </label>
                     </div>
                 </div>
@@ -190,7 +190,7 @@
 
 
         </div>
-        {{!-- Miscellaneous --}}
+        <!-- Miscellaneous -->
         <div class="col-md-12 col-lg-4">
             <div class="z-depth-2 card">
                 <!-- Content -->
@@ -209,31 +209,31 @@
 
                         <div style="" id="skillInput1" class="md-form md-outline">
                             <input type="text" class="form-control" name="skill1" id="skill1"
-                                placeholder="e.g. Illustrator" value="{{getItem skills 0}}">
+                                placeholder="e.g. Illustrator" value="{{ skills[0] }}">
                             <label for="skill1Label" class="text-left"> Skill 1 </label>
                         </div>
 
                         <div style="" id="skillInput2" class="md-form md-outline">
                             <input type="text" class="form-control" name="skill2" id="skill2"
-                                placeholder="e.g. Illustrator" value="{{getItem skills 1}}">
+                                placeholder="e.g. Illustrator" value="{{ skills[1] }}">
                             <label for="skill2Label" class="text-left"> Skill 2 </label>
                         </div>
 
                         <div style="" id="skillInput3" class="md-form md-outline">
                             <input type="text" class="form-control" name="skill3" id="skill3"
-                                placeholder="e.g. Illustrator" value="{{getItem skills 2}}">
+                                placeholder="e.g. Illustrator" value="{{ skills[2] }}">
                             <label for="skill3Label" class="text-left"> Skill 3 </label>
                         </div>
 
                         <div style="" id="skillInput4" class="md-form md-outline">
                             <input type="text" class="form-control" name="skill4" id="skill4"
-                                placeholder="e.g. Illustrator" value="{{getItem skills 3}}">
+                                placeholder="e.g. Illustrator" value="{{ skills [3]}}">
                             <label for="skill4Label" class="text-left"> Skill 4 </label>
                         </div>
 
                         <div style="" id="skillInput5" class="md-form md-outline">
                             <input type="text" class="form-control" name="skill5" id="skill5"
-                                placeholder="e.g. Illustrator" value="{{getItem skills 4}}">
+                                placeholder="e.g. Illustrator" value="{{ skills [4]}}">
                             <label for="skill5Label" class="text-left"> Skill 5 </label>
                         </div>
 

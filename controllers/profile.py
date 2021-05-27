@@ -15,13 +15,15 @@ def profile():
     user = User.get_by_id(user_id)
     social_medias = user.social_medias.split(',')
     follower_ids = user.followers.split(',')
-    followers = []
-    for id in follower_ids:
-        followers.append(User.get_by_id(id))
     following_ids = user.following.split(',')
+    followers = []
+    if follower_ids[0] != '':
+        for id in follower_ids:
+            followers.append(User.get_by_id(id))
     following = []
-    for id in following_ids:
-        following.append(User.get_by_id(id))
+    if following_ids[0] != '':
+        for id in following_ids:
+            following.append(User.get_by_id(id))
     skills = user.skills.split(',')
     return render_template('profile/index.html', user=user, social_medias=social_medias,
                            followers=followers, following=following, skills=skills)
@@ -31,8 +33,11 @@ def profile():
 @is_auth
 def edit():
     if request.method == 'POST':
+        req = request.form
         pass
 
     user_id = session['user_id']
     user = User.get_by_id(user_id)
-    return render_template('profile/edit.html', user=user)
+    social_medias = user.social_medias.split(',')
+    skills = user.skills.split(',')
+    return render_template('profile/edit.html', user=user, social_medias=social_medias, skills=skills)
