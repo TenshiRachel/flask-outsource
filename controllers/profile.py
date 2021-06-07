@@ -32,11 +32,21 @@ def profile():
 @profile_bp.route('/profile/edit', methods=['GET', 'POST'])
 @is_auth
 def edit():
+    user_id = session['user_id']
     if request.method == 'POST':
         req = request.form
-        pass
+        bio = req.get('bio')
+        website = req.get('website')
+        dob = req.get('dob')
+        location = req.get('location')
+        gender = req.get('gender')
+        occupation = req.get('occupation')
 
-    user_id = session['user_id']
+        query = User.update(bio=bio, website=website, dob=dob, location=location, gender=gender, occupation=occupation)\
+            .where(User.id == user_id)
+        query.execute()
+        flash('Changes saved successfully', 'success')
+
     user = User.get_by_id(user_id)
     social_medias = user.social_medias.split(',')
     skills = user.skills.split(',')
