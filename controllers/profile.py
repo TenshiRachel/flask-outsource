@@ -46,8 +46,24 @@ def edit():
             .where(User.id == user_id)
         query.execute()
         flash('Changes saved successfully', 'success')
+        return redirect(url_for('user.profile'))
 
     user = User.get_by_id(user_id)
     social_medias = user.social_medias.split(',')
     skills = user.skills.split(',')
     return render_template('profile/edit.html', user=user, social_medias=social_medias, skills=skills)
+
+
+@profile_bp.route('/profile/delete/<id>')
+@is_auth
+def delete(id):
+    user_id = session['user_id']
+    if user_id != id:
+        flash('You are not authorized to perform this action', 'error')
+        return redirect(url_for('user.profile'))
+
+    query = User.delete().where(User.id == user_id)
+    query.execute()
+
+    flash('Account deleted successfully', 'success')
+    return redirect(url_for('index.index'))
