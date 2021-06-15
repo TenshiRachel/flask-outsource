@@ -46,7 +46,7 @@ def edit():
             .where(User.id == user_id)
         query.execute()
         flash('Changes saved successfully', 'success')
-        return redirect(url_for('user.profile'))
+        return redirect(url_for('profile.profile'))
 
     user = User.get_by_id(user_id)
     social_medias = user.social_medias.split(',')
@@ -60,7 +60,7 @@ def delete(id):
     user_id = session['user_id']
     if user_id != id:
         flash('You are not authorized to perform this action', 'error')
-        return redirect(url_for('user.profile'))
+        return redirect(url_for('profile.profile'))
 
     query = User.delete().where(User.id == user_id)
     query.execute()

@@ -75,8 +75,9 @@
 
 
                     <div class="select-outline text-left">
+                        <label for="gender" class="text-left m-0">Gender</label>
                         <select name="gender" id="gender"
-                            class="mdb-select md-form md-outline colorful-select dropdown-primary">
+                            class="custom-select md-form md-outline colorful-select dropdown-primary d-block">
                             {% if user.gender %}
                             <option value="{{user.gender}}" selected>{{user.gender}}</option>
                             <hr>
@@ -89,12 +90,12 @@
                             <option value="Others">Others</option>
 
                         </select>
-                        <label for="gender" class="text-left">Gender</label>
                     </div>
 
-                    <div class="select-outline text-left mb-n4">
+                    <div class="select-outline text-left mb-4">
+                        <label for="location" class="text-left m-0">Country</label>
                         <select name="location" id="location"
-                            class="mdb-select md-form md-outline colorful-select dropdown-primary"
+                            class="custom-select md-form md-outline colorful-select dropdown-primary d-block"
                             placeholder="Country">
                             {% if user.location %}
                             <option value="{{user.location}}" selected>{{user.location}}</option>
@@ -105,7 +106,6 @@
                             <option value="{{this.name}}">{{country}}</option>
                             {% endfor %}
                         </select>
-                        <label for="location" class="text-left">Country</label>
                     </div>
 
                     <div class="md-form md-outline">
@@ -259,7 +259,7 @@
                 aria-hidden="true">
 
                 <!-- Change class .modal-sm to change the size of the modal -->
-                <div class="modal-dialog modal-sm" role="document">
+                <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h4 class="modal-title w-100" id="label">Confirm Delete?</h4>
