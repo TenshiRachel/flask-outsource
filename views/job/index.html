@@ -49,7 +49,7 @@
                                         Awaiting payment
                                         {% endif %}
                                         {% if job.status == "paid" %}
-                                        <a href="/jobs/submit/{{id}}" class="btn btn-sm btn-success material-tooltip-md"
+                                        <a href="/jobs/submit/{{job.id}}" class="btn btn-sm btn-success material-tooltip-md"
                                             data-tooltip="tooltip" data-placement="top" title="Submit Job">
                                             Job completed<i class="far fa-check ml-2"></i></a>
                                         {% endif %}
