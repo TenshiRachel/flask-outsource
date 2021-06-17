@@ -4,6 +4,7 @@ from datetime import date
 from middlewares.auth import is_auth
 from models.service import Service
 from models.user import User
+from models.job import Job
 
 
 service_bp = Blueprint('service', __name__, template_folder=config.constants.template_dir,
@@ -12,8 +13,8 @@ service_bp = Blueprint('service', __name__, template_folder=config.constants.tem
 
 @service_bp.route('/list')
 def list_service():
-    user_id = session['user_id']
-    user = User.get_by_id(user_id)
+    user_id = session.get('user_id')
+    user = User.get_or_none(User.id == user_id)
     services = Service.select()
     return render_template('service/list.html', services=services, user=user)
 
@@ -55,6 +56,23 @@ def manage():
 
     services = Service.select().where(Service.uid == user_id)
     return render_template('service/manage.html', services=services, user=user)
+
+
+@service_bp.route('/request', methods=['GET', 'POST'])
+@is_auth
+def req():
+    user_id = session['user_id']
+    user = User.get_by_id(user_id)
+    jobs = Job.select().where(Job.cid == user_id)
+
+    if user.acc_type != 'client':
+        flash('You need a client account to request a service', 'error')
+        redirect(url_for('service.list'))
+
+    if request.method == 'POST':
+        pass
+
+    return render_template('service/request.html', jobs=jobs, user=user)
 
 
 @service_bp.route('/add', methods=['GET', 'POST'])

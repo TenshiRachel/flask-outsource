@@ -7,6 +7,7 @@ from config.constants import app_secret_key
 from controllers.index import index_bp
 from controllers.auth import auth_bp
 from controllers.service import service_bp
+from controllers.job import job_bp
 from controllers.profile import profile_bp
 
 
@@ -19,6 +20,7 @@ toastr = Toastr(app)
 app.register_blueprint(index_bp)
 app.register_blueprint(auth_bp)
 app.register_blueprint(service_bp)
+app.register_blueprint(job_bp)
 app.register_blueprint(profile_bp)
 
 

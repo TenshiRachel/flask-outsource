@@ -40,7 +40,7 @@
                             </p>
                         </div>
                         <div class="remarks">
-                        <form method="post" action="/jobs/add/{{services.id}}">
+                        <form method="post" action="/job/add/{{services.id}}">
                             <div class="md-form md-outline">
                                 <label class="font-italic card-text" for="remarks">Remarks</label>
                                 <textarea class="form-control" id="remarks" name="remarks" rows="7"></textarea>
@@ -49,7 +49,7 @@
                                 <button id="butreq" type="submit" class="btn btn-success">Request
                                     Service
                                 </button>
-                                {% if job %}<a href="/jobs/delete/{{job.id}}" class="btn btn-danger">Cancel
+                                {% if job %}<a href="/job/delete/{{job.id}}" class="btn btn-danger">Cancel
                                     Request</a>{% endif %}
                             </div>
                         </form>
