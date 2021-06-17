@@ -13,8 +13,8 @@ service_bp = Blueprint('service', __name__, template_folder=config.constants.tem
 
 @service_bp.route('/list')
 def list_service():
-    user_id = session['user_id']
-    user = User.get_by_id(user_id)
+    user_id = session.get('user_id')
+    user = User.get_or_none(User.id == user_id)
     services = Service.select()
     return render_template('service/list.html', services=services, user=user)
 
@@ -60,7 +60,7 @@ def manage():
 
 @service_bp.route('/request', methods=['GET', 'POST'])
 @is_auth
-def request():
+def req():
     user_id = session['user_id']
     user = User.get_by_id(user_id)
     jobs = Job.select().where(Job.cid == user_id)
@@ -72,7 +72,7 @@ def request():
     if request.method == 'POST':
         pass
 
-    return render_template('service/request.html', jobs=jobs)
+    return render_template('service/request.html', jobs=jobs, user=user)
 
 
 @service_bp.route('/add', methods=['GET', 'POST'])
