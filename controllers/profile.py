@@ -29,6 +29,29 @@ def profile():
                            followers=followers, following=following, skills=skills)
 
 
+@profile_bp.route('/view/<id>')
+def view(id):
+    user_id = session.get('user_id')
+    user = User.get_or_none(User.id == user_id)
+
+    viewuser = User.get_by_id(id)
+    social_medias = viewuser.social_medias.split(',')
+    follower_ids = viewuser.followers.split(',')
+    following_ids = viewuser.following.split(',')
+    followers = []
+    if follower_ids[0] != '':
+        for id in follower_ids:
+            followers.append(User.get_by_id(id))
+    following = []
+    if following_ids[0] != '':
+        for id in following_ids:
+            following.append(User.get_by_id(id))
+    skills = viewuser.skills.split(',')
+
+    return render_template('profile/view.html', user=user, viewuser=viewuser, social_medias=social_medias,
+                           followers=followers, following=following, skills=skills)
+
+
 @profile_bp.route('/profile/edit', methods=['GET', 'POST'])
 @is_auth
 def edit():
