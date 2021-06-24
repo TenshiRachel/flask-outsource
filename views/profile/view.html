@@ -1,0 +1,345 @@
+{% extends 'layouts/base.html' %}
+{% block body %}
+
+<section class="profile">
+
+    <!-- Card -->
+    <div class="card testimonial-card z-depth-2 rounded-0">
+        <!-- Background color -->
+        <div class="vh-40 card-up indigo lighten-1 rounded-0 jarallax">
+            <img loading="lazy" class="img-fluid jarallax-img " onerror='this.src="/img/profile/banner.png"'
+                src="/uploads/profile/{{viewuser.id}}/banner.png" alt="">
+            <div class="mask flex-center waves-effect waves-light rgba-black-slight">
+                <div class="h-100 w-100 col-12 align-items-end row justify-content-end p-0">
+                    <div id="socialmedias" class="row col-3 justify-content-center p-1 mr-2">
+
+                        {% if social_medias[0] %}
+                        <a href="{{social_medias[0]}}" class="col text-center "><i
+                                class="fab fa-twitter fa-2x text-white text-center"></i></a>
+                        {% endif %}
+                        {% if social_medias[1] %}
+                        <a href="{{social_medias[1]}}" class="col text-center "><i
+                                class="fab fa-instagram fa-2x text-white text-center"></i></a>
+                        {% endif %}
+
+                        {% if social_medias[2] %}
+                        <a href="{{social_medias[2]}}" class="col text-center "><i
+                                class="fab fa-facebook fa-2x text-white text-center"></i></a>
+                        {% endif %}
+
+                        {% if social_medias[3] %}
+                        <a href="{{social_medias[3]}}" class="col text-center "><i
+                                class="fab fa-youtube fa-2x text-white text-center"></i></a>
+                        {% endif %}
+
+                        {% if social_medias[4] %}
+                        <a href="{{social_medias[4]}}" class="col text-center "><i
+                                class="fab fa-deviantart fa-2x text-white text-center"></i></a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- =============================== Content =============================== -->
+        <div style="" class="card-body p-0 rounded-0">
+
+            <div class="row justify-content-around">
+                <!-- Profile Details -->
+                <div class="col-lg-3 col-sm-12">
+                    <div class="profile-margin">
+                        <!-- Card -->
+                        <div class="card testimonial-card ">
+
+                            <!-- Background color -->
+                            <div style="height:auto;" class="card-up indigo lighten-1 rounded-0">
+                            </div>
+
+                            <div class="avatar mx-auto white mt-4">
+
+                                <img loading="lazy" onerror='this.src = "/img/profile/default.png"'
+                                    src="/uploads/profile/{{viewuser.id}}/profilePic.png"
+                                    class="rounded-circle  border" alt="">
+                            </div>
+
+                            <!-- Content -->
+                            <div class="card-body">
+                                <!-- Name -->
+                                <h3 class="card-title">{{viewuser.username}}</h3>
+
+                                <h5 class="card-title text-muted">
+                                    {% if viewuser.accType == "service" %}
+                                    Service Provider
+                                    {% else %}
+                                    Client
+                                    {% endif %}
+                                </h5>
+
+                                {% if user %}
+                                <div class="">
+                                    {% if followedUser %}
+                                    <p onclick="unfollowUser({{viewuser.id}})" id="followButton"
+                                        class="btn btn-secondary btn-rounded active">
+                                        Followed </p>
+                                    {% else %}
+                                    <p onclick="followUser({{viewuser.id}})" id="followButton"
+                                        class="btn btn-secondary btn-rounded">
+                                        Follow </p>
+                                    {% endif %}
+                                </div>
+                                {% endif %}
+
+                                <br>
+                                <p class="text-left"> <a href="#" class="font-weight-bold" data-toggle="modal"
+                                        data-target="#followersModal">Followers:</a> {{followers.length}} </p>
+                                <p class="text-left"> <a href="#" class="font-weight-bold" data-toggle="modal"
+                                        data-target="#followingModal">Following:</a> {{following.length}}</p>
+                                <hr class="hr-primary">
+
+
+                                <p class="text-left"><b>Website:</b>
+                                    {% if viewuser.website %}
+                                    {{viewuser.website}}
+                                    {% else %}
+                                    <span class="text-muted">None</span>
+                                    {% endif %}
+                                </p>
+                                <p class="text-left"><b>Birthday:</b>
+                                    {% if viewuser.dob %}
+                                    {{ viewuser.dob }}
+                                    {% else %}
+                                    <span class="text-muted">Not Set</span>
+                                    {% endif %}
+                                </p>
+                                <p class="text-left"><b>Gender:</b>
+                                    {% if viewuser.gender %}
+                                    {{viewuser.gender}}
+                                    {% else %}
+                                    <span class="text-muted">Not Set</span>
+                                    {% endif %}
+                                </p>
+                                <p class="text-left"><b>Location:</b>
+                                    {% if viewuser.location %}
+                                    {{viewuser.location}}
+                                    {% else %}
+                                    <span class="text-muted">Not Set</span>
+                                    {% endif %}
+                                </p>
+                                <p class="text-left"><b>Occupation:</b>
+                                    {% if viewuser.occupation %}
+                                    {{viewuser.occupation}}
+                                    {% else %}
+                                    <span class="text-muted">Not Set</span>
+                                    {% endif %}
+                                </p>
+                                <p class="text-left"><b>Email:</b> {{viewuser.email}}</p>
+                                <hr class="hr-primary">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-3">
+                        <!-- Card -->
+                        <div class="card testimonial-card ">
+
+
+                            <!-- Content -->
+                            <div class="card-body">
+                                <!-- Name -->
+                                <h4 class="card-title text-left">Bio</h4>
+
+
+                                <p class="text-left text-muted">
+                                    {% if viewuser.bio %}
+                                    {{viewuser.bio}}
+                                    {% else %}
+                                    Not set
+                                    {% endif %}
+                                </p>
+                                <hr class="hr-primary">
+                                <h4 class="card-title text-left">Skills</h4>
+                                <div class="row justify-content-start pl-2">
+                                    {% for skill in skills %}
+
+                                    <button type="button"
+                                        class="btn btn-outline-secondary btn-rounded waves-effect skill-button">{{skill}}</button>
+
+                                    {% endfor %}
+                                </div>
+
+                                <hr class="hr-primary">
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <br>
+                    <br>
+                </div>
+
+                <!-- Content -->
+                <div class="classic-tabs col-lg-8 col-sm-12">
+
+                    <ul class="nav tabs-white rounded-0" id="myClassicTabShadow" role="tablist">
+
+                        <li class="nav-item m-0">
+                            <a class="nav-link waves-light active show" id="portfolio-tab-classic-shadow"
+                                data-toggle="tab" href="#portfolio-classic-shadow" role="tab"
+                                aria-controls="portfolio-classic-shadow" aria-selected="true">Portfolio</a>
+                        </li>
+
+                        {% if viewuser.accType == "service"%}
+                        <li class="nav-item">
+                            <a class="nav-link waves-light" id="services-tab-classic-shadow" data-toggle="tab"
+                                href="#services-classic-shadow" role="tab" aria-controls="services-classic-shadow"
+                                aria-selected="false"> Services </a>
+                        </li>
+                        {% else %}
+                        {% endif %}
+
+                        <li class="nav-item">
+                            <a class="nav-link waves-light" id="status-tab-classic-shadow" data-toggle="tab"
+                                href="#favs-classic-shadow" role="tab" aria-controls="favs-classic-shadow"
+                                aria-selected="false"> Favourites </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link waves-light" id="likes-tab-classic-shadow" data-toggle="tab"
+                                href="#likes-classic-shadow" role="tab" aria-controls="likes-classic-shadow"
+                                aria-selected="false"> Likes </a>
+                        </li>
+
+                    </ul>
+
+                    <div class="tab-content min-vh-80 p-0" id="myClassicTabContentShadow">
+                        <!-- =============================== Portfolio =============================== -->
+                        <div class="tab-pane fade active show profile-content" id="portfolio-classic-shadow"
+                            role="tabpanel" aria-labelledby="portfolio-tab-classic-shadow">
+<!--                            > profile/_portfolioItem-->
+                        </div>
+                        {% if viewuser.accType == "service" %}
+                        <!-- =============================== Services =============================== -->
+                        <div class="tab-pane fade profile-content" id="services-classic-shadow" role="tabpanel"
+                            aria-labelledby="services-tab-classic-shadow">
+<!--                            > profile/_servicesItem-->
+
+                        </div>
+                        {% else %}
+                        {% endif %}
+
+                        <!-- =============================== Favourites =============================== -->
+                        <div class="tab-pane fade profile-content" id="favs-classic-shadow" role="tabpanel"
+                            aria-labelledby="favs-tab-classic-shadow">
+<!--                            > profile/_favItem-->
+                        </div>
+
+                        <!-- =============================== Likes =============================== -->
+                        <div class="tab-pane fade profile-content" id="likes-classic-shadow" role="tabpanel"
+                            aria-labelledby="likes-tab-classic-shadow">
+<!--                            > profile/_likeItem-->
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</section>
+
+<!-- Followers Modal -->
+<div class="modal fade" id="followersModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Followers of {{viewuser.username}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body vh-30 overflow-auto">
+                {% if followers.length == 0 %}
+                <p class="text-center">{{viewuser.username}} has no followers ;-;</p>
+                {% else %}
+                {% for follower in followers %}
+                <a href="/profile/view/{{follower.id}}">
+                    <div class="row justify-content-start">
+                        <div class="col-2">
+                            <img loading="lazy" onerror='this.src = "/img/profile/default.png"'
+                                src="/uploads/profile/{{follower.id}}/profilePic.png" class="rounded-circle border w-100" alt="">
+                        </div>
+                        <div class="col-5">
+
+                            {{follower.username}}
+
+                            <br>
+                            <p>
+                                {{follower.accType}}
+                            </p>
+                        </div>
+
+                    </div>
+                </a>
+                <hr class="hr-primary p-0 mt-0">
+                {% endfor %}
+                {% endif %}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Following Modal -->
+<div class="modal fade" id="followingModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{viewuser.username}}'s Following</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body vh-30 overflow-auto">
+                {% if following.length == 0 %}
+                <p class="text-center"> Wow very empty. Much following.<br>{{viewuser.username}} Didn't following anyone
+                </p>
+                {% else %}
+                {% for follower in following %}
+                <a href="/profile/view/{{follower.id}}">
+                    <div class="row justify-content-start">
+                        <div class="col-2">
+                            <img loading="lazy" onerror='this.src = "/img/profile/default.png"'
+                                src="/uploads/profile/{{follower.id}}/profilePic.png" class="rounded-circle w-100 border" alt="">
+                        </div>
+                        <div class="col-5">
+
+                            <b>{{follower.username}}</b>
+
+                            <br>
+                            <p>
+                                {{follower.accType}}
+                            </p>
+                        </div>
+
+                    </div>
+                </a>
+                <hr class="hr-primary p-0 mt-0">
+                {% endfor %}
+                {% endif %}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
