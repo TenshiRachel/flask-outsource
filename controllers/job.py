@@ -33,6 +33,12 @@ def add(sid):
         service_provider = User.get_by_id(service.uid)
         client = User.get_by_id(user_id)
         remarks = request.form.get('remarks')
+        Job.get_or_none(Job.cid == user_id, Job.sid == sid)
+
+        if Job:
+            flash('Please wait for your previous request to be completed before requesting again', 'error')
+            return redirect(url_for('service.list'))
+
         Job.create(sid=sid, name=service.name, uid=service_provider.id, uname=service_provider.username,
                    cid=user_id, cname=client.username, date=date.today().strftime('%d/%m/%Y'),
                    salary=service.price, remarks=remarks,

@@ -25,9 +25,11 @@ def view(uid, id):
     user = User.get_by_id(user_id)
     service = Service.get_by_id(id)
     service_user = User.get_by_id(uid)
+    job = Job.select().where(Job.sid == id)
+
     query = Service.update(views=service.views + 1).where(Service.id == id)
     query.execute()
-    return render_template('service/index.html', services=service, service_user=service_user, user=user)
+    return render_template('service/index.html', services=service, service_user=service_user, user=user, job=job)
 
 
 @service_bp.route('/fav/<id>', methods=['POST'])
@@ -58,7 +60,7 @@ def manage():
     return render_template('service/manage.html', services=services, user=user)
 
 
-@service_bp.route('/request', methods=['GET', 'POST'])
+@service_bp.route('/request')
 @is_auth
 def req():
     user_id = session['user_id']
@@ -68,9 +70,6 @@ def req():
     if user.acc_type != 'client':
         flash('You need a client account to request a service', 'error')
         redirect(url_for('service.list'))
-
-    if request.method == 'POST':
-        pass
 
     return render_template('service/request.html', jobs=jobs, user=user)
 

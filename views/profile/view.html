@@ -46,7 +46,7 @@
         <div style="" class="card-body p-0 rounded-0">
 
             <div class="row justify-content-around">
-                {{!-- Profile Details --}}
+                <!-- Profile Details -->
                 <div class="col-lg-3 col-sm-12">
                     <div class="profile-margin">
                         <!-- Card -->
@@ -179,7 +179,7 @@
                     <br>
                 </div>
 
-                {{!-- Content --}}
+                <!-- Content -->
                 <div class="classic-tabs col-lg-8 col-sm-12">
 
                     <ul class="nav tabs-white rounded-0" id="myClassicTabShadow" role="tablist">
@@ -214,31 +214,31 @@
                     </ul>
 
                     <div class="tab-content min-vh-80 p-0" id="myClassicTabContentShadow">
-                        {{!-- =============================== Portfolio =============================== --}}
+                        <!-- =============================== Portfolio =============================== -->
                         <div class="tab-pane fade active show profile-content" id="portfolio-classic-shadow"
                             role="tabpanel" aria-labelledby="portfolio-tab-classic-shadow">
-                            {{> profile/_portfolioItem}}
+<!--                            > profile/_portfolioItem-->
                         </div>
                         {% if viewuser.accType == "service" %}
-                        {{!-- =============================== Services =============================== --}}
+                        <!-- =============================== Services =============================== -->
                         <div class="tab-pane fade profile-content" id="services-classic-shadow" role="tabpanel"
                             aria-labelledby="services-tab-classic-shadow">
-                            {{> profile/_servicesItem}}
+<!--                            > profile/_servicesItem-->
 
                         </div>
                         {% else %}
                         {% endif %}
 
-                        {{!-- =============================== Favourites =============================== --}}
+                        <!-- =============================== Favourites =============================== -->
                         <div class="tab-pane fade profile-content" id="favs-classic-shadow" role="tabpanel"
                             aria-labelledby="favs-tab-classic-shadow">
-                            {{> profile/_favItem}}
+<!--                            > profile/_favItem-->
                         </div>
 
-                        {{!-- =============================== Likes =============================== --}}
+                        <!-- =============================== Likes =============================== -->
                         <div class="tab-pane fade profile-content" id="likes-classic-shadow" role="tabpanel"
                             aria-labelledby="likes-tab-classic-shadow">
-                            {{> profile/_likeItem}}
+<!--                            > profile/_likeItem-->
                         </div>
                     </div>
 
