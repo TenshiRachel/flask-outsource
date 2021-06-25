@@ -22,8 +22,17 @@
 				<div class="col-lg-3">
 					<label class="font-italic">Service poster (Optional)</label>
 					<div class="custom-file">
-						<div class="file-upload" data-autosubmit="false">
-							<input type="file" name="serviceposter" accept="image/png,image/jpeg,image/jpg,image/gif">
+						<div class="files-upload" data-autosubmit="false">
+							<div class="wrapper">
+								<div class="card-text">
+									No image uploaded
+								</div>
+								<div class="preview">
+									<img src="{{ url_for('static', filename='/img/placeholder.jpg') }}">
+								</div>
+								<button class="remove btn btn-sm btn-danger">Remove</button>
+							</div>
+							<input type="file" name="poster" accept="image/png,image/jpeg,image/jpg,image/gif">
 						</div>
 					</div>
 				</div>
