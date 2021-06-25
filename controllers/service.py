@@ -21,11 +21,14 @@ def list_service():
 
 @service_bp.route('/view/<uid>/<id>')
 def view(uid, id):
-    user_id = session['user_id']
-    user = User.get_by_id(user_id)
-    service = Service.get_by_id(id)
+    user_id = session.get('user_id')
+    user = User.get_or_none(User.id == user_id)
+    service = Service.get_or_none(Service.id == id)
+    if not service:
+        flash('Service not found', 'error')
+        return redirect(url_for('service.list'))
     service_user = User.get_by_id(uid)
-    job = Job.select().where(Job.sid == id)
+    job = Job.get_or_none(Job.sid == id, Job.cid == user_id)
 
     query = Service.update(views=service.views + 1).where(Service.id == id)
     query.execute()
