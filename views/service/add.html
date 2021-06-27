@@ -24,13 +24,20 @@
 					<div class="custom-file">
 						<div class="files-upload" data-autosubmit="false">
 							<div class="wrapper">
-								<div class="card-text">
-									No image uploaded
-								</div>
 								<div class="preview">
-									<img src="{{ url_for('static', filename='/img/placeholder.jpg') }}">
+									<img class="poster" src="{{ url_for('static', filename='/img/placeholder.jpg') }}">
+									<div class="infos d-none">
+                                        <div class="infos-inner">
+                                            <p class="filename"></p>
+                                            <a class="btn btn-sm btn-success">Change image</a>
+                                        </div>
+                                    </div>
 								</div>
-								<button class="remove btn btn-sm btn-danger">Remove</button>
+								<div class="card-text">
+                                    <i class="fas fa-5x fa-image"></i>
+                                    <p class="font-weight-bolder">No Image Uploaded</p>
+                                </div>
+								<button class="remove btn btn-sm btn-danger d-none">Remove</button>
 							</div>
 							<input type="file" name="poster" accept="image/png,image/jpeg,image/jpg,image/gif">
 						</div>
@@ -81,4 +88,5 @@
 	</div>
 </div>
 <script src="{{ url_for('static', filename='/js/service.js') }}"></script>
+<script src="{{ url_for('static', filename='/js/previewFile.js') }}"></script>
 {% endblock %}
