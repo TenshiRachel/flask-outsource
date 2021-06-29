@@ -1,6 +1,6 @@
-let customUpload = $('.files-upload')
+let customUpload = $('.wrapper')
 customUpload.on('click', function() {
-    $('input[name="poster"]').click()
+    customUpload.closest('.files-upload').find('input[name="poster"]').click()
 })
 
 $('input[name="poster"]').on('change', function() {
@@ -8,11 +8,11 @@ $('input[name="poster"]').on('change', function() {
 })
 
 $('.remove').on('click', function() {
-    remove()
+    removeFile()
 })
 
 function previewImg(){
-    let fileInput = document.getElementsByName('poster')[0].value
+    let fileInput = document.getElementsByName('poster')[0]
     let file = fileInput.files
     let reader = new FileReader()
 
@@ -27,7 +27,7 @@ function previewImg(){
         reader.readAsDataURL(file[0]);
     }
 
-    if (fileInput.files.length > 0){
+    if (file.length > 0){
         let fileName = fileInput.value.split('\\')
         $('.filename').html(fileName[fileName.length - 1])
         $('.infos').removeClass('d-none')
@@ -38,6 +38,7 @@ function previewImg(){
         $('.infos').addClass('d-none')
         $('.remove').addClass('d-none')
         $('.card-text').removeClass('d-none')
+        $('.poster').attr('src', '/public/img/placeholder.jpg')
     }
 }
 
@@ -46,5 +47,5 @@ function removeFile(){
     $('.remove').addClass('d-none')
     $('.card-text').removeClass('d-none')
     $('input[name="poster"]').val('')
-    $('.poster').src('{{ url_for("static", filename="/img/placeholder.jpg") }}')
+    $('.poster').attr('src', '/public/img/placeholder.jpg')
 }
