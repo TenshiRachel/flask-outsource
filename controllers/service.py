@@ -95,10 +95,12 @@ def add():
         price = req.get('price')
         categories = req.getlist('categories')
         categories = ' '.join(categories)
+        poster = request.files('poster')
 
         Service.create(name=name, desc=desc, price=price, categories=categories,
                        date_created=date.today().strftime('%d/%m/%Y'),
                        views=0, favs=0, username=user.username, uid=user_id)
+        poster.save(config.constants.uploads_dir + '/' + user.id + '/profilePic.png')
 
         flash('Service created successfully', 'success')
         return redirect(url_for('service.manage'))

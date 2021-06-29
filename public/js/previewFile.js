@@ -1,4 +1,4 @@
-let customUpload = $('.files-upload > input')
+let customUpload = $('.files-upload')
 customUpload.on('click', function() {
     $('input[name="poster"]').click()
 })
