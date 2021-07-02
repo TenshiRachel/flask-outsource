@@ -1,4 +1,5 @@
 import config.constants
+import os
 from flask import Blueprint, render_template, request, url_for, redirect, flash, session
 from models.user import User
 
@@ -41,7 +42,9 @@ def register():
             flash(', '.join(errors.values()), 'error')
             return redirect(url_for('auth.register'))
 
-        User.create(username=username, email=email, password=password, acc_type=acc_type)
+        user = User.create(username=username, email=email, password=password, acc_type=acc_type)
+
+        os.makedirs(config.constants.uploads_dir + '/' + str(user.id) + '/services', exist_ok=True)
 
         flash('You have registered successfully and can now log in', 'success')
         return redirect(url_for('index.index'))

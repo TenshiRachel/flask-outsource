@@ -5,6 +5,7 @@ from middlewares.auth import is_auth
 from models.service import Service
 from models.user import User
 from models.job import Job
+import os
 
 
 service_bp = Blueprint('service', __name__, template_folder=config.constants.template_dir,
@@ -95,12 +96,12 @@ def add():
         price = req.get('price')
         categories = req.getlist('categories')
         categories = ' '.join(categories)
-        poster = request.files('poster')
+        poster = request.files['poster']
 
-        Service.create(name=name, desc=desc, price=price, categories=categories,
-                       date_created=date.today().strftime('%d/%m/%Y'),
-                       views=0, favs=0, username=user.username, uid=user_id)
-        poster.save(config.constants.uploads_dir + '/' + user.id + '/profilePic.png')
+        service = Service.create(name=name, desc=desc, price=price, categories=categories,
+                                 date_created=date.today().strftime('%d/%m/%Y'),
+                                 views=0, favs=0, username=user.username, uid=user_id)
+        poster.save(config.constants.uploads_dir + '/' + str(user.id) + '/services/' + str(service.id) + '.png')
 
         flash('Service created successfully', 'success')
         return redirect(url_for('service.manage'))
@@ -131,9 +132,12 @@ def edit(id):
         price = req.get('price')
         categories = req.getlist('categories')
         categories = ' '.join(categories)
+        poster = request.files['poster']
 
         query = Service.update(name=name, desc=desc, price=price, categories=categories).where(Service.id == id)
         query.execute()
+        poster.save(config.constants.uploads_dir + '/' + str(user.id) + '/services/' + str(services.id) + '.png')
+
         flash('Changes saved successfully', 'success')
         return redirect(url_for('service.manage'))
 
