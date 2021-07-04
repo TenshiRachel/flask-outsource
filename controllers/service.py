@@ -5,7 +5,6 @@ from middlewares.auth import is_auth
 from models.service import Service
 from models.user import User
 from models.job import Job
-import os
 
 
 service_bp = Blueprint('service', __name__, template_folder=config.constants.template_dir,

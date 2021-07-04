@@ -276,3 +276,36 @@ section.home-hero .carousel-caption {
     width: 30px;
     height: 2px;
 }
+
+/* Edit Profile */
+
+.modal-dialog-banner {
+    max-width: 90vw;
+}
+
+.files-upload-circle,
+.file-upload-circle {
+    /* min-height: 0px; */
+    /* height:100%; */
+    width:100%;
+
+}
+
+.edit-profile .jarallax {
+    min-height: 300px
+}
+
+.edit-profile .testimonial-card .avatar > img {
+    width: 100%;
+    /* height: 100%; */
+    /* clip: rect(0px,0px,200px,0px); */
+
+    /* width: 120px;
+    height: 120px; */
+    /* border: 1px solid red; */
+    overflow: hidden;
+}
+
+.object-fit-img{
+    object-fit: cover;
+}
