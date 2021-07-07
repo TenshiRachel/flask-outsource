@@ -45,6 +45,7 @@ def register():
         user = User.create(username=username, email=email, password=password, acc_type=acc_type)
 
         os.makedirs(config.constants.uploads_dir + '/' + str(user.id) + '/services', exist_ok=True)
+        os.makedirs(config.constants.uploads_dir + '/' + str(user.id) + '/profile', exist_ok=True)
 
         flash('You have registered successfully and can now log in', 'success')
         return redirect(url_for('index.index'))

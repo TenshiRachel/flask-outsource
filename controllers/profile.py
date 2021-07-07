@@ -65,14 +65,15 @@ def edit():
         gender = req.get('gender')
         occupation = req.get('occupation')
 
-        banner = req.files['upload_banner']
-        pic = req.files['upload_pic']
+        banner = request.files['upload_banner']
+        pic = request.files['upload_image']
 
         query = User.update(bio=bio, website=website, dob=dob, location=location, gender=gender, occupation=occupation)\
             .where(User.id == user_id)
         query.execute()
-        banner.save(config.constants.uploads_dir + '/' + str(user_id) + '/banner.png')
-        pic.save(config.constants.uploads_dir + '/' + str(user_id) + '/profilePic.png')
+
+        banner.save(config.constants.uploads_dir + '/' + str(user_id) + '/profile/banner.png')
+        pic.save(config.constants.uploads_dir + '/' + str(user_id) + '/profile/profilePic.png')
 
         flash('Changes saved successfully', 'success')
         return redirect(url_for('profile.profile'))
