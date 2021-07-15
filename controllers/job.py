@@ -18,9 +18,6 @@ def index():
     user = User.get_by_id(user_id)
     jobs = Job.select().where(Job.uid == user_id)
 
-    if request.method == 'POST':
-        pass
-
     return render_template('job/index.html', jobs=jobs, user=user)
 
 
@@ -33,9 +30,9 @@ def add(sid):
         service_provider = User.get_by_id(service.uid)
         client = User.get_by_id(user_id)
         remarks = request.form.get('remarks')
-        Job.get_or_none(Job.cid == user_id, Job.sid == sid)
+        job = Job.get_or_none(Job.cid == user_id, Job.sid == sid)
 
-        if Job:
+        if job:
             flash('Please wait for your previous request to be completed before requesting again', 'error')
             return redirect(url_for('service.list'))
 

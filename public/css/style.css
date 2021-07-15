@@ -82,18 +82,15 @@ section.home-hero .carousel-caption {
 
 /*File Upload*/
 
-.files-upload,
-.file-upload {
+.files-upload {
     min-height: 500px;
 }
 
-.files-upload > input[type="file"],
-.file-upload > input[type="file"] {
+.files-upload > input[type="file"] {
     display: none;
 }
 
-.files-upload > .wrapper,
-.file-upload > .wrapper {
+.files-upload > .wrapper {
     display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
@@ -119,8 +116,8 @@ section.home-hero .carousel-caption {
     color: #ffffff;
 }
 
-.files-upload > .wrapper > .card-text,
-.file-upload > .wrapper > .card-text {
+.files-upload > .wrapper > .card-text {
+    z-index: 2;
     color: #ffffff;
     position: relative;
     top: 50px;
@@ -129,9 +126,8 @@ section.home-hero .carousel-caption {
     transform: translateY(-50%);
 }
 
-.files-upload > .wrapper > .preview,
-.file-upload > .wrapper > .preview {
-    display: none;
+.files-upload > .wrapper > .preview {
+    /*display: none;*/
     position: absolute;
     z-index: 1;
     background-color: #fff;
@@ -146,9 +142,8 @@ section.home-hero .carousel-caption {
     text-align: center;
 }
 
-.files-upload > .wrapper > button.remove,
-.file-upload > .wrapper > button.remove {
-    display: none;
+.files-upload > .wrapper > button.remove {
+    /*display: none;*/
     position: absolute;
     opacity: 0;
     z-index: 7;
@@ -159,17 +154,15 @@ section.home-hero .carousel-caption {
     transition: all .15s linear;
 }
 
-.files-upload > .wrapper.has-preview > button.remove,
-.file-upload > .wrapper.has-preview > button.remove {
+.files-upload > .wrapper.has-preview > button.remove {
     display: block;
 }
 
-.files-upload > .wrapper:hover > button.remove,
-.file-upload > .wrapper:hover > button.remove {
+.files-upload > .wrapper:hover > button.remove {
     opacity: 1;
 }
 
-.files-upload > .wrapper > .preview > .renderer > img {
+.files-upload > .wrapper > .preview > img {
     width: 100%;
     height: 100%;
     background-color: #fff;
@@ -211,8 +204,7 @@ section.home-hero .carousel-caption {
     text-overflow: ellipsis;
 }
 
-.files-upload > .wrapper > .preview > .infos,
-.file-upload > .wrapper > .preview > .infos {
+.files-upload > .wrapper > .preview > .infos {
     position: absolute;
     left: 0;
     top: 0;
@@ -226,13 +218,11 @@ section.home-hero .carousel-caption {
     transition: opacity .15s linear;
 }
 
-.files-upload > .wrapper:hover > .preview > .infos,
-.file-upload > .wrapper:hover > .preview > .infos {
+.files-upload > .wrapper:hover > .preview > .infos {
     opacity: 1;
 }
 
-.files-upload > .wrapper > .preview > .infos > .infos-inner,
-.file-upload > .wrapper > .preview > .infos > .infos-inner {
+.files-upload > .wrapper > .preview > .infos > .infos-inner {
     position: absolute;
     top: 50%;
     -webkit-transform: translate(0, -40%);
@@ -247,13 +237,11 @@ section.home-hero .carousel-caption {
     transition: all .2s ease;
 }
 
-.files-upload > .wrapper:hover > .preview > .infos > .infos-inner,
-.file-upload > .wrapper:hover > .preview > .infos > .infos-inner {
+.files-upload > .wrapper:hover > .preview > .infos > .infos-inner {
     margin-top: -5px;
 }
 
-.files-upload > .wrapper > .preview > .infos > .infos-inner > p,
-.file-upload > .wrapper > .preview > .infos > .infos-inner > p {
+.files-upload > .wrapper > .preview > .infos > .infos-inner > p {
     padding: 0;
     margin: 0;
     position: relative;
@@ -268,8 +256,7 @@ section.home-hero .carousel-caption {
     font-weight: 700;
 }
 
-.files-upload > .wrapper > .preview > .infos > .infos-inner > p.message,
-.file-upload > .wrapper > .preview > .infos > .infos-inner > p.message {
+.files-upload > .wrapper > .preview > .infos > .infos-inner > p.message {
     margin-top: 15px;
     padding-top: 15px;
     font-size: 12px;
@@ -277,8 +264,7 @@ section.home-hero .carousel-caption {
     opacity: .5;
 }
 
-.files-upload > .wrapper > .preview > .infos > .infos-inner > p.message::before,
-.file-upload > .wrapper > .preview > .infos > .infos-inner > p.message::before {
+.files-upload > .wrapper > .preview > .infos > .infos-inner > p.message::before {
     content: "";
     position: absolute;
     top: 0;
@@ -289,4 +275,37 @@ section.home-hero .carousel-caption {
     background: #fff;
     width: 30px;
     height: 2px;
+}
+
+/* Edit Profile */
+
+.modal-dialog-banner {
+    max-width: 90vw;
+}
+
+.files-upload-circle,
+.file-upload-circle {
+    /* min-height: 0px; */
+    /* height:100%; */
+    width:100%;
+
+}
+
+.edit-profile .jarallax {
+    min-height: 300px
+}
+
+.edit-profile .testimonial-card .avatar > img {
+    width: 100%;
+    /* height: 100%; */
+    /* clip: rect(0px,0px,200px,0px); */
+
+    /* width: 120px;
+    height: 120px; */
+    /* border: 1px solid red; */
+    overflow: hidden;
+}
+
+.object-fit-img{
+    object-fit: cover;
 }
