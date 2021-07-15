@@ -9,6 +9,7 @@ from controllers.auth import auth_bp
 from controllers.service import service_bp
 from controllers.job import job_bp
 from controllers.profile import profile_bp
+from controllers.files import files_bp
 
 
 setupdb()
@@ -22,6 +23,7 @@ app.register_blueprint(auth_bp)
 app.register_blueprint(service_bp)
 app.register_blueprint(job_bp)
 app.register_blueprint(profile_bp)
+app.register_blueprint(files_bp)
 
 
 if __name__ == "__main__":
