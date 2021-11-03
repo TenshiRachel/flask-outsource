@@ -1,3 +1,5 @@
+{% extends 'layouts/base.html' %}
+{% block body %}
 <section class="files">
     <div class="row">
         <div class="col-12 col-md-3 col-lg-2 my-4 my-md-0">
@@ -40,22 +42,22 @@
             <div id="files-card" class="card card-cascade narrower">
 <!--                <div class="view view-cascade primary-light-gradient narrower py-2 mx-4 mb-3">-->
 <!--                    <ol class="breadcrumb justify-content-center align-items-center white-text transparent py-0 m-0">-->
-<!--                        {{#if breadcrumbs}}-->
-<!--                            {{#each breadcrumbs}}-->
+<!--                        if breadcrumbs-->
+<!--                            each breadcrumbs-->
 <!--                                <li class="breadcrumb-item text-capitalize">-->
-<!--                                    {{#if this.link}}-->
-<!--                                        <a href="{{ this.link }}">{{ this.name }}</a>-->
-<!--                                    {{else}}-->
-<!--                                        <span class="white-text">{{ this.name }}</span>-->
-<!--                                    {{/if}}-->
+<!--                                     this.link-->
+<!--                                        <a href="this.link">this.name</a>-->
+<!--                                    else-->
+<!--                                        <span class="white-text">this.name</span>-->
+<!--                                    /if-->
 <!--                                </li>-->
-<!--                            {{/each}}-->
-<!--                        {{/if}}-->
+<!--                            /each-->
+<!--                        /if-->
 <!--                    </ol>-->
 <!--                </div>-->
 
                 <div class="card-body p-0">
-                    <form id="action-form" action="{{ postRoot }}/" method="post">
+                    <form id="action-form" action="" method="post">
                         <div class="table-responsive table-hover w-100">
                             <table id="files-table" class="table table-striped text-center mb-0">
                                 <thead class="deep-purple accent-3 white-text">
@@ -95,7 +97,7 @@
                     <div id="action-search" class="input-group px-3 mt-2 mb-3">
                         <div class="md-form md-outline">
                             <input id="action-search-input" class="form-control mdb-autocomplete" type="text" name="search">
-                            <button class="mdb-autocomplete-clear deep-purple-text{{#if files}}{{else}} d-none{{/if}}">
+                            <button class="mdb-autocomplete-clear deep-purple-text">
                                 <i class="far fa-times"></i>
                             </button>
                             <label for="action-search-input">Search</label>
@@ -129,12 +131,12 @@
                                     <label class="custom-control-label cursor-pointer" for="filter-type">Type</label>
                                 </div>
 
-                                {{#ifCond 'urlRoot === "/files/my-drive" || urlRoot === "/files"'}}
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input filter-shared" checked>
-                                        <label class="custom-control-label cursor-pointer" for="filter-shared">Shared</label>
-                                    </div>
-                                {{/ifCond}}
+<!--                                 if urlRoot === "/files/my-drive" || urlRoot === "/files"-->
+<!--                                    <div class="custom-control custom-checkbox">-->
+<!--                                        <input type="checkbox" class="custom-control-input filter-shared" checked>-->
+<!--                                        <label class="custom-control-label cursor-pointer" for="filter-shared">Shared</label>-->
+<!--                                    </div>-->
+<!--                                 endif -->
 
                                 <div class="custom-control custom-checkbox mb-3">
                                     <input type="checkbox" class="custom-control-input filter-modified" checked>
@@ -190,7 +192,7 @@
 <!--                                /ifCond-->
                             </div>
 
-<!--                            #ifCond 'urlRoot === "/files/my-drive" || urlRoot === "/files"'-->
+<!--                            ifCond 'urlRoot === "/files/my-drive" || urlRoot === "/files"'-->
 <!--                                <button class="list-group-item list-group-item-action move-action" data-toggle="modal" data-target="#move-modal">-->
 <!--                                    <i class="fas fa-exchange-alt mr-1"></i>Move-->
 <!--                                </button>-->
@@ -231,14 +233,14 @@
                         </div>
 
                         <div class="md-form md-outline">
-                            <input id="copy-directory-input" class="form-control mdb-autocomplete" type="text" {{#if forms.copyDir}}value="{{ forms.copyDir }}"{{/if}} name="directory">
+                            <input id="copy-directory-input" class="form-control mdb-autocomplete" type="text" name="directory">
                             <button class="mdb-autocomplete-clear deep-purple-text">
                                 <i class="far fa-times"></i>
                             </button>
                             <label for="copy-directory-input">Directory Path</label>
 
                             <div class="invalid-tooltip">
-                                {{ forms.errors.copyDir }}
+
                             </div>
                         </div>
 
@@ -274,7 +276,7 @@
                 </button>
             </div>
 
-            <form id="move-form" class="needs-validation" action="{{ postRoot }}/~move" method="post" novalidate>
+            <form id="move-form" class="needs-validation" method="post" novalidate>
                 <div class="modal-body">
                     <div class="input-group mb-0">
                         <div class="input-group-append">
@@ -282,14 +284,14 @@
                         </div>
 
                         <div class="md-form md-outline">
-                            <input id="move-directory-input" class="form-control mdb-autocomplete" type="text" {{#if forms.moveDir}}value="{{ forms.moveDir }}"{{/if}} name="directory">
+                            <input id="move-directory-input" class="form-control mdb-autocomplete" type="text" name="directory">
                             <button class="mdb-autocomplete-clear deep-purple-text">
                                 <i class="far fa-times"></i>
                             </button>
                             <label for="move-directory-input">Directory Path</label>
 
                             <div class="invalid-tooltip">
-                                {{ forms.errors.moveDir }}
+
                             </div>
                         </div>
 
@@ -326,25 +328,25 @@
             </div>
 
             <div class="modal-body">
-                <form class="needs-validation" method="post" action="{{ postRoot }}/~newfile" novalidate>
+                <form class="needs-validation" method="post" novalidate>
                     <div class="input-group mb-0">
                         <div class="md-form md-outline">
-                            <input id="new-file-name-input" class="form-control" type="text" name="name"{{#if forms.filename}} value="{{ forms.filename }}"{{/if}}>
+                            <input id="new-file-name-input" class="form-control" type="text" name="name">
                             <label for="new-file-name-input">File Name</label>
 
                             <div class="invalid-tooltip">
-                                {{ forms.errors.filename }}
+
                             </div>
                         </div>
 
                         <span class="input-group-text border-left-0 border-right-0 rounded-0">.</span>
 
                         <div class="md-form md-outline">
-                            <input id="new-file-ext-input" class="form-control mdb-autocomplete" type="text" name="ext"{{#if forms.ext}} value="{{ forms.ext }}"{{/if}}>
+                            <input id="new-file-ext-input" class="form-control mdb-autocomplete" type="text" name="ext">
                             <label for="new-file-ext-input">Extension</label>
 
                             <div class="invalid-tooltip">
-                                {{ forms.errors.ext }}
+
                             </div>
                         </div>
 
@@ -361,11 +363,11 @@
                     <div class="width-height animated faster d-none">
                         <div class="input-group mt-4 mb-0">
                             <div class="md-form md-outline">
-                                <input id="new-file-width" class="form-control" type="number" name="width"{{#if forms.width}} value="{{ forms.width }}"{{/if}}>
+                                <input id="new-file-width" class="form-control" type="number" name="width">
                                 <label for="new-file-width">Width (px)</label>
 
                                 <div class="invalid-tooltip">
-                                    {{ forms.errors.width }}
+
                                 </div>
                             </div>
 
@@ -374,11 +376,11 @@
                             </span>
 
                             <div class="md-form md-outline">
-                                <input id="new-file-height" class="form-control mdb-autocomplete" type="number" name="height"{{#if forms.height}} value="{{ forms.height }}"{{/if}}>
+                                <input id="new-file-height" class="form-control mdb-autocomplete" type="number" name="height">
                                 <label for="new-file-height">Height (px)</label>
 
                                 <div class="invalid-tooltip">
-                                    {{ forms.errors.height }}
+
                                 </div>
                             </div>
                         </div>
@@ -407,14 +409,14 @@
             </div>
 
             <div class="modal-body">
-                <form class="needs-validation" action="{{ postRoot }}/~newfolder" method="post" novalidate>
+                <form class="needs-validation" method="post" novalidate>
                     <div class="input-group mb-0">
                         <div class="md-form md-outline">
-                            <input id="new-folder-name-input" class="form-control" type="text" {{#if forms.foldername}}value="{{ forms.foldername }}"{{/if}} name="name">
+                            <input id="new-folder-name-input" class="form-control" type="text" name="name">
                             <label for="new-folder-name-input">Folder Name</label>
 
                             <div class="invalid-tooltip">
-                                {{ forms.errors.foldername }}
+
                             </div>
                         </div>
 
@@ -447,14 +449,14 @@
             </div>
 
             <div class="modal-body">
-                <form class="needs-validation" action="{{ postRoot }}/~rename" method="post" novalidate>
+                <form class="needs-validation" method="post" novalidate>
                     <div class="input-group mb-0">
                         <div class="md-form md-outline">
-                            <input id="rename-name-input" class="form-control" type="text" {{#if forms.rename}}value="{{ forms.rename }}"{{/if}} name="rename">
+                            <input id="rename-name-input" class="form-control" type="text" name="rename">
                             <label for="rename-name-input">New Name</label>
 
                             <div class="invalid-tooltip">
-                                {{ forms.errors.rename }}
+
                             </div>
                         </div>
 
@@ -491,17 +493,17 @@
             </div>
 
             <div class="modal-body">
-                <form class="needs-validation" action="{{ postRoot }}/~addshareuser" method="post" novalidate>
+                <form class="needs-validation" method="post" novalidate>
                     <div class="input-group mb-0">
                         <div class="md-form md-outline">
-                            <input id="share-user-input" class="form-control mdb-autocomplete" type="text" {{#if forms.shareUser}}value="{{ forms.shareUser }}"{{/if}} name="shareUser">
+                            <input id="share-user-input" class="form-control mdb-autocomplete" type="text" name="shareUser">
                             <button class="mdb-autocomplete-clear deep-purple-text">
                                 <i class="far fa-times"></i>
                             </button>
                             <label for="share-user-input">Username or Email</label>
 
                             <div class="invalid-tooltip">
-                                {{ forms.errors.shareUser }}
+
                             </div>
                         </div>
 
@@ -526,7 +528,7 @@
                         <i class="far fa-users mr-2"></i>Shared With
                     </h6>
 
-                    <form class="needs-validaton text-right" action="{{ postRoot }}/~delshareuser" method="post" novalidate>
+                    <form class="needs-validaton text-right" method="post" novalidate>
                         <div class="table-fixed table-hover w-100 mb-3">
                             <table id="share-users-table" class="table table-striped text-center mb-0">
                                 <thead class="deep-purple accent-3 white-text">
@@ -553,7 +555,7 @@
             </div>
 
             <div class="modal-footer d-block">
-                <form class="needs-validation d-block d-md-flex flex-fill" action="{{ postRoot }}/~sharecode" method="post" novalidate>
+                <form class="needs-validation d-block d-md-flex flex-fill" method="post" novalidate>
                     <div class="flex-md-fill mb-3 mt-0 mb-md-auto mt-md-auto text-left">
                         <i class="far fa-unlink fa-sm border border-primary rounded-circle p-2 mr-2"></i>
                         <span class="align-middle">Share link not created</span>
@@ -587,7 +589,7 @@
             </div>
 
             <div class="modal-body">
-                <form class="files-upload" action="{{ postRoot }}/~upload" method="post" enctype="multipart/form-data">
+                <form class="files-upload" method="post" enctype="multipart/form-data">
                     <input type="file" name="files" multiple />
                     <p class="text-center m-0 mt-3">
                         <small class="form-text text-muted">
@@ -633,3 +635,4 @@
 <!--        </div>-->
 <!--    </div>-->
 <!--</div>-->
+{% endblock %}
