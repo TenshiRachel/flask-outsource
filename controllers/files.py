@@ -26,7 +26,6 @@ def manage():
 @is_auth
 def upload_file():
     user_id = session.get('user_id')
-    user = User.get_by_id(user_id)
     files = request.files.getlist('files')
 
     directory = config.constants.uploads_dir + '/uploads/' + str(user_id) + '/files/'
@@ -35,9 +34,53 @@ def upload_file():
         file_type = mime.from_file(file.filename)
         file_type = file_type[file_type.index('/'):]
         full_path = os.path.join(directory, file.filename)
-        new_file = File.create(name=file.filename, type=file_type, uid=user_id,
-                               directory=directory, fullPath=full_path)
+        File.create(name=file.filename, type=file_type, uid=user_id,
+                    directory=directory, fullPath=full_path)
+
+        if os.path.exists(full_path):
+            os.remove(full_path)
+
         file.save(directory + file.filename)
 
     flash('File(s) uploaded successfully', 'success')
+    return redirect(url_for('files.manage'))
+
+
+@files_bp.route('/share', methods=['POST'])
+@is_auth
+def share():
+    req = request.form
+    fid = req.get('fid')
+    share_user = req.get('shareUser')
+    file = File.get_by_id(fid)
+    share_user = User.select().where((User.username == share_user) | (User.email == share_user))
+    share_username = share_user[0].username
+    share_list = file.shareUid.split(',').append(share_user[0].id)
+    share_user = ",".join(share_list)
+
+    query = File.update(shareUid=share_user).where(File.id == fid)
+    query.execute()
+
+    flash('Successfully shared with ' + share_username, 'success')
+    return redirect(url_for('files.manage'))
+
+
+@files_bp.route('/unshare', methods=['POST'])
+@is_auth
+def unshare():
+    req = request.form
+    fid = req.get('fid')
+    unshare_user = req.getlist('shareUser')
+    file = File.get_by_id(fid)
+    share_list = file.shareUid.split(',')
+
+    for user_id in unshare_user:
+        share_list.remove(user_id)
+
+    share_list = ",".join(share_list)
+
+    query = File.update(shareUid=share_list).where(File.id == fid)
+    query.execute()
+
+    flash('Unshared successfully', 'success')
     return redirect(url_for('files.manage'))

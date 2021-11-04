@@ -10,7 +10,7 @@ index_bp = Blueprint('index', __name__, template_folder=config.constants.templat
 @index_bp.route('/')
 def index():
     if session.get('user_id') is not None:
-        user = User.get_by_id(session['user_id'])
+        user = User.get_or_none(session['user_id'])
         return render_template('index.html', user=user)
 
     return render_template("index.html")

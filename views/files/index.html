@@ -147,7 +147,7 @@
                     </div>
 
                     <div class="list-group list-group-flush">
-                        <button class="list-group-item list-group-item-action" data-toggle="modal" data-target="#upload-modal">
+                        <button class="list-group-item list-group-item-action" data-toggle="modal" data-backdrop="false" data-target="#upload-modal">
                             <i class="far fa-cloud-upload-alt mr-1"></i>Upload File(s)
                         </button>
 <!--                            <button class="list-group-item list-group-item-action" data-toggle="modal" data-target="#gdrive-upload-modal">-->
@@ -493,7 +493,7 @@
             </div>
 
             <div class="modal-body">
-                <form class="needs-validation" method="post" novalidate>
+                <form class="needs-validation" action="/files/share" method="post" novalidate>
                     <div class="input-group mb-0">
                         <div class="md-form md-outline">
                             <input id="share-user-input" class="form-control mdb-autocomplete" type="text" name="shareUser">
@@ -528,7 +528,7 @@
                         <i class="far fa-users mr-2"></i>Shared With
                     </h6>
 
-                    <form class="needs-validaton text-right" method="post" novalidate>
+                    <form class="needs-validaton text-right" action="/files/unshare" method="post" novalidate>
                         <div class="table-fixed table-hover w-100 mb-3">
                             <table id="share-users-table" class="table table-striped text-center mb-0">
                                 <thead class="deep-purple accent-3 white-text">
@@ -589,32 +589,33 @@
             </div>
 
             <div class="modal-body">
-                <form class="files-upload" action="files/upload" method="post" enctype="multipart/form-data">
+                <form class="files-upload" action="/files/upload" method="post" enctype="multipart/form-data">
                     <div class="wrapper">
                         <div class="card-text">
                             <i class="fas fa-5x fa-file"></i>
                             <p class="font-weight-bolder">No File Uploaded</p>
                         </div>
                         <div class="preview">
-                            <img class="poster" src="{{ url_for('static', filename='/img/placeholder.jpg') }}">
+                            <img src="{{ url_for('static', filename='/img/placeholder.jpg') }}">
                             <div class="infos d-none">
                                 <div class="infos-inner">
                                     <p class="filename"></p>
-                                    <a class="btn btn-sm btn-success">Change file</a>
+                                    <a type="button" class="btn btn-sm btn-success">Change file</a>
                                 </div>
                             </div>
                         </div>
-                        <button class="remove btn btn-sm btn-danger d-none">Remove</button>
+                        <button type="button" class="remove btn btn-sm btn-danger d-none">Remove</button>
                     </div>
-                    <input type="file" name="files" multiple />
+                    <input type="file" name="poster" multiple />
                     <p class="text-center m-0 mt-3">
                         <small class="form-text text-muted">
-                            You are can only upload up to a maximum of 100mb.
+                            You can only upload up to a maximum of 100mb.
                         </small>
                         <small class="form-text text-danger font-weight-500">
                             * If uploaded file or files exist in the current directory, that file or files will be overwritten.
                         </small>
                     </p>
+                    <button class="btn btn-block btn-success">Upload</button>
                 </form>
             </div>
         </div>
@@ -651,4 +652,5 @@
 <!--        </div>-->
 <!--    </div>-->
 <!--</div>-->
+<script src="{{ url_for('static', filename='/js/previewFile.js') }}"></script>
 {% endblock %}
