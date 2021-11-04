@@ -5,9 +5,12 @@ if (customUpload){
     customUpload.closest('.files-upload').find('input[name="poster"]').click()
     })
 
-    $('input[name="poster"]').on('change', function() {
-        previewImg(document.getElementsByName('poster')[0], $('.poster'))
-    })
+    let poster = $('input[name="poster"]')
+    if (poster){
+        poster.on('change', function() {
+            previewImg(document.getElementsByName('poster')[0], $('.poster'))
+        })
+    }
 }
 
 customUpload = $('#inputBorder')

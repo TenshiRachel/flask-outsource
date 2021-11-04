@@ -38,8 +38,7 @@ def add(sid):
 
         Job.create(sid=sid, name=service.name, uid=service_provider.id, uname=service_provider.username,
                    cid=user_id, cname=client.username, date=date.today().strftime('%d/%m/%Y'),
-                   salary=service.price, remarks=remarks,
-                   status='unaccepted')
+                   salary=service.price, remarks=remarks)
 
         flash('Request sent successfully, please wait for ' + service_provider.username + '\'s response', 'success')
         return redirect(url_for('service.list'))

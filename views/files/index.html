@@ -589,7 +589,23 @@
             </div>
 
             <div class="modal-body">
-                <form class="files-upload" method="post" enctype="multipart/form-data">
+                <form class="files-upload" action="files/upload" method="post" enctype="multipart/form-data">
+                    <div class="wrapper">
+                        <div class="card-text">
+                            <i class="fas fa-5x fa-file"></i>
+                            <p class="font-weight-bolder">No File Uploaded</p>
+                        </div>
+                        <div class="preview">
+                            <img class="poster" src="{{ url_for('static', filename='/img/placeholder.jpg') }}">
+                            <div class="infos d-none">
+                                <div class="infos-inner">
+                                    <p class="filename"></p>
+                                    <a class="btn btn-sm btn-success">Change file</a>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="remove btn btn-sm btn-danger d-none">Remove</button>
+                    </div>
                     <input type="file" name="files" multiple />
                     <p class="text-center m-0 mt-3">
                         <small class="form-text text-muted">

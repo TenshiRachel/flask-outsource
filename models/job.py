@@ -13,7 +13,7 @@ class Job(Base):
     name = CharField()
     salary = DecimalField()
     remarks = CharField()
-    status = CharField()
+    status = CharField(default='unaccepted')
 
     class Meta:
         database = Base._meta.db
