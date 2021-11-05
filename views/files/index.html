@@ -180,13 +180,13 @@
                                     <i class="far fa-cloud-download-alt mr-1"></i>Download
                                 </a>
 <!--                                #ifCond 'urlRoot === "/files/my-drive" || urlRoot === "/files"'-->
-                                    <button class="list-group-item list-group-item-action" data-toggle="modal" data-target="#share-modal">
+                                    <button class="list-group-item list-group-item-action" data-toggle="modal" data-backdrop="false" data-target="#share-modal">
                                         <i class="far fa-share-alt mr-1"></i>Share
                                     </button>
 <!--                                    <a class="edit list-group-item list-group-item-action d-none" href="">-->
 <!--                                        <i class="far fa-edit mr-1"></i>Edit-->
 <!--                                    </a>-->
-                                    <button class="list-group-item list-group-item-action" data-toggle="modal" data-target="#rename-modal">
+                                    <button class="list-group-item list-group-item-action" data-toggle="modal" data-backdrop="false" data-target="#rename-modal">
                                         <i class="far fa-i-cursor mr-1"></i>Rename
                                     </button>
 <!--                                /ifCond-->
@@ -449,7 +449,7 @@
             </div>
 
             <div class="modal-body">
-                <form class="needs-validation" method="post" novalidate>
+                <form class="needs-validation" action="/files/rename" method="post" novalidate>
                     <div class="input-group mb-0">
                         <div class="md-form md-outline">
                             <input id="rename-name-input" class="form-control" type="text" name="rename">
@@ -653,4 +653,5 @@
 <!--    </div>-->
 <!--</div>-->
 <script src="{{ url_for('static', filename='/js/previewFile.js') }}"></script>
+<script src="{{ url_for('static', filename='/js/files.js') }}"></script>
 {% endblock %}
