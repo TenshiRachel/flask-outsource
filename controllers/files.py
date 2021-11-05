@@ -3,6 +3,8 @@ import magic
 import os
 import re
 from flask import Blueprint, render_template, request, url_for, redirect, flash, session
+from pathlib import Path
+from playhouse.shortcuts import *
 from middlewares.auth import is_auth
 from models.user import User
 from models.filesFolders import File
@@ -18,7 +20,24 @@ mime = magic.Magic(mime=True)
 def manage():
     user_id = session.get('user_id')
     user = User.get_by_id(user_id)
-    files = File.select().where(File.uid == user_id)
+    user_files = File.select().where(File.uid == user_id)
+    files = []
+    share = {'uids': [], 'usernames': [], 'emails': []}
+
+    user_files = [model_to_dict(file) for file in user_files]
+
+    for file in user_files:
+        share_uids = file['shareUid'].split(',')
+        for share_uid in share_uids:
+            share_users = User.select().where(User.id in share_uid.split(','))
+            for share_user in share_users:
+                share_user = model_to_dict(share_user)
+
+                share['uids'].append(str(share_user['id']))
+                share['usernames'].append(share_user['username'])
+                share['emails'].append(share_user['email'])
+                file['share'] = share
+                files.append(file)
 
     return render_template('files/index.html', user=user, files=files)
 
@@ -27,21 +46,22 @@ def manage():
 @is_auth
 def upload_file():
     user_id = session.get('user_id')
-    files = request.files.getlist('files')
+    files = request.files.getlist('poster')
 
-    directory = config.constants.uploads_dir + '/uploads/' + str(user_id) + '/files/'
+    directory = config.constants.uploads_dir + '/' + str(user_id) + '/files/'
 
     for file in files:
-        file_type = mime.from_file(file.filename)
-        file_type = file_type[file_type.index('/'):]
         full_path = os.path.join(directory, file.filename)
+        Path(directory).mkdir(exist_ok=True)
+        file.save(full_path)
+        file_type = mime.from_file(full_path)
+        file_type = file_type[file_type.index('/') + 1:]
+
         File.create(name=file.filename, type=file_type, uid=user_id,
                     directory=directory, fullPath=full_path)
 
         if os.path.exists(full_path):
             os.remove(full_path)
-
-        file.save(directory + file.filename)
 
     flash('File(s) uploaded successfully', 'success')
     return redirect(url_for('files.manage'))
@@ -77,7 +97,7 @@ def share():
 def unshare():
     req = request.form
     fid = req.get('fid')
-    unshare_user = req.getlist('shareUser')
+    unshare_user = req.getlist('uid')
 
     if fid:
         file = File.get_by_id(fid)
