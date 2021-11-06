@@ -37,6 +37,12 @@ def manage():
                 share['usernames'].append(share_user['username'])
                 share['emails'].append(share_user['email'])
                 file['share'] = share
+
+                size = round(os.path.getsize(file['fullPath'])/1000, 2)
+                file['size'] = str(size) + ' kb'
+                if size >= 1000:
+                    file['size'] = str(round(size/1000, 2)) + ' mb'
+
                 files.append(file)
 
     return render_template('files/index.html', user=user, files=files)
@@ -53,15 +59,18 @@ def upload_file():
     for file in files:
         full_path = os.path.join(directory, file.filename)
         Path(directory).mkdir(exist_ok=True)
+        if os.path.exists(full_path):
+            os.remove(full_path)
+
         file.save(full_path)
         file_type = mime.from_file(full_path)
         file_type = file_type[file_type.index('/') + 1:]
+        size = os.path.getsize(full_path)
+        if size/1000000 >= 100:
+            flash('File cannot exceed 100mb in size', 'error')
 
-        File.create(name=file.filename, type=file_type, uid=user_id,
+        File.create(name=file.filename[:file.filename.index('.')], type=file_type, uid=user_id,
                     directory=directory, fullPath=full_path)
-
-        if os.path.exists(full_path):
-            os.remove(full_path)
 
     flash('File(s) uploaded successfully', 'success')
     return redirect(url_for('files.manage'))
@@ -130,6 +139,8 @@ def rename():
         if re.match(regex, name):
             flash('File or folder name only allow alphanumeric, space, underscore and dash', 'error')
 
+        file = File.get_by_id(fid)
+        os.rename(file.fullPath, file.directory + name + '.' + file.type)
         query = File.update(name=name).where(File.id == fid)
         query.execute()
 

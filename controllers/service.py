@@ -1,5 +1,6 @@
 import config.constants
 from flask import Blueprint, render_template, request, url_for, redirect, flash, session
+from pathlib import Path
 from datetime import date
 from middlewares.auth import is_auth
 from models.service import Service
@@ -100,6 +101,8 @@ def add():
         service = Service.create(name=name, desc=desc, price=price, categories=categories,
                                  date_created=date.today().strftime('%d/%m/%Y'),
                                  views=0, favs=0, username=user.username, uid=user_id)
+
+        Path(config.constants.uploads_dir + '/' + str(user.id) + '/services/').mkdir(exist_ok=True)
         poster.save(config.constants.uploads_dir + '/' + str(user.id) + '/services/' + str(service.id) + '.png')
 
         flash('Service created successfully', 'success')

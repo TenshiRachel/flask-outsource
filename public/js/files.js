@@ -353,13 +353,13 @@ $('#rename-modal, #share-modal').on('show.bs.modal', function() {
                         if (removeBtn.hasClass('d-none')) {
                             removeBtn.removeClass('d-none');
 
-                            removeBtn.addClass('bounceIn').one(animationEnd, function() {
+                            removeBtn.addClass('bounceIn').one('animationend', function() {
                                 $(this).removeClass('bounceIn');
                             });
                         }
                     }
                     else {
-                        removeBtn.addClass('bounceOut').one(animationEnd, function() {
+                        removeBtn.addClass('bounceOut').one('animationend', function() {
                             $(this).addClass('d-none');
                             $(this).removeClass('bounceOut');
                         });
@@ -451,4 +451,123 @@ $('#rename-modal, #share-modal').on('show.bs.modal', function() {
                 });
             }
         }
+});
+
+// Search
+$(function() {
+    let searchInput = $('input[name="search"]');
+    let trs = $('tbody tr', '#files-table');
+
+    let filterCheckboxes = $('.filter-all, .filter-name, .filter-size, .filter-type, .filter-shared, .filter-modified');
+    let filters = ['name', 'size', 'type', 'shared', 'modified'];
+
+    // Filters
+    $('.search-filters').on('click', function() {
+        return false;
+    });
+
+    filterCheckboxes.parent().on('click', function() {
+        let checkbox = $(this).children('input[type="checkbox"]');
+
+        if (checkbox.is(':checked')) {
+            if (checkbox.hasClass('filter-all')) {
+                $('.filter-all').prop('checked', false);
+                $('.filter-name').prop('checked', false);
+                $('.filter-size').prop('checked', false);
+                $('.filter-type').prop('checked', false);
+                $('.filter-shared').prop('checked', false);
+                $('.filter-modified').prop('checked', false);
+
+                filters = [];
+            }
+            else {
+                $('.filter-all').prop('checked', false);
+
+                if (checkbox.hasClass('filter-name')) {
+                    $('.filter-name').prop('checked', false);
+
+                    filters.splice($.inArray('name', filters), 1);
+                }
+                else if (checkbox.hasClass('filter-size')) {
+                    $('.filter-size').prop('checked', false);
+
+                    filters.splice($.inArray('size', filters), 1);
+                }
+                else if (checkbox.hasClass('filter-type')) {
+                    $('.filter-type').prop('checked', false);
+
+                    filters.splice($.inArray('type', filters), 1);
+                }
+                else if (checkbox.hasClass('filter-shared')) {
+                    $('.filter-shared').prop('checked', false);
+
+                    filters.splice($.inArray('shared', filters), 1);
+                }
+                else if (checkbox.hasClass('filter-modified')) {
+
+                    $('.filter-modified').prop('checked', false);
+
+                    filters.splice($.inArray('modified', filters), 1);
+                }
+            }
+        }
+        else {
+            if (checkbox.hasClass('filter-all')) {
+                checkbox.prop('checked', true);
+                $('.filter-all').prop('checked', true);
+                $('.filter-name').prop('checked', true);
+                $('.filter-size').prop('checked', true);
+                $('.filter-type').prop('checked', true);
+                $('.filter-shared').prop('checked', true);
+                $('.filter-modified').prop('checked', true);
+
+                filters = ['name', 'size', 'type', 'shared', 'modified'];
+            }
+            else {
+                if (checkbox.hasClass('filter-name')) {
+                    $('.filter-name').prop('checked', true);
+
+                    if (!filters.includes('name')) {
+                        filters.push('name');
+                    }
+                }
+                else if (checkbox.hasClass('filter-size')) {
+                    $('.filter-size').prop('checked', true);
+
+                    if (!filters.includes('size')) {
+                        filters.push('size');
+                    }
+                }
+                else if (checkbox.hasClass('filter-type')) {
+                    $('.filter-type').prop('checked', true);
+
+                    if (!filters.includes('type')) {
+                        filters.push('type');
+                    }
+                }
+                else if (checkbox.hasClass('filter-shared')) {
+                    $('.filter-shared').prop('checked', true);
+
+                    if (!filters.includes('shared')) {
+                        filters.push('shared');
+                    }
+                }
+                else if (checkbox.hasClass('filter-modified')) {
+                    $('.filter-modified').prop('checked', true);
+
+                    if (!filters.includes('modified')) {
+                        filters.push('modified');
+                    }
+                }
+
+                if (filters.length > 4) {
+                    $('.filter-all').prop('checked', true);
+                }
+            }
+        }
+
+        autocomplete(searchInput, trs, filters);
+        $('input[name="search"]').trigger('keyup');
+        return false;
+    });
 });
