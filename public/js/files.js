@@ -166,11 +166,11 @@ $(function() {
 
                 // Download link and Edit Link
                 if (count === 1) {
-                    let downloadAction = singleActions.find('a.download');
+                    let downloadAction = singleActions.find('form.download');
                     let editAction = singleActions.find('a.edit');
                     let type = checked.last().attr('data-type');
 
-                    downloadAction.attr('href', `${window.location.pathname}/${checked.last().attr('data-id')}/~download`);
+                    downloadAction.attr('action', `/files/download/${checked.last().attr('data-id')}`);
 
                     if (type === 'code' || type === 'image') {
                         editAction.attr('href', `${window.location.pathname}/${checked.last().attr('data-id')}/~edit`);

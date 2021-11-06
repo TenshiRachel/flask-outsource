@@ -176,9 +176,11 @@
 <!--                            /ifCond-->
 
                             <div class="single-select animated faster">
-                                <a class="download list-group-item list-group-item-action" href="{{ postRoot }}" download>
-                                    <i class="far fa-cloud-download-alt mr-1"></i>Download
-                                </a>
+                                <form class="download" action="" method="POST">
+                                    <button class="download list-group-item list-group-item-action" type="submit">
+                                        <i class="far fa-cloud-download-alt mr-1"></i>Download
+                                    </button>
+                                </form>
 <!--                                #ifCond 'urlRoot === "/files/my-drive" || urlRoot === "/files"'-->
                                     <button class="list-group-item list-group-item-action" data-toggle="modal" data-backdrop="false" data-target="#share-modal">
                                         <i class="far fa-share-alt mr-1"></i>Share

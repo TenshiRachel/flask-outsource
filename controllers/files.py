@@ -2,7 +2,7 @@ import config.constants
 import magic
 import os
 import re
-from flask import Blueprint, render_template, request, url_for, redirect, flash, session
+from flask import Blueprint, render_template, request, url_for, redirect, flash, session, send_from_directory
 from pathlib import Path
 from playhouse.shortcuts import *
 from middlewares.auth import is_auth
@@ -148,5 +148,25 @@ def rename():
 
     else:
         flash('No file or folder selected', 'error')
+
+    return redirect(url_for('files.manage'))
+
+
+@files_bp.route('/download/<fid>', methods=['POST'])
+@is_auth
+def download(fid):
+    if fid:
+        user_id = session['user_id']
+        file = File.get_by_id(fid)
+        share_uids = file.shareUid.split(',')
+
+        if user_id not in share_uids and user_id != file.uid:
+            flash('You do not have permission to download this file', 'error')
+
+        else:
+            return send_from_directory(directory=file.directory, filename=file.name + '.' + file.type)
+
+    else:
+        flash('You do not have permission to download this file/This file can\'t be found', 'error')
 
     return redirect(url_for('files.manage'))
