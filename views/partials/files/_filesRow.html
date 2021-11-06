@@ -1,0 +1,51 @@
+{% if files %}
+    {% for file in files %}
+        <tr class="animated faster d-none">
+            <td headers="select">
+                <div class="form-check">
+                    <input id="ff-{{ file.id }}"
+                        class="form-check-input" type="checkbox"
+                        data-id="{{ file.id }}"
+                        data-name="{{ file.name }}"
+                        {% if file.share.uids %} data-share-uids="{{ ','.join(file.share.uids) }}" {% endif %}
+                        {% if file.share.usernames %} data-share-usernames="{{ ','.join(file.share.usernames) }}" {% endif %}
+                        {% if file.share.emails %} data-share-emails="{{ ','.join(file.share.emails) }}" {% endif %}
+                        {% if file.shareCode %} data-share-code="{{ file.shareCode }}" {% endif %}
+                        {% if file.type %} data-type="{{ file.type }}" {% endif %}
+                        name="fid"
+                        {% if file.id %} value="{{ file.id }}" {% endif %}
+                    >
+                    <label for="ff-{{ file.id }}" class="form-check-label"></label>
+                </div>
+            </td>
+            <td headers="name">
+<!--                if this.link-->
+<!--                    <a class="d-flex flex-fill justify-content-center" href=" this.link "> file.name </a>-->
+<!--                else-->
+                    {{ file.name }}
+<!--                endif-->
+            </td>
+            <td headers="size" class="d-none d-md-table-cell">
+                {{ file.size }}
+            </td>
+            <td headers="type" class="d-none d-md-table-cell text-capitalize">{{ file.type }}</td>
+            <td headers="shared" class="cursor-default d-none d-md-table-cell"><!-- ToDo: <i class="far fa-link mr-1"></i> -->
+<!--                if this.shareCode-->
+<!--                    <i class="far fa-link mr-1 material-tooltip-sm" data-tooltip="tooltip" title="Share Link Created"></i>-->
+<!--                endif-->
+<!--                if this.share-->
+<!--                    <span class="material-tooltip-sm" data-tooltip="tooltip" title=" joinSeperator ', ' this.share.usernames  ">-->
+<!--                        if 'this.share.usernames.length > 1'-->
+<!--                             this.share.usernames.length  users-->
+<!--                        else-->
+<!--                             this.share.usernames.length  user-->
+<!--                        endif-->
+<!--                    </span>-->
+<!--                else-->
+<!--                    Only you-->
+<!--                endif-->
+            </td>
+            <td headers="modified" class="d-none d-md-table-cell"> file.modified </td>
+        </tr>
+    {% endfor %}
+{% endif %}

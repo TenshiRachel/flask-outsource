@@ -12,7 +12,7 @@ function search() {
         if (compare.toUpperCase().includes(filter)) {
             if ($(focus).hasClass('d-none')) {
                 $(focus).removeClass('d-none');
-                $(focus).addClass('animated faster fadeIn').one(animationEnd, function() {
+                $(focus).addClass('animated faster fadeIn').one('animationend', function() {
                     let _this = $(this);
 
                     _this.removeClass('animated faster fadeIn');
@@ -22,7 +22,7 @@ function search() {
         }
         else {
             if (!$(focus).hasClass('d-none')){
-                $(focus).addClass('animated faster fadeOut').one(animationEnd, function(){
+                $(focus).addClass('animated faster fadeOut').one('animationend', function(){
                     let _this = $(this);
 
                     _this.removeClass('animated faster fadeOut');
@@ -64,7 +64,7 @@ $('select.category-select').on('change', function(e) {
         if (($(focus).hasClass(category) || category === "ShowAll")) {
             if ($(focus).hasClass('d-none')) {
                 $(focus).removeClass('d-none');
-                $(focus).addClass('animated faster fadeIn').one(animationEnd, function() {
+                $(focus).addClass('animated faster fadeIn').one('animationend', function() {
                     let _this = $(this);
 
                     _this.removeClass('animated faster fadeIn');
@@ -74,7 +74,7 @@ $('select.category-select').on('change', function(e) {
         }
         else {
             if (!$(focus).hasClass('d-none')){
-                $(focus).addClass('animated faster fadeOut').one(animationEnd, function(){
+                $(focus).addClass('animated faster fadeOut').one('animationend', function(){
                     let _this = $(this);
 
                     _this.removeClass('animated faster fadeOut');
