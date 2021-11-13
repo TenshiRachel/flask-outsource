@@ -24,6 +24,9 @@ def manage():
     files = []
     share = {'uids': [], 'usernames': [], 'emails': []}
 
+    root = config.constants.uploads_dir + '/' + str(user_id) + '/files/'
+    breadcrumbs = [{'name': '/files'}]
+
     user_files = [model_to_dict(file) for file in user_files]
 
     for file in user_files:
@@ -43,9 +46,12 @@ def manage():
                 if size >= 1000:
                     file['size'] = str(round(size/1000, 2)) + ' mb'
 
+                if file['type'] == 'folder':
+                    file['link'] = '/files/manage/' + file['fullPath'][file['fullPath'].index('files/') + 6:]
+
                 files.append(file)
 
-    return render_template('files/index.html', user=user, files=files)
+    return render_template('files/index.html', user=user, files=files, breadcrumbs=breadcrumbs)
 
 
 @files_bp.route('/upload', methods=['POST'])
@@ -169,4 +175,31 @@ def download(fid):
     else:
         flash('You do not have permission to download this file/This file can\'t be found', 'error')
 
+    return redirect(url_for('files.manage'))
+
+
+@files_bp.route('/create-folder', methods=['POST'])
+@is_auth
+def create_folder():
+    user_id = session['user_id']
+    name = request.form.get('name')
+    regex = re.compile(r'/[!@#$%^&*+\=\[\]{}()~;:"\\|,.<>\/?]/')
+    root = config.constants.uploads_dir + '/' + str(user_id) + '/files/'
+
+    if not name:
+        flash('Folder name can\'t be empty', 'error')
+
+    if re.match(regex, name):
+        flash('File or folder name only allow alphanumeric, underscore and dash', 'error')
+
+    full_path = os.path.join(root, name)
+
+    if os.path.exists(full_path):
+        flash('Folder already exists in current directory', 'error')
+
+    else:
+        os.mkdir(full_path)
+        File.create(name=name, directory=root, fullPath=full_path, type='folder', uid=user_id)
+
+    flash('Folder created successfully', 'success')
     return redirect(url_for('files.manage'))

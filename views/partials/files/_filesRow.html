@@ -19,11 +19,11 @@
                 </div>
             </td>
             <td headers="name">
-<!--                if this.link-->
-<!--                    <a class="d-flex flex-fill justify-content-center" href=" this.link "> file.name </a>-->
-<!--                else-->
+                {% if file.link %}
+                    <a class="d-flex flex-fill justify-content-center" href="{{ file.link }}"> {{ file.name }} </a>
+                {% else %}
                     {{ file.name }}
-<!--                endif-->
+                {% endif %}
             </td>
             <td headers="size" class="d-none d-md-table-cell">
                 {{ file.size }}
