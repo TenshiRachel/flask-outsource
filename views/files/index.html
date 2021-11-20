@@ -46,8 +46,7 @@
                             {% for breadcrumb in breadcrumbs %}
                                 <li class="breadcrumb-item text-capitalize">
                                     {% if breadcrumb.link %}
-                                        {{ breadcrumb.link }}
-                                        <a href="breadcrumb.link">{{ breadcrumb.name }}</a>
+                                        <a href="{{ breadcrumb.link }}">{{ breadcrumb.name }}</a>
                                     {% else %}
                                         <span class="white-text">{{ breadcrumb.name }}</span>
                                     {% endif %}

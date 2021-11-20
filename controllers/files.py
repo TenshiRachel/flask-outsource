@@ -16,8 +16,9 @@ mime = magic.Magic(mime=True)
 
 
 @files_bp.route('/manage')
+@files_bp.route('/manage/<file_path>')
 @is_auth
-def manage():
+def manage(file_path=None):
     user_id = session.get('user_id')
     user = User.get_by_id(user_id)
     user_files = File.select().where(File.uid == user_id)
@@ -25,12 +26,13 @@ def manage():
     share = {'uids': [], 'usernames': [], 'emails': []}
 
     root = config.constants.uploads_dir + '/' + str(user_id) + '/files/'
-    breadcrumbs = [{'name': '/files'}]
+    breadcrumbs = [{'name': 'My Drive'}]
 
     user_files = [model_to_dict(file) for file in user_files]
 
     for file in user_files:
         share_uids = file['shareUid'].split(',')
+
         for share_uid in share_uids:
             share_users = User.select().where(User.id in share_uid.split(','))
             for share_user in share_users:
@@ -50,6 +52,41 @@ def manage():
                     file['link'] = '/files/manage/' + file['fullPath'][file['fullPath'].index('files/') + 6:]
 
                 files.append(file)
+
+    if file_path is not None:
+        links = file_path.split('/')
+        full_link = ''
+        breadcrumbs[0]['link'] = '/files/manage'
+        for link in links:
+            full_link += link + '/'
+            breadcrumbs.append({'name': link, 'link': '/files/manage/' + full_link})
+
+        files.clear()
+        files_folders = os.listdir(root + file_path)
+        for selected in files_folders:
+            file = File.select().where(File.name == selected[:selected.index('.')])
+            file = model_to_dict(file)
+            share_uids = file['shareUid'].split(',')
+
+            for share_uid in share_uids:
+                share_users = User.select().where(User.id in share_uid.split(','))
+                for share_user in share_users:
+                    share_user = model_to_dict(share_user)
+
+                    share['uids'].append(str(share_user['id']))
+                    share['usernames'].append(share_user['username'])
+                    share['emails'].append(share_user['email'])
+                    file['share'] = share
+
+                    size = round(os.path.getsize(file['fullPath']) / 1000, 2)
+                    file['size'] = str(size) + ' kb'
+                    if size >= 1000:
+                        file['size'] = str(round(size / 1000, 2)) + ' mb'
+
+                    if file['type'] == 'folder':
+                        file['link'] = '/files/manage/' + file['fullPath'][file['fullPath'].index('files/') + 6:]
+
+                    files.append(file)
 
     return render_template('files/index.html', user=user, files=files, breadcrumbs=breadcrumbs)
 
@@ -89,7 +126,7 @@ def share():
     fid = req.get('fid')
     share_user = req.get('shareUser')
 
-    if fid:
+    if fid is not None:
         file = File.get_by_id(fid)
         share_user = User.select().where((User.username == share_user) | (User.email == share_user))
         share_username = share_user[0].username
@@ -114,7 +151,7 @@ def unshare():
     fid = req.get('fid')
     unshare_user = req.getlist('uid')
 
-    if fid:
+    if fid is not None:
         file = File.get_by_id(fid)
         share_list = file.shareUid.split(',')
 
@@ -141,7 +178,7 @@ def rename():
     fid = req.get('fid')
     name = req.get('rename')
     regex = re.compile(r'/[!@#$%^&*+\=\[\]{}()~;:"\\|,.<>\/?]/')
-    if fid:
+    if fid is not None:
         if re.match(regex, name):
             flash('File or folder name only allow alphanumeric, space, underscore and dash', 'error')
 
@@ -161,7 +198,7 @@ def rename():
 @files_bp.route('/download/<fid>', methods=['POST'])
 @is_auth
 def download(fid):
-    if fid:
+    if fid is not None:
         user_id = session['user_id']
         file = File.get_by_id(fid)
         share_uids = file.shareUid.split(',')
@@ -186,13 +223,15 @@ def create_folder():
     regex = re.compile(r'/[!@#$%^&*+\=\[\]{}()~;:"\\|,.<>\/?]/')
     root = config.constants.uploads_dir + '/' + str(user_id) + '/files/'
 
-    if not name:
+    if name is not None:
         flash('Folder name can\'t be empty', 'error')
 
     if re.match(regex, name):
         flash('File or folder name only allow alphanumeric, underscore and dash', 'error')
 
     full_path = os.path.join(root, name)
+    # if folder_path is not None:
+    #     full_path = os.path.join(root, folder_path, name)
 
     if os.path.exists(full_path):
         flash('Folder already exists in current directory', 'error')
