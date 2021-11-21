@@ -4,6 +4,7 @@ import os
 import re
 from flask import Blueprint, render_template, request, url_for, redirect, flash, session, send_from_directory
 from pathlib import Path
+from urllib.parse import unquote
 from playhouse.shortcuts import *
 from middlewares.auth import is_auth
 from models.user import User
@@ -21,12 +22,14 @@ mime = magic.Magic(mime=True)
 def manage(file_path=None):
     user_id = session.get('user_id')
     user = User.get_by_id(user_id)
-    user_files = File.select().where(File.uid == user_id)
     files = []
     share = {'uids': [], 'usernames': [], 'emails': []}
 
     root = config.constants.uploads_dir + '/' + str(user_id) + '/files/'
     breadcrumbs = [{'name': 'My Drive'}]
+
+    user_dir_items = [os.path.splitext(file_name)[0] for file_name in os.listdir(root)]
+    user_files = File.select().where((File.uid == user_id) & (File.name << user_dir_items))
 
     user_files = [model_to_dict(file) for file in user_files]
 
@@ -64,7 +67,9 @@ def manage(file_path=None):
         files.clear()
         files_folders = os.listdir(root + file_path)
         for selected in files_folders:
-            file = File.select().where(File.name == selected[:selected.index('.')])
+            selected = selected[:selected.index('.')] if '.' in selected else selected
+            file = File.get(File.name == selected)
+
             file = model_to_dict(file)
             share_uids = file['shareUid'].split(',')
 
@@ -230,8 +235,9 @@ def create_folder():
         flash('File or folder name only allow alphanumeric, underscore and dash', 'error')
 
     full_path = os.path.join(root, name)
-    # if folder_path is not None:
-    #     full_path = os.path.join(root, folder_path, name)
+    url = request.referrer
+    if url[35:] != '':
+        full_path = os.path.join(root, unquote(url[35:]), name)
 
     if os.path.exists(full_path):
         flash('Folder already exists in current directory', 'error')
