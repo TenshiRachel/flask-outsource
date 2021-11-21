@@ -40,21 +40,21 @@
 
         <div class="col-12 col-md-9 col-lg-7">
             <div id="files-card" class="card card-cascade narrower">
-<!--                <div class="view view-cascade primary-light-gradient narrower py-2 mx-4 mb-3">-->
-<!--                    <ol class="breadcrumb justify-content-center align-items-center white-text transparent py-0 m-0">-->
-<!--                        if breadcrumbs-->
-<!--                            each breadcrumbs-->
-<!--                                <li class="breadcrumb-item text-capitalize">-->
-<!--                                     this.link-->
-<!--                                        <a href="this.link">this.name</a>-->
-<!--                                    else-->
-<!--                                        <span class="white-text">this.name</span>-->
-<!--                                    /if-->
-<!--                                </li>-->
-<!--                            /each-->
-<!--                        /if-->
-<!--                    </ol>-->
-<!--                </div>-->
+                <div class="view view-cascade primary-light-gradient narrower py-2 mx-4 mb-3">
+                    <ol class="breadcrumb justify-content-center align-items-center white-text transparent py-0 m-0">
+                        {% if breadcrumbs %}
+                            {% for breadcrumb in breadcrumbs %}
+                                <li class="breadcrumb-item text-capitalize">
+                                    {% if breadcrumb.link %}
+                                        <a href="{{ breadcrumb.link }}">{{ breadcrumb.name }}</a>
+                                    {% else %}
+                                        <span class="white-text">{{ breadcrumb.name }}</span>
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
+                        {% endif %}
+                    </ol>
+                </div>
 
                 <div class="card-body p-0">
                     <form id="action-form" action="" method="post">
@@ -156,9 +156,9 @@
 <!--                            <button class="list-group-item list-group-item-action" data-toggle="modal" data-target="#newfile-modal">-->
 <!--                                <i class="far fa-file-plus mr-1"></i>New File-->
 <!--                            </button>-->
-<!--                            <button class="list-group-item list-group-item-action" data-toggle="modal" data-target="#newfolder-modal">-->
-<!--                                <i class="far fa-folder-plus mr-1"></i>New Folder-->
-<!--                            </button>-->
+                        <button class="list-group-item list-group-item-action" data-toggle="modal" data-backdrop="false" data-target="#newfolder-modal">
+                            <i class="far fa-folder-plus mr-1"></i>New Folder
+                        </button>
                     </div>
 
                     <hr class="my-0">
@@ -411,7 +411,7 @@
             </div>
 
             <div class="modal-body">
-                <form class="needs-validation" method="post" novalidate>
+                <form class="needs-validation" action="/files/create-folder" method="post" novalidate>
                     <div class="input-group mb-0">
                         <div class="md-form md-outline">
                             <input id="new-folder-name-input" class="form-control" type="text" name="name">
