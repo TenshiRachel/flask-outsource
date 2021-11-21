@@ -37,44 +37,8 @@ def manage(file_path=None):
         share_uids = file['shareUid'].split(',')
 
         for share_uid in share_uids:
-            share_users = User.select().where(User.id in share_uid.split(','))
-            for share_user in share_users:
-                share_user = model_to_dict(share_user)
-
-                share['uids'].append(str(share_user['id']))
-                share['usernames'].append(share_user['username'])
-                share['emails'].append(share_user['email'])
-                file['share'] = share
-
-                size = round(os.path.getsize(file['fullPath'])/1000, 2)
-                file['size'] = str(size) + ' kb'
-                if size >= 1000:
-                    file['size'] = str(round(size/1000, 2)) + ' mb'
-
-                if file['type'] == 'folder':
-                    file['link'] = '/files/manage/' + file['fullPath'][file['fullPath'].index('files/') + 6:]
-
-                files.append(file)
-
-    if file_path is not None:
-        links = file_path.split('/')
-        full_link = ''
-        breadcrumbs[0]['link'] = '/files/manage'
-        for link in links:
-            full_link += link + '/'
-            breadcrumbs.append({'name': link, 'link': '/files/manage/' + full_link})
-
-        files.clear()
-        files_folders = os.listdir(root + file_path)
-        for selected in files_folders:
-            selected = selected[:selected.index('.')] if '.' in selected else selected
-            file = File.get(File.name == selected)
-
-            file = model_to_dict(file)
-            share_uids = file['shareUid'].split(',')
-
-            for share_uid in share_uids:
-                share_users = User.select().where(User.id in share_uid.split(','))
+            share_users = User.select().where(User.id << share_uid.split(','))
+            if share_users:
                 for share_user in share_users:
                     share_user = model_to_dict(share_user)
 
@@ -83,15 +47,56 @@ def manage(file_path=None):
                     share['emails'].append(share_user['email'])
                     file['share'] = share
 
-                    size = round(os.path.getsize(file['fullPath']) / 1000, 2)
-                    file['size'] = str(size) + ' kb'
-                    if size >= 1000:
-                        file['size'] = str(round(size / 1000, 2)) + ' mb'
+            size = round(os.path.getsize(file['fullPath'])/1000, 2)
+            file['size'] = str(size) + ' kb'
+            if size >= 1000:
+                file['size'] = str(round(size/1000, 2)) + ' mb'
 
-                    if file['type'] == 'folder':
-                        file['link'] = '/files/manage/' + file['fullPath'][file['fullPath'].index('files/') + 6:]
+            if file['type'] == 'folder':
+                file['link'] = '/files/manage/' + file['fullPath'][file['fullPath'].index('files/') + 6:]\
+                    .replace('\\', '+')
 
-                    files.append(file)
+            files.append(file)
+
+    if file_path is not None:
+        links = file_path.split('+')
+        full_link = ''
+        breadcrumbs[0]['link'] = '/files/manage'
+        for link in links:
+            full_link += link + '/'
+            breadcrumbs.append({'name': link, 'link': '/files/manage/' + full_link})
+
+        files.clear()
+        files_folders = os.listdir(root + file_path.replace('+', '/'))
+        for selected in files_folders:
+            selected = selected[:selected.index('.')] if '.' in selected else selected
+            file = File.get(File.name == selected)
+
+            file = model_to_dict(file)
+            share_uids = file['shareUid'].split(',')
+
+            for share_uid in share_uids:
+                share_users = User.select().where(User.id << share_uid.split(','))
+
+                if share_users:
+                    for share_user in share_users:
+                        share_user = model_to_dict(share_user)
+
+                        share['uids'].append(str(share_user['id']))
+                        share['usernames'].append(share_user['username'])
+                        share['emails'].append(share_user['email'])
+                        file['share'] = share
+
+                size = round(os.path.getsize(file['fullPath']) / 1000, 2)
+                file['size'] = str(size) + ' kb'
+                if size >= 1000:
+                    file['size'] = str(round(size / 1000, 2)) + ' mb'
+
+                if file['type'] == 'folder':
+                    file['link'] = '/files/manage/' + file['fullPath'][file['fullPath'].index('files/') + 6:]\
+                        .replace('\\', '+')
+
+                files.append(file)
 
     return render_template('files/index.html', user=user, files=files, breadcrumbs=breadcrumbs)
 
@@ -234,10 +239,9 @@ def create_folder():
     if re.match(regex, name):
         flash('File or folder name only allow alphanumeric, underscore and dash', 'error')
 
-    full_path = os.path.join(root, name)
     url = request.referrer
-    if url[35:] != '':
-        full_path = os.path.join(root, unquote(url[35:]), name)
+    full_path = os.path.join(root, name) if url[35:] == '' else os.path.join(root, unquote(url[35:]).replace('+', '/'),
+                                                                             name)
 
     if os.path.exists(full_path):
         flash('Folder already exists in current directory', 'error')

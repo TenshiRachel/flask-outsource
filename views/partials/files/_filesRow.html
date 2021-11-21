@@ -7,9 +7,9 @@
                         class="form-check-input" type="checkbox"
                         data-id="{{ file.id }}"
                         data-name="{{ file.name }}"
-                        {% if file.share.uids %} data-share-uids="{{ ','.join(file.share.uids) }}" {% endif %}
-                        {% if file.share.usernames %} data-share-usernames="{{ ','.join(file.share.usernames) }}" {% endif %}
-                        {% if file.share.emails %} data-share-emails="{{ ','.join(file.share.emails) }}" {% endif %}
+                        {% if file.share %} data-share-uids="{{ ','.join(file.share.uids) }}" {% endif %}
+                        {% if file.share %} data-share-usernames="{{ ','.join(file.share.usernames) }}" {% endif %}
+                        {% if file.share %} data-share-emails="{{ ','.join(file.share.emails) }}" {% endif %}
                         {% if file.shareCode %} data-share-code="{{ file.shareCode }}" {% endif %}
                         {% if file.type %} data-type="{{ file.type }}" {% endif %}
                         name="fid"
