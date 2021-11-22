@@ -110,7 +110,10 @@ def upload_file():
     directory = config.constants.uploads_dir + '/' + str(user_id) + '/files/'
 
     for file in files:
-        full_path = os.path.join(directory, file.filename)
+        url = request.referrer
+        full_path = os.path.join(directory, file.filename) if url[35:] == '' else \
+            os.path.join(directory, unquote(url[35:]).replace('+', '/'))
+
         Path(directory).mkdir(exist_ok=True)
         if os.path.exists(full_path):
             os.remove(full_path)
