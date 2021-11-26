@@ -10,6 +10,7 @@ class Notification(Base):
     title = CharField()
     date = CharField()
     category = CharField()
+    user = IntegerField()
 
     class Meta:
         database = Base._meta.db
