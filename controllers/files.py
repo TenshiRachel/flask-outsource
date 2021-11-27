@@ -9,6 +9,7 @@ from playhouse.shortcuts import *
 from middlewares.auth import is_auth
 from models.user import User
 from models.filesFolders import File
+from models.notifications import Notification
 
 
 files_bp = Blueprint('files', __name__, template_folder=config.constants.template_dir,
@@ -138,16 +139,21 @@ def share():
     req = request.form
     fid = req.get('fid')
     share_user = req.get('shareUser')
+    user_id = session.get('user_id')
+    user = User.get_by_id(user_id)
 
     if fid is not None:
         file = File.get_by_id(fid)
         share_user = User.select().where((User.username == share_user) | (User.email == share_user))
         share_username = share_user[0].username
+        share_id = share_user[0].id
         share_list = file.shareUid.split(',').append(share_user[0].id)
         share_user = ",".join(share_list)
 
         query = File.update(shareUid=share_user).where(File.id == fid)
         query.execute()
+
+        Notification.create(uid=int(user_id), username=user.username, title=file.name, category='file_share', user=share_id)
 
         flash('Successfully shared with ' + share_username, 'success')
 
@@ -163,13 +169,17 @@ def unshare():
     req = request.form
     fid = req.get('fid')
     unshare_user = req.getlist('uid')
+    user_id = session.get('user_id')
+    user = User.get_by_id(user_id)
 
     if fid is not None:
         file = File.get_by_id(fid)
         share_list = file.shareUid.split(',')
 
-        for user_id in unshare_user:
-            share_list.remove(user_id)
+        for unshare_user_id in unshare_user:
+            share_list.remove(unshare_user_id)
+            Notification.create(uid=int(user_id), username=user.username, title=file.name, category='file_unshare',
+                                user=unshare_user_id)
 
         share_list = ",".join(share_list)
 
