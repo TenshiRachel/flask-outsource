@@ -18,4 +18,24 @@ def index():
     like_notifications = Notification.select().where(Notification.user == user_id & Notification.category == 'likes')\
         .order_by(Notification.date.desc())
 
-    return render_template('notifications/index.html', user=user, like_notifications=like_notifications)
+    job_reject_notifications = Notification.select().\
+        where(Notification.user == user_id & Notification.category == 'job_reject').order_by(Notification.date.desc())
+
+    job_notifications = Notification.select().\
+        where(Notification.user == user_id & Notification.category == 'job').order_by(Notification.date.desc())
+
+    request_cancelled_notifications = Notification.select().\
+        where(Notification.user == user_id & Notification.category == 'request_cancel')\
+        .order_by(Notification.date.desc())
+
+    file_share_notifications = Notification.select().\
+        where(Notification.user == user_id & Notification.category == 'file_share').order_by(Notification.date.desc())
+
+    file_unshare_notifications = Notification.select().\
+        where(Notification.user == user_id & Notification.category == 'file_unshare').order_by(Notification.date.desc())
+
+    return render_template('notifications/index.html', user=user, like_notifications=like_notifications,
+                           job_reject_notifications=job_reject_notifications, job_notifications=job_notifications,
+                           request_cancelled_notifications=request_cancelled_notifications,
+                           file_share_notifications=file_share_notifications,
+                           file_unshare_notifications=file_unshare_notifications)

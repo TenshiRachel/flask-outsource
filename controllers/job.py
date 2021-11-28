@@ -109,7 +109,7 @@ def submit(id):
         query.execute()
 
         Notification.create(uid=user.id, username=user.username, pid=service.id, title=service.name,
-                            category='request_ccomplete', user=job.cid)
+                            category='request_complete', user=job.cid)
 
         flash('Job completed', 'success')
         return redirect(url_for('job.index'))
