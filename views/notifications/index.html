@@ -1,0 +1,621 @@
+{% extends 'layouts/base.html' %}
+{% block body %}
+<section class="view-notification">
+    <h1 class="col-12 text-center">Notifications</h1>
+    <div class="classic-tabs col-lg-10 col-sm-12 mx-auto">
+
+        <ul class="nav tabs-white rounded-0" id="myClassicTabShadow" role="tablist">
+
+            <!-- =============================== Self =============================== -->
+            <li class="nav-item ml-0">
+                <a class="nav-link waves-light active show" id="likes-tab-classic-shadow" data-toggle="tab"
+                    href="#likes-classic-shadow" role="tab" aria-controls="likes-classic-shadow" aria-selected="false">
+                    Likes
+                    {% if like_notifications|length > 0 %}
+                    <span class="text-danger font-weight-bold">!</span>
+                    {% endif %}
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link waves-light" id="comments-tab-classic-shadow" data-toggle="tab"
+                    href="#comments-classic-shadow" role="tab" aria-controls="comments-classic-shadow"
+                    aria-selected="false">
+                    Comments
+                    {% if comment_notifications|length > 0 %}
+                    <span class="text-danger font-weight-bold">!</span>
+                    {% endif %}</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link waves-light" id="followers-tab-classic-shadow" data-toggle="tab"
+                    href="#followers-classic-shadow" role="tab" aria-controls="followers-classic-shadow"
+                    aria-selected="false">
+                    Followers
+                    {% if followers_notifications|length > 0 %}
+                    <span class="text-danger font-weight-bold">!</span>
+                    {% endif %}</a>
+            </li>
+            {% if user.acc_type == "service" %}
+            <li class="nav-item">
+                <a class="nav-link waves-light" id="jobs-tab-classic-shadow" data-toggle="tab"
+                    href="#jobs-classic-shadow" role="tab" aria-controls="jobs-classic-shadow" aria-selected="false">
+                    Jobs
+                    {% if jobs_reject_notifications|length == 0 and jobs_notifications|length == 0 and paid_jobs_notifications|length == 0 %}
+                    {% else %}
+                    <span class="text-danger font-weight-bold">!</span>
+                    {% endif %}</a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+                <a class="nav-link waves-light" id="requests-tab-classic-shadow" data-toggle="tab"
+                    href="#requests-classic-shadow" role="tab" aria-controls="requests-classic-shadow"
+                    aria-selected="false">
+                    Requests
+                    {% if requests_cancelled_notifications|length == 0 and requests_notifications|length == 0 and complete_requests_notifications|length == 0 %}
+                    {% else %}
+                    <span class="text-danger font-weight-bold">!</span>
+                    {% endif %}</a>
+            </li>
+            {% endif %}
+
+            <li class="nav-item">
+                <a class="nav-link waves-light" id="file-tab-classic-shadow" data-toggle="tab"
+                    href="#file-classic-shadow" role="tab" aria-controls="file-classic-shadow" aria-selected="false">
+                    File
+                    {% if file_share_notifications|length > 0 or file_unshare_notifications|length > 0 %}
+                    <span class="text-danger font-weight-bold">!</span>
+                    {% endif %}</a>
+            </li>
+            <!-- =============================== Following =============================== -->
+            <li class="nav-item ml-auto">
+                <a class="nav-link waves-light" id="portfolio-tab-classic-shadow" data-toggle="tab"
+                    href="#portfolio-classic-shadow" role="tab" aria-controls="portfolio-classic-shadow"
+                    aria-selected="true">Portfolio
+                    {% if project_notifications|length > 0 %}
+                    <span class="text-danger font-weight-bold">!</span>
+                    {% endif %}
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link waves-light" id="service-tab-classic-shadow" data-toggle="tab"
+                    href="#service-classic-shadow" role="tab" aria-controls="service-classic-shadow"
+                    aria-selected="false">
+                    Service
+                    {% if service_notifications|length > 0 %}
+                    <span class="text-danger font-weight-bold">!</span>
+                    {% endif %}
+                </a>
+            </li>
+
+        </ul>
+
+        <div class="tab-content min-vh-0 p-0" id="myClassicTabContentShadow">
+            <!-- =============================== Likes =============================== -->
+            <div class="tab-pane fade active profile-content show" id="likes-classic-shadow" role="tabpanel"
+                aria-labelledby="likes-tab-classic-shadow">
+                <div class="row justify-content-center mx-auto p-2 col-12">
+                    {% if like_notifications %}
+                    <div class="col-12 row justify-content-end mx-auto">
+                        <a class="ml-auto" href="/profile/deleteAllNotifications/Likes"><button
+                                class="btn btn-secondary">
+                                Clear All </button></a>
+                    </div>
+                    {% for notif in like_notifications %}
+                    <div id="notif{{notif.id}}" class="col-12 row justify-content-between z-depth-1 my-2">
+                        <div class="col-8 row mx-auto my-3">
+                            <img loading="lazy" class=" border rounded-circle" style="width:50px; height:50px;"
+                                onerror='this.src = "/img/profile/default.png"'
+                                src="/uploads/profile/{{notif.uid}}/profilePic.png" alt="">
+
+                            <div class="pl-2 align-self-center pt-1">
+                                <h5 class="">
+                                    <a href="/profile/view/{{notif.uid}}">{{notif.username}}</a> liked
+                                    <a href="/profile/openProject/{{notif.pid}}">{{notif.title}}</a>
+
+                                </h5>
+                            </div>
+                        </div>
+                        <div class="col-2 align-self-center pt-2 row justify-content-end mx-auto">
+                            <h6 class="text-muted text-right">
+                                {{notif.date}}
+                            </h6>
+
+                        </div>
+                        <button type="button" class="close mx-auto" onclick="deleteNotif({{notif.id}})">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <h4 class="col-12 text-center text-muted my-5"> You have no notifications</h4>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- =============================== Comments =============================== -->
+            <div class="tab-pane fade profile-content" id="comments-classic-shadow" role="tabpanel"
+                aria-labelledby="comments-tab-classic-shadow">
+                <div class="row justify-content-center mx-auto p-2 col-12">
+                    {% if comment_notifications %}
+                    <div class="col-12 row justify-content-end mx-auto">
+
+                        <a class="ml-auto" href="/profile/deleteAllNotifications/Comments"><button
+                                class="btn btn-secondary"> Clear All </button></a>
+                    </div>
+                    {% for notif in comment_notifications %}
+                    <div id="notif{{notif.id}}" class="col-12 row justify-content-between z-depth-1 my-2">
+                        <div class="col-8 row mx-auto my-3">
+                            <img loading="lazy" class=" border rounded-circle" style="width:50px; height:50px;"
+                                onerror='this.src = "/img/profile/default.png"'
+                                src="/uploads/profile/{{notif.uid}}/profilePic.png" alt="">
+
+                            <div class="pl-2 align-self-center pt-1">
+                                <h5 class="">
+                                    <a href="/profile/view/{{notif.uid}}">{{notif.username}}</a> commented on
+                                    <a href="/profile/openProject/{{notif.pid}}/">{{notif.title}}</a>
+
+                                </h5>
+                            </div>
+                        </div>
+                        <div class="col-2 align-self-center pt-2 row justify-content-end mx-auto">
+                            <h6 class="text-muted text-right">
+                                {{notif.date}}
+                            </h6>
+
+                        </div>
+                        <button type="button" class="close mx-auto" onclick="deleteNotif({{notif.id}})">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <h4 class="col-12 text-center text-muted my-5"> You have no notifications</h4>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- =============================== Followers =============================== -->
+            <div class="tab-pane fade profile-content" id="followers-classic-shadow" role="tabpanel"
+                aria-labelledby="followers-tab-classic-shadow">
+                <div class="row justify-content-center mx-auto p-2 col-12">
+                    {% if followers_notifications %}
+                    <div class="col-12 row justify-content-end mx-auto">
+
+                        <a class="ml-auto" href="/profile/deleteAllNotifications/Follow"><button
+                                class="btn btn-secondary">
+                                Clear All </button></a>
+                    </div>
+                    {% for notif in followers_notifications %}
+                    <div id="notif{{notif.id}}" class="col-12 row justify-content-between z-depth-1 my-2">
+                        <div class="col-8 row mx-auto my-3">
+                            <img loading="lazy" class=" border rounded-circle" style="width:50px; height:50px;"
+                                onerror='this.src = "/img/profile/default.png"'
+                                src="/uploads/profile/{{notif.uid}}/profilePic.png" alt="">
+
+                            <div class="pl-2 align-self-center pt-1">
+                                <h5 class="">
+                                    <a href="/profile/view/{{notif.uid}}">{{notif.username}}</a> followed you.
+                                </h5>
+                            </div>
+                        </div>
+                        <div class="col-2 align-self-center pt-2 row justify-content-end mx-auto">
+                            <h6 class="text-muted text-right">
+                                {{notif.date}}
+                            </h6>
+
+                        </div>
+                        <button type="button" class="close mx-auto" onclick="deleteNotif({{notif.id}})">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <h4 class="col-12 text-center text-muted my-5"> You have no notifications</h4>
+                    {% endif %}
+                </div>
+            </div>
+
+            {% if user.acc_type == "service" %}
+            <!-- =============================== Jobs =============================== -->
+            <div class="tab-pane fade profile-content" id="jobs-classic-shadow" role="tabpanel"
+                aria-labelledby="jobs-tab-classic-shadow">
+                <div class="row justify-content-center mx-auto p-2 col-12">
+                    {% if paid_jobs_notifications %}
+                    <div class="col-12 row justify-content-end mx-auto">
+                        <a class="ml-auto" href="/profile/deleteAllNotifications/Jobs_Paid"><button
+                                class="btn btn-secondary">
+                                Clear All </button></a>
+                    </div>
+                    {% for notif in paid_jobs_notifications %}
+                    <div id="notif{{notif.id}}" class="col-12 row justify-content-between z-depth-1 my-2">
+                        <div class="col-8 row mx-auto my-3">
+                            <img loading="lazy" class=" border rounded-circle" style="width:50px; height:50px;"
+                                onerror='this.src = "/img/profile/default.png"'
+                                src="/uploads/profile/{{notif.uid}}/profilePic.png" alt="">
+
+                            <div class="pl-2 align-self-center pt-1">
+                                <h5 class="">
+                                    <a href="/profile/view/{{notif.uid}}">{{notif.username}}</a> paid for <a
+                                        href="/services/view/{{notif.uid}}/{{notif.pid}}">{{notif.title}}</a>.
+                                </h5>
+                            </div>
+                        </div>
+                        <div class="col-2 align-self-center pt-2 row justify-content-end mx-auto">
+                            <h6 class="text-muted text-right">
+                                {{notif.date}}
+                            </h6>
+
+                        </div>
+                        <button type="button" class="close mx-auto" onclick="deleteNotif({{notif.id}})">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+
+                    {% if jobs_reject_notifications%}
+                    <div class="col-12 row justify-content-end mx-auto">
+                        <a class="ml-auto" href="/profile/deleteAllNotifications/Jobs_Reject"><button
+                                class="btn btn-secondary">
+                                Clear All </button></a>
+                    </div>
+                    {% for notif in jobs_reject_notifications %}
+                    <div id="notif{{notif.id}}" class="col-12 row justify-content-between z-depth-1 my-2">
+                        <div class="col-8 row mx-auto my-3">
+                            <img loading="lazy" class=" border rounded-circle" style="width:50px; height:50px;"
+                                onerror='this.src = "/img/profile/default.png"'
+                                src="/uploads/profile/{{notif.uid}}/profilePic.png" alt="">
+
+                            <div class="pl-2 align-self-center pt-1">
+                                <h5 class="">
+                                    <a href="/profile/view/{{notif.uid}}">{{notif.username}}</a> cancelled your service of <a
+                                        href="/services/view/{{notif.uid}}/{{notif.pid}}">{{notif.title}}</a>.
+                                </h5>
+                            </div>
+                        </div>
+                        <div class="col-2 align-self-center pt-2 row justify-content-end mx-auto">
+                            <h6 class="text-muted text-right">
+                                {{notif.date}}
+                            </h6>
+
+                        </div>
+                        <button type="button" class="close mx-auto" onclick="deleteNotif({{notif.id}})">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+
+                    {% if jobs_notifications %}
+                    <div class="col-12 row justify-content-end mx-auto">
+                        <a class="ml-auto" href="/profile/deleteAllNotifications/Jobs"><button
+                                class="btn btn-secondary">
+                                Clear All </button></a>
+                    </div>
+                    {% for notif in jobs_notifications %}
+                    <div id="notif{{notif.id}}" class="col-12 row justify-content-between z-depth-1 my-2">
+                        <div class="col-8 row mx-auto my-3">
+                            <img loading="lazy" class=" border rounded-circle" style="width:50px; height:50px;"
+                                onerror='this.src = "/img/profile/default.png"'
+                                src="/uploads/profile/{{notif.uid}}/profilePic.png" alt="">
+
+                            <div class="pl-2 align-self-center pt-1">
+                                <h5 class="">
+                                    <a href="/profile/view/{{notif.uid}}">{{notif.username}}</a> requested your service of <a
+                                        href="/services/view/{{notif.uid}}/{{notif.pid}}">{{notif.title}}</a>.
+                                    <br><a class="small" href="/jobs">Please check Job Dashboard</a>
+                                </h5>
+                            </div>
+                        </div>
+                        <div class="col-2 align-self-center pt-2 row justify-content-end mx-auto">
+                            <h6 class="text-muted text-right">
+                                {{notif.date}}
+                            </h6>
+
+                        </div>
+                        <button type="button" class="close mx-auto" onclick="deleteNotif({{notif.id}})">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+
+                    {% if jobs_reject_notifications|length == 0 and jobs_notifications|length == 0 and paid_jobs_notifications|length == 0 %}
+                    <h4 class="col-12 text-center text-muted my-5"> You have no notifications</h4>
+                    {% endif %}
+                </div>
+            </div>
+            {% else %}
+            <!-- =============================== Requests =============================== -->
+            <div class="tab-pane fade profile-content" id="requests-classic-shadow" role="tabpanel"
+                aria-labelledby="requests-tab-classic-shadow">
+                <div class="row justify-content-center mx-auto p-2 col-12">
+
+                    {% if complete_requests_notifications %}
+                    <div class="col-12 row justify-content-end mx-auto">
+                        <a class="ml-auto" href="/profile/deleteAllNotifications/Complete_requests"><button
+                                class="btn btn-secondary">
+                                Clear All </button></a>
+                    </div>
+                    {% for notif in complete_requests_notifications %}
+                    <div id="notif{{notif.id}}" class="col-12 row justify-content-between z-depth-1 my-2">
+                        <div class="col-8 row mx-auto my-3">
+                            <img loading="lazy" class=" border rounded-circle" style="width:50px; height:50px;"
+                                onerror='this.src = "/img/profile/default.png"'
+                                src="/uploads/profile/{{notif.uid}}/profilePic.png" alt="">
+
+                            <div class="pl-2 align-self-center pt-1">
+                                <h5 class="">
+                                    <a href="/profile/view/{{uid}}">{{notif.username}}</a> completed your request of <a
+                                        href="/services/view/{{notif.uid}}/{{notif.pid}}">{{notif.title}}</a>.
+                                </h5>
+                            </div>
+                        </div>
+                        <div class="col-2 align-self-center pt-2 row justify-content-end mx-auto">
+                            <h6 class="text-muted text-right">
+                                {{notif.date}}
+                            </h6>
+
+                        </div>
+                        <button type="button" class="close mx-auto" onclick="deleteNotif({{notif.id}})">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+
+
+                    {% if requests_cancelled_notifications %}
+                    <div class="col-12 row justify-content-end mx-auto">
+                        <a class="ml-auto" href="/profile/deleteAllNotifications/Requests_Cancel"><button
+                                class="btn btn-secondary">
+                                Clear All </button></a>
+                    </div>
+                    {% for notif in requests_cancelled_notifications %}
+                    <div id="notif{{notif.id}}" class="col-12 row justify-content-between z-depth-1 my-2">
+                        <div class="col-8 row mx-auto my-3">
+                            <img loading="lazy" class=" border rounded-circle" style="width:50px; height:50px;"
+                                onerror='this.src = "/img/profile/default.png"'
+                                src="/uploads/profile/{{notif.uid}}/profilePic.png" alt="">
+
+                            <div class="pl-2 align-self-center pt-1">
+                                <h5 class="">
+                                    <a href="/profile/view/{{notif.uid}}">{{notif.username}}</a> cancelled your request of <a
+                                        href="/services/view/{{notif.uid}}/{{notif.pid}}">{{notif.title}}</a>.
+                                </h5>
+                            </div>
+                        </div>
+                        <div class="col-2 align-self-center pt-2 row justify-content-end mx-auto">
+                            <h6 class="text-muted text-right">
+                                {{notif.date}}
+                            </h6>
+
+                        </div>
+                        <button type="button" class="close mx-auto" onclick="deleteNotif({{notif.id}})">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+
+                    {% if requests_notifications %}
+                    <div class="col-12 row justify-content-end mx-auto">
+                        <a class="ml-auto" href="/profile/deleteAllNotifications/Requests"><button
+                                class="btn btn-secondary">
+                                Clear All </button></a>
+                    </div>
+                    {% for notif in requests_notifications %}
+                    <div id="notif{{notif.id}}" class="col-12 row justify-content-between z-depth-1 my-2">
+                        <div class="col-8 row mx-auto my-3">
+                            <img loading="lazy" class=" border rounded-circle" style="width:50px; height:50px;"
+                                onerror='this.src = "/img/profile/default.png"'
+                                src="/uploads/profile/{{notif.uid}}/profilePic.png" alt="">
+
+                            <div class="pl-2 align-self-center pt-1">
+                                <h5 class="">
+                                    <a href="/profile/view/{{notif.uid}}">{{notif.username}}</a> accepted your request of <a
+                                        href="/services/view/{{notif.uid}}/{{notif.pid}}">{{notif.title}}</a>.
+                                    <br><a class="small" href="/services/requests">Please pay at Requests Dashboard to get
+                                        started</a>
+
+                                </h5>
+                            </div>
+                        </div>
+                        <div class="col-2 align-self-center pt-2 row justify-content-end mx-auto">
+                            <h6 class="text-muted text-right">
+                                {{notif.date}}
+                            </h6>
+
+                        </div>
+                        <button type="button" class="close mx-auto" onclick="deleteNotif({{notif.id}})">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    {% endif %}
+
+                    {% if requests_cancelled_notifications|length == 0 and requests_notifications|length == 0 and complete_requests_notifications|length == 0 %}
+                    <h4 class="col-12 text-center text-muted my-5"> You have no notifications</h4>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- =============================== File =============================== -->
+            <div class="tab-pane fade profile-content" id="file-classic-shadow" role="tabpanel"
+                aria-labelledby="file-tab-classic-shadow">
+                <div class="row justify-content-center mx-auto p-2 col-12">
+                    {% if file_share_notifications %}
+                    <div class="col-12 row justify-content-end mx-auto">
+                        <a class="ml-auto" href="/profile/deleteAllNotifications/Share"><button
+                                class="btn btn-secondary">
+                                Clear All </button></a>
+                    </div>
+                    {% for notif in file_share_notifications %}
+                    <div id="notif{{notif.id}}" class="col-12 row justify-content-between z-depth-1 my-2">
+                        <div class="col-8 row mx-auto my-3">
+                            <img loading="lazy" class=" border rounded-circle" style="width:50px; height:50px;"
+                                onerror='this.src = "/img/profile/default.png"'
+                                src="/uploads/profile/{{notif.uid}}/profilePic.png" alt="">
+
+                            <div class="pl-2 align-self-center pt-1">
+                                <h5 class="">
+                                    <a href="/profile/view/{{notif.uid}}">{{notif.username}}</a> shared <a
+                                        href="/files/share-drive">{{notif.title}}</a>
+                                </h5>
+                            </div>
+                        </div>
+                        <div class="col-2 align-self-center pt-2 row justify-content-end mx-auto">
+                            <h6 class="text-muted text-right">
+                                {{notif.date}}
+                            </h6>
+
+                        </div>
+                        <button type="button" class="close mx-auto" onclick="deleteNotif({{notif.id}})">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+
+
+                    {% if file_unshare_notifications %}
+                    <div class="col-12 row justify-content-end mx-auto">
+                        <a class="ml-auto" href="/profile/deleteAllNotifications/Unshare"><button
+                                class="btn btn-secondary">
+                                Clear All </button></a>
+                    </div>
+                    {% for notif in file_unshare_notifications %}
+                    <div id="notif{{notif.id}}" class="col-12 row justify-content-between z-depth-1 my-2">
+                        <div class="col-8 row mx-auto my-3">
+                            <img loading="lazy" class=" border rounded-circle" style="width:50px; height:50px;"
+                                onerror='this.src = "/img/profile/default.png"'
+                                src="/uploads/profile/{{notif.uid}}/profilePic.png" alt="">
+
+                            <div class="pl-2 align-self-center pt-1">
+                                <h5 class="">
+                                    <a href="/profile/view/{{notif.uid}}">{{notif.username}}</a> unshared <a
+                                        href="/files/share-drive">{{notif.title}}</a>.
+                                </h5>
+                            </div>
+                        </div>
+                        <div class="col-2 align-self-center pt-2 row justify-content-end mx-auto">
+                            <h6 class="text-muted text-right">
+                                {{notif.date}}
+                            </h6>
+
+                        </div>
+                        <button type="button" class="close mx-auto" onclick="deleteNotif({{notif.id}})">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+
+                    {% if file_share_notifications|length == 0 and file_unshare_notifications|length == 0 %}
+                    <h4 class="col-12 text-center text-muted my-5"> You have no notifications</h4>
+                    {% endif %}
+                </div>
+            </div>
+
+
+            <!-- =============================== Portfolio =============================== -->
+            <div class="tab-pane fade profile-content" id="portfolio-classic-shadow" role="tabpanel"
+                aria-labelledby="portfolio-tab-classic-shadow">
+                <div class="row justify-content-center mx-auto p-2 col-12">
+                    {% if project_notifications %}
+                    <div class="col-12 row justify-content-end mx-auto">
+                        <a class="ml-auto" href="/profile/deleteAllNotifications/Projects"><button
+                                class="btn btn-secondary">
+                                Clear All </button></a>
+                    </div>
+                    {% for notif in project_notifications %}
+                    <div id="notif{{notif.id}}" class="col-12 row justify-content-between z-depth-1 my-2">
+                        <div class="col-8 row mx-auto my-3">
+                            <img loading="lazy" class=" border rounded-circle" style="width:50px; height:50px;"
+                                onerror='this.src = "/img/profile/default.png"'
+                                src="/uploads/profile/{{notif.uid}}/profilePic.png" alt="">
+
+                            <div class="pl-2 align-self-center pt-1">
+                                <h5 class="">
+                                    <a href="/profile/view/{{notif.uid}}">{{notif.username}}</a> has posted a new project,
+                                    <a href="/profile/view/{{notif.uid}}/{{notif.pid}}">{{notif.title}}</a>
+
+                                </h5>
+                            </div>
+                        </div>
+                        <div class="col-2 align-self-center pt-2 row justify-content-end mx-auto">
+                            <h6 class="text-muted text-right">
+                                {{notif.date}}
+                            </h6>
+
+                        </div>
+                        <button type="button" class="close mx-auto" onclick="deleteNotif({{notif.id}})">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <h4 class="col-12 text-center text-muted my-5"> You have no notifications</h4>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- =============================== Services =============================== -->
+            <div class="tab-pane fade profile-content" id="service-classic-shadow" role="tabpanel"
+                aria-labelledby="service-tab-classic-shadow">
+                <div class="row justify-content-center mx-auto p-2 col-12">
+                    {% if service_notifications %}
+                    <div class="col-12 row justify-content-end mx-auto">
+
+                        <a class="ml-auto" href="/profile/deleteAllNotifications/Services"><button
+                                class="btn btn-secondary">
+                                Clear All </button></a>
+                    </div>
+                    {% for notif in service_notifications %}
+                    <div id="notif{{notif.id}}" class="col-12 row justify-content-between z-depth-1 my-2">
+                        <div class="col-8 row mx-auto my-3">
+                            <img loading="lazy" class=" border rounded-circle" style="width:50px; height:50px;"
+                                onerror='this.src = "/img/profile/default.png"'
+                                src="/uploads/profile/{{notif.uid}}/profilePic.png" alt="">
+
+                            <div class="pl-2 align-self-center pt-1">
+                                <h5 class="">
+                                    <a href="/profile/view/{{notif.uid}}">{{notif.username}}</a> has posted a new service,
+                                    <a href="/services/view/{{notif.uid}}/{{notif.pid}}">{{notif.title}}</a>
+
+                                </h5>
+                            </div>
+                        </div>
+                        <div class="col-2 align-self-center pt-2 row justify-content-end mx-auto">
+                            <h6 class="text-muted text-right">
+                                {{notif.date}}
+                            </h6>
+
+                        </div>
+                        <button type="button" class="close mx-auto" onclick="deleteNotif({{notif.id}})">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <h4 class="col-12 text-center text-muted my-5"> You have no notifications</h4>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+</section>
+{% endblock %}
