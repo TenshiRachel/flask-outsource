@@ -24,8 +24,15 @@ def index():
     job_notifications = Notification.select().\
         where(Notification.user == user_id & Notification.category == 'job').order_by(Notification.date.desc())
 
+    paid_jobs_notifications = Notification.select().\
+        where(Notification.user == user_id & Notification.category == 'job_paid').order_by(Notification.date.desc())
+
     request_cancelled_notifications = Notification.select().\
         where(Notification.user == user_id & Notification.category == 'request_cancel')\
+        .order_by(Notification.date.desc())
+
+    complete_requests_notifications = Notification.select().\
+        where(Notification.user == user_id & Notification.category == 'request_complete')\
         .order_by(Notification.date.desc())
 
     file_share_notifications = Notification.select().\
@@ -38,4 +45,6 @@ def index():
                            job_reject_notifications=job_reject_notifications, job_notifications=job_notifications,
                            request_cancelled_notifications=request_cancelled_notifications,
                            file_share_notifications=file_share_notifications,
-                           file_unshare_notifications=file_unshare_notifications)
+                           file_unshare_notifications=file_unshare_notifications,
+                           complete_requests_notifications=complete_requests_notifications,
+                           paid_jobs_notifications=paid_jobs_notifications)
