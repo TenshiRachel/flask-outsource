@@ -1,0 +1,90 @@
+<section class="payment-service">
+
+    <div class="card z-depth-2">
+        <div class="vh-100 row justify-content-around p-5">
+            <div class="col-12 row justify-content-around">
+                <h1 class="text-center col-12">Send Payment</h1>
+            </div>
+            <div class="col-5">
+                <h1 class="text-center">From</h1>
+                <!-- Card -->
+                <div class="vh-60 card testimonial-card">
+
+                    <!-- Background color -->
+                    <div class="card-up indigo lighten-1">
+                        <img loading="lazy" style="" class="card-img-top img-fluid jarallax-img "
+                            onerror='this.src="/img/profile/banner.png"' src="/uploads/profile/{{client.id}}/banner.png">
+                    </div>
+
+                    <!-- Avatar -->
+                    <div class="avatar mx-auto white">
+                        <img loading="lazy" onerror='this.src = "/img/profile/default.png"'
+                                    src="/uploads/profile/{{client.id}}/profilePic.png" class="rounded-circle"
+                            alt="woman avatar">
+                    </div>
+
+                    <!-- Content -->
+                    <div class="card-body">
+                        <!-- Name -->
+                        <h4 class="card-title">{{client.username}}</h4>
+                        <hr>
+                        <!-- Quotation -->
+                        <div class="row justify-content-between">
+                            <h6 class="text-left col-5"><b>Paypal Email:</b></h6>
+                            <h6 class="text-right col-7"> {{client.paypal}}</h6>
+                            <h6 class="text-left col-5"><b>Payment Amount:</b></h6>
+                            <h6 class="text-right col-7"> ${{service.price}}</h6>
+                        </div>
+
+                    </div>
+                    <div class="text-center">
+                        <a href="/services/"><button class="btn btn-purple"> Back </button></a>
+                    </div>
+
+                </div>
+                <!-- Card -->
+            </div>
+            <div class="col-2 row justify-content-center align-items-center">
+                <i class=" far fa-arrow-right fa-4x my-auto"></i>
+            </div>
+
+            <div class="col-5">
+                <h1 class="text-center">To</h1>
+                <div class="vh-60 card testimonial-card">
+
+                    <!-- Background color -->
+                    <div class="card-up indigo lighten-1">
+                        <img loading="lazy" style="" class="card-img-top img-fluid jarallax-img "
+                            onerror='this.src="/img/profile/banner.png"' src="/uploads/profile/{{freelancer.id}}/banner.png">
+                    </div>
+
+                    <!-- Avatar -->
+                    <div class="avatar mx-auto white">
+                        <img loading="lazy" onerror='this.src = "/img/profile/default.png"'
+                                    src="/uploads/profile/{{freelancer.id}}/profilePic.png" class="rounded-circle " alt="">
+                    </div>
+
+                    <!-- Content -->
+                    <div class="card-body">
+                        <!-- Name -->
+                        <h4 class="card-title">{{freelancer.username}}</h4>
+                        <hr>
+                        <!-- Quotation -->
+                        <div class="row justify-content-between">
+                            <h6 class="text-left col-5"><b>Paypal Email:</b></h6>
+                            <h6 class="text-right col-7"> {{freelancer.paypal}}</h6>
+
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <form action="" method="post">
+                            <input type="submit" value="send" class="btn btn-purple">
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>

@@ -157,3 +157,25 @@ def delete(id):
     query.execute()
     flash('Service deleted successfully', 'success')
     return redirect(url_for('service.manage'))
+
+
+@service_bp.route('/payment/<sid>/<id>', methods=['GET', 'POST'])
+@is_auth
+def payment(sid=None, id=None):
+    user = User.get_by_id(session['user_id'])
+    if sid is None or id is None:
+        flash('Service/Request not found', 'error')
+        return redirect(url_for('service.request'))
+
+    job = Job.get_by_id(id)
+    if job.cid != user.id:
+        flash('Unauthorized', 'error')
+        return redirect(url_for('service.request'))
+
+    freelancer = User.get_by_id(job.uid)
+    service = Service.get_by_id(sid)
+
+    if request.method == 'POST':
+        return
+
+    return render_template('service/payment.html', client=user, freelancer=freelancer, service=service)
