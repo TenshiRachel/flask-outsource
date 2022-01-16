@@ -37,10 +37,10 @@
                                     <td headers="remarks" class="align-middle">{{job.remarks}}</td>
                                     <td headers="action" class="align-middle">
                                         {% if job.status == "unaccepted" %}
-                                        <a href="/jobs/accept/{{job.id}}" class="btn btn-sm btn-success material-tooltip-md"
+                                        <a href="/job/accept/{{job.id}}" class="btn btn-sm btn-success material-tooltip-md"
                                             data-tooltip="tooltip" data-placement="top" title="Accept Job">
                                             Accept Job<i class="far fa-check ml-2"></i></a>
-                                        <a href="/jobs/delete/{{job.id}}" class="btn btn-sm btn-danger material-tooltip-md"
+                                        <a href="/job/delete/{{job.id}}" class="btn btn-sm btn-danger material-tooltip-md"
                                             data-tooltip="tooltip" data-placement="top" title="Reject Job">
                                             Reject Job<i class="far fa-times ml-2"></i>
                                         </a>
@@ -49,7 +49,7 @@
                                         Awaiting payment
                                         {% endif %}
                                         {% if job.status == "paid" %}
-                                        <a href="/jobs/submit/{{job.id}}" class="btn btn-sm btn-success material-tooltip-md"
+                                        <a href="/job/submit/{{job.id}}" class="btn btn-sm btn-success material-tooltip-md"
                                             data-tooltip="tooltip" data-placement="top" title="Submit Job">
                                             Job completed<i class="far fa-check ml-2"></i></a>
                                         {% endif %}
