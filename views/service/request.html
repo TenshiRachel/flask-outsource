@@ -37,13 +37,13 @@
                                     <td headers="remarks" class="align-middle">{{job.remarks}}</td>
                                     <td headers="action" class="align-middle">
                                         {% if job.status == "accepted" %}
-                                        <a href="/services/payment/{{job.sid}}/{{job.id}}"
+                                        <a href="/service/payment/{{job.sid}}/{{job.id}}"
                                             class="btn btn-sm btn-success material-tooltip-md" data-tooltip="tooltip"
                                             data-placement="top" title="Send payment">
                                             Send payment<i class="far fas-dollar-sign ml-2"></i></a>
                                         {% endif %}
                                         {% if job.status == "unaccepted" %}
-                                        <a href="/jobs/delete/{{job.id}}" class="btn btn-sm btn-danger material-tooltip-md"
+                                        <a href="/job/delete/{{job.id}}" class="btn btn-sm btn-danger material-tooltip-md"
                                             data-tooltip="tooltip" data-placement="top" title="Cancel request">
                                             Cancel request<i class="far fa-times ml-2"></i>
                                         </a>

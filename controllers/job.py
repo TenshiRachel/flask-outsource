@@ -35,7 +35,7 @@ def add(sid):
 
         if job is not None:
             flash('Please wait for your previous request to be completed before requesting again', 'error')
-            return redirect(url_for('service.list'))
+            return redirect(url_for('service.list_service'))
 
         Job.create(sid=sid, name=service.name, uid=service_provider.id, uname=service_provider.username,
                    cid=user_id, cname=client.username, date=date.today().strftime('%d/%m/%Y'),
@@ -45,72 +45,70 @@ def add(sid):
                             category='job', user=service_provider.id)
 
         flash('Request sent successfully, please wait for ' + service_provider.username + '\'s response', 'success')
-        return redirect(url_for('service.list'))
+        return redirect(url_for('service.list_service'))
 
 
-@job_bp.route('delete/<id>', methods=['POST'])
+@job_bp.route('/delete/<id>')
 @is_auth
 def cancel_or_reject(id):
     user_id = session['user_id']
     user = User.get_by_id(user_id)
-    if request.method == 'POST':
-        job = Job.get_by_id(id)
-        service = Service.get_by_id(job.sid)
+    print('hi')
+    job = Job.get_by_id(id)
+    service = Service.get_by_id(job.sid)
 
-        query = Job.delete().where(Job.id == id)
-        query.execute()
-        flash('Request cancelled/rejected successfully', 'success')
-        if user.acc_type == 'client':
-            Notification.create(uid=user.id, username=user.username, pid=service.id, title=service.name,
-                                category='request_cancel', user=service.uid)
+    query = Job.delete().where(Job.id == id)
+    query.execute()
+    flash('Request cancelled/rejected successfully', 'success')
+    if user.acc_type == 'client':
+        Notification.create(uid=user.id, username=user.username, pid=service.id, title=service.name,
+                            category='request_cancel', user=service.uid)
 
-            return redirect(url_for('service.request'))
+        return redirect(url_for('service.req'))
 
-        else:
-            Notification.create(uid=user_id, username=user.username, pid=service.id, title=service.name,
-                                category='job_reject', user=job.cid)
+    else:
+        Notification.create(uid=user_id, username=user.username, pid=service.id, title=service.name,
+                            category='job_reject', user=job.cid)
 
-            return redirect(url_for('job.index'))
+        return redirect(url_for('job.index'))
 
 
-@job_bp.route('accept/<id>', methods=['POST'])
+@job_bp.route('/accept/<id>')
 @is_auth
 def accept(id):
-    if request.method == 'POST':
-        user_id = session['user_id']
-        user = User.get_by_id(user_id)
-        if user.acc_type == 'client':
-            flash('Unauthorized action', 'error')
+    user_id = session['user_id']
+    user = User.get_by_id(user_id)
+    if user.acc_type == 'client':
+        flash('Unauthorized action', 'error')
 
-        job = Job.get_by_id(id)
-        service = Service.get_by_id(job.sid)
-        query = Job.update(status='accepted').where(Job.id == id)
-        query.execute()
+    job = Job.get_by_id(id)
+    service = Service.get_by_id(job.sid)
+    query = Job.update(status='accepted').where(Job.id == id)
+    query.execute()
 
-        Notification.create(uid=user.id, username=user.username, pid=service.id, title=service.name, category='request',
-                            user=job.cid)
+    Notification.create(uid=user.id, username=user.username, pid=service.id, title=service.name, category='request',
+                        user=job.cid)
 
-        flash('Job accepted', 'success')
-        return redirect(url_for('job.index'))
+    flash('Job accepted', 'success')
+    return redirect(url_for('job.index'))
 
 
-@job_bp.route('submit/<id>', methods=['POST'])
+@job_bp.route('/submit/<id>')
 @is_auth
 def submit(id):
-    if request.method == 'POST':
-        user_id = session['user_id']
-        user = User.get_by_id(user_id)
-        if user.acc_type == 'client':
-            flash('Unauthorized action', 'error')
+    user_id = session['user_id']
+    user = User.get_by_id(user_id)
+    if user.acc_type == 'client':
+        flash('Unauthorized action', 'error')
 
-        job = Job.get_by_id(id)
-        service = Service.get_by_id(job.sid)
-        query = Job.update(status='done').where(Job.id == id)
-        query.execute()
+    job = Job.get_by_id(id)
+    service = Service.get_by_id(job.sid)
+    query = Job.update(status='done').where(Job.id == id)
+    query.execute()
 
-        Notification.create(uid=user.id, username=user.username, pid=service.id, title=service.name,
-                            category='request_complete', user=job.cid)
+    Notification.create(uid=user.id, username=user.username, pid=service.id, title=service.name,
+                        category='request_complete', user=job.cid)
 
-        flash('Job completed', 'success')
-        return redirect(url_for('job.index'))
+    flash('Job completed', 'success')
+    return redirect(url_for('job.index'))
 

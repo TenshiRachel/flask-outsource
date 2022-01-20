@@ -1,4 +1,5 @@
 import config.constants
+import paypalrestsdk
 from flask import Blueprint, render_template, request, url_for, redirect, flash, session
 from pathlib import Path
 from datetime import date
@@ -10,6 +11,12 @@ from models.job import Job
 
 service_bp = Blueprint('service', __name__, template_folder=config.constants.template_dir,
                        static_folder=config.constants.static_dir, static_url_path='public', url_prefix='/service')
+
+paypalrestsdk.configure({
+    "mode": "sandbox",  # sandbox or live
+    "client_id": "",
+    "client_secret": ""
+})
 
 
 @service_bp.route('/list')
@@ -25,9 +32,9 @@ def view(uid, id):
     user_id = session.get('user_id')
     user = User.get_or_none(User.id == user_id)
     service = Service.get_or_none(Service.id == id)
-    if not service:
+    if service is None:
         flash('Service not found', 'error')
-        return redirect(url_for('service.list'))
+        return redirect(url_for('service.list_service'))
     service_user = User.get_by_id(uid)
     job = Job.get_or_none(Job.sid == id, Job.cid == user_id)
 
@@ -44,10 +51,10 @@ def fav(id):
 
         if service is None:
             flash('Service not found', 'error')
-            return redirect(url_for('service.list'))
+            return redirect(url_for('service.list_service'))
 
         flash('Service favorited', 'success')
-        return redirect(url_for('service.list'))
+        return redirect(url_for('service.list_service'))
 
 
 @service_bp.route('/manage')
@@ -73,7 +80,7 @@ def req():
 
     if user.acc_type != 'client':
         flash('You need a client account to request a service', 'error')
-        redirect(url_for('service.list'))
+        redirect(url_for('service.list_service'))
 
     return render_template('service/request.html', jobs=jobs, user=user)
 
@@ -157,3 +164,59 @@ def delete(id):
     query.execute()
     flash('Service deleted successfully', 'success')
     return redirect(url_for('service.manage'))
+
+
+@service_bp.route('/payment/<sid>/<id>', methods=['GET', 'POST'])
+@is_auth
+def payment(sid=None, id=None):
+    user = User.get_by_id(session['user_id'])
+    if sid is None or id is None:
+        flash('Service/Request not found', 'error')
+        return redirect(url_for('service.request'))
+
+    job = Job.get_by_id(id)
+    if job.cid != user.id:
+        flash('Unauthorized', 'error')
+        return redirect(url_for('service.request'))
+
+    freelancer = User.get_by_id(job.uid)
+    service = Service.get_by_id(sid)
+
+    if request.method == 'POST':
+        payment = paypalrestsdk.Payment({
+            "intent": "sale",
+
+            "payer": {
+                "payment_method": "paypal"},
+
+            # Redirect URLs
+            "redirect_urls": {
+                "return_url": "http://127.0.0.1:5000/service/payment/execute",
+                "cancel_url": "http://127.0.0.1:5000/service/request"},
+
+            "transactions": [{
+
+                "item_list": {
+                    "items": [{
+                        "name": service.name,
+                        "sku": service.name,
+                        "price": float(service.price),
+                        "currency": "USD",
+                        "quantity": 1}]},
+
+                "amount": {
+                    "total": float(service.price),
+                    "currency": "USD"},
+                "description": "This is the payment transaction description."}]})
+
+        if payment.create():
+            for link in payment.links:
+                approval_url = str(link.href)
+                print("Redirect for approval: %s" % (approval_url))
+
+            flash('Payment success', 'success')
+
+        else:
+            flash("Error while creating payment: " + payment.error, 'error')
+
+    return render_template('service/payment.html', client=user, freelancer=freelancer, service=service)
