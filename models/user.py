@@ -7,6 +7,7 @@ class User(Base):
     username = CharField()
     email = CharField()
     password = CharField()
+    salt = CharField()
     acc_type = CharField()
     bio = CharField(default='')
     dob = CharField(default='')

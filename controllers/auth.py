@@ -1,5 +1,6 @@
 import config.constants
 import os
+import bcrypt
 from flask import Blueprint, render_template, request, url_for, redirect, flash, session
 from models.user import User
 
@@ -42,7 +43,10 @@ def register():
             flash(', '.join(errors.values()), 'error')
             return redirect(url_for('auth.register'))
 
-        user = User.create(username=username, email=email, password=password, acc_type=acc_type)
+        salt = bcrypt.gensalt(rounds=16)
+        hashed = bcrypt.hashpw(str.encode(password), salt)
+
+        user = User.create(username=username, email=email, password=hashed, salt=salt.decode(), acc_type=acc_type)
 
         os.makedirs(config.constants.uploads_dir + '/' + str(user.id) + '/services', exist_ok=True)
         os.makedirs(config.constants.uploads_dir + '/' + str(user.id) + '/profile', exist_ok=True)
@@ -65,6 +69,8 @@ def login():
 
         user = User.get_or_none(User.email == email)
 
+        hashed = bcrypt.hashpw(str.encode(password), str.encode(user.salt))
+
         if user is None:
             flash('Account does not exist, please register', 'error')
             return redirect(url_for('auth.register'))
@@ -78,7 +84,7 @@ def login():
         if password == '':
             errors += 1
 
-        if password != user.password:
+        if hashed.decode() != user.password:
             errors += 1
 
         if errors > 0:
