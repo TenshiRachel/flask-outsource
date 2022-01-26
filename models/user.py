@@ -8,6 +8,8 @@ class User(Base):
     email = CharField()
     password = CharField()
     salt = CharField()
+    token = CharField()
+    token_expiry = IntegerField()
     acc_type = CharField()
     bio = CharField(default='')
     dob = CharField(default='')
