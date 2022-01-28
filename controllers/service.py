@@ -19,8 +19,8 @@ service_bp = Blueprint('service', __name__, template_folder=config.constants.tem
 
 paypalrestsdk.configure({
     "mode": "sandbox",  # sandbox or live
-    "client_id": "AbZo5FDYC15AwDLiwRLLx1AKNw0e6dZIBbcZwcclWcgkfaR86QxVNYXm4O5XntkXj8MkInenIxEoJC_9",
-    "client_secret": "EI5bbyYwXOiQ1fNZbycSUDS9iai4Z99tuIfUmqes2snRbZ_ukYmXWvSic_-UYnEox9tcqXUW6Gwdxwps"
+    "client_id": "",
+    "client_secret": ""
 })
 
 
