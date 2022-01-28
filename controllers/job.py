@@ -53,7 +53,6 @@ def add(sid):
 def cancel_or_reject(id):
     user_id = session['user_id']
     user = User.get_by_id(user_id)
-    print('hi')
     job = Job.get_by_id(id)
     service = Service.get_by_id(job.sid)
 
