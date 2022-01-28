@@ -2,6 +2,7 @@ import config.constants
 import paypalrestsdk
 import smtplib
 import time
+import webbrowser
 from flask import Blueprint, render_template, request, url_for, redirect, flash, session
 from pathlib import Path
 from datetime import date
@@ -18,8 +19,8 @@ service_bp = Blueprint('service', __name__, template_folder=config.constants.tem
 
 paypalrestsdk.configure({
     "mode": "sandbox",  # sandbox or live
-    "client_id": "",
-    "client_secret": ""
+    "client_id": "AbZo5FDYC15AwDLiwRLLx1AKNw0e6dZIBbcZwcclWcgkfaR86QxVNYXm4O5XntkXj8MkInenIxEoJC_9",
+    "client_secret": "EI5bbyYwXOiQ1fNZbycSUDS9iai4Z99tuIfUmqes2snRbZ_ukYmXWvSic_-UYnEox9tcqXUW6Gwdxwps"
 })
 
 
@@ -195,26 +196,27 @@ def payment(sid=None, id=None):
         sender = 'outsource.automated@gmail.com'
         receiver = [user.email]
 
-        link = 'http://127.0.0.1:5000/service/paymentSuccess/' + service.id + '?token=' + token
+        link = 'http://127.0.0.1:5000/service/paymentSuccess/' + str(service.id) + '?token=' + token
 
         message = """
         Subject: Outsource payment
         
         <p>You are receiving this because you (or someone else) is trying to pay for a service on Outsource.</p>
                 Service Name: """ + service.name + """</p>
-                <p>Price: $""" + service.price + """</p>
+                <p>Price: $""" + str(service.price) + """</p>
                 <p>Please click on the following link or paste it into your browser to complete the payment.</p>
-                <a href='""" + link + "'>" + link + """</a>
+                <a href='""" + link + """'>""" + link + """</a>
                 <p>If you did not request this, please ignore this email and your balance will not be deducted.</p>
         """
 
-        try:
-            smtpObj = smtplib.SMTP('localhost')
-            smtpObj.sendmail(sender, receiver, message)
-            flash('A confirmation email has been sent to ' + user.email, 'success')
-
-        except smtplib.SMTPException:
-            flash('Unable to send email', 'error')
+        # try:
+        #     smtpObj = smtplib.SMTP('localhost')
+        #     smtpObj.sendmail(sender, receiver, message)
+        #     flash('A confirmation email has been sent to ' + user.email, 'success')
+        #
+        # except smtplib.SMTPException:
+        #     flash('Unable to send email', 'error')
+        return redirect(url_for('service.payment_success', sid=service.id))
 
     return render_template('service/payment.html', client=user, freelancer=freelancer, service=service)
 
@@ -222,18 +224,18 @@ def payment(sid=None, id=None):
 @service_bp.route('/paymentSuccess/<sid>')
 @is_auth
 def payment_success(sid=None):
-    token = str.encode(request.args.get('token'))
+    # token = str.encode(request.args.get('token'))
     service = Service.get_by_id(sid)
     user = User.get_by_id(session['user_id'])
 
-    token = decrypt(token)
-    if user.token != token:
-        flash('Invalid token', 'error')
-        return redirect(url_for('service.req'))
-
-    if int(time.time()) - user.token_expiry >= 0:
-        flash('Token has expired, please resend email to continue', 'error')
-        return redirect(url_for('service.payment'))
+    # token = decrypt(token)
+    # if user.token != token:
+    #     flash('Invalid token', 'error')
+    #     return redirect(url_for('service.req'))
+    #
+    # if int(time.time()) - user.token_expiry >= 0:
+    #     flash('Token has expired, please resend email to continue', 'error')
+    #     return redirect(url_for('service.payment'))
 
     payment = paypalrestsdk.Payment({
         "intent": "sale",
@@ -243,7 +245,7 @@ def payment_success(sid=None):
 
         # Redirect URLs
         "redirect_urls": {
-            "return_url": "http://127.0.0.1:5000/service/payment/execute",
+            "return_url": "http://127.0.0.1:5000/service/paymentExecute",
             "cancel_url": "http://127.0.0.1:5000/service/request"},
 
         "transactions": [{
@@ -259,14 +261,18 @@ def payment_success(sid=None):
             "amount": {
                 "total": float(service.price),
                 "currency": "USD"},
-            "description": "This is the payment transaction description."}]})
+            "description": service.desc}]})
 
     if payment.create():
         for link in payment.links:
-            approval_url = str(link.href)
-            print("Redirect for approval: %s" % (approval_url))
+            if link.method == 'REDIRECT':
+                approval_url = str(link.href)
+                print("Redirect for approval: %s" % approval_url)
+                webbrowser.open(approval_url)
 
-        flash('Payment success', 'success')
+        flash('Your payment was created, redirecting to paypal for authorization', 'success')
 
     else:
         flash("Error while creating payment: " + payment.error, 'error')
+
+    return redirect(url_for('service.req'))
