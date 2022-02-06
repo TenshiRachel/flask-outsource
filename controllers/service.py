@@ -276,3 +276,18 @@ def payment_success(sid=None):
         flash("Error while creating payment: " + payment.error, 'error')
 
     return redirect(url_for('service.req'))
+
+
+@service_bp.route('/paymentExecute')
+@is_auth
+def payment_execute():
+    payment_id = request.args.get('paymentID')
+    payment = paypalrestsdk.Payment.find(payment_id)
+    payer_id = request.args.get('payerID')
+
+    if payment.execute({'payer_id': payer_id}):
+        flash('Payment completed successfully', 'success')
+        return redirect(url_for('service.req'))
+
+    else:
+        flash(payment.error, 'error')
