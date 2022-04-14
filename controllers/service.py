@@ -17,12 +17,6 @@ from models.job import Job
 service_bp = Blueprint('service', __name__, template_folder=config.constants.template_dir,
                        static_folder=config.constants.static_dir, static_url_path='public', url_prefix='/service')
 
-paypalrestsdk.configure({
-    "mode": "sandbox",  # sandbox or live
-    "client_id": "",
-    "client_secret": ""
-})
-
 
 @service_bp.route('/list')
 def list_service():
@@ -190,33 +184,44 @@ def payment(sid=None, id=None):
     if request.method == 'POST':
         token = str(uuid4())
         token = encrypt(token)
+        print(token)
 
-        user.update(token=token, token_expiry=int(time.time() + 60*60)).where(User.id == user.id)
+        query = user.update(token=token, token_expiry=int(time.time() + 60*60)).where(User.id == user.id)
+        query.execute()
+
+        host = 'smtp.gmail.com'
 
         sender = 'outsource.automated@gmail.com'
         receiver = [user.email]
 
         link = 'http://127.0.0.1:5000/service/paymentSuccess/' + str(service.id) + '?token=' + token
+        print(token)
 
         message = """
         Subject: Outsource payment
         
-        <p>You are receiving this because you (or someone else) is trying to pay for a service on Outsource.</p>
-                Service Name: """ + service.name + """</p>
-                <p>Price: $""" + str(service.price) + """</p>
-                <p>Please click on the following link or paste it into your browser to complete the payment.</p>
-                <a href='""" + link + """'>""" + link + """</a>
-                <p>If you did not request this, please ignore this email and your balance will not be deducted.</p>
+        You are receiving this because you (or someone else) is trying to pay for a service on Outsource.
+                Service Name: """ + service.name + """
+                Price: $""" + str(service.price) + """
+                Please click on the following link or paste it into your browser to complete the payment.
+                """ + link + """
+                If you did not request this, please ignore this email and your balance will not be deducted.
         """
 
-        # try:
-        #     smtpObj = smtplib.SMTP('localhost')
-        #     smtpObj.sendmail(sender, receiver, message)
-        #     flash('A confirmation email has been sent to ' + user.email, 'success')
-        #
-        # except smtplib.SMTPException:
-        #     flash('Unable to send email', 'error')
-        return redirect(url_for('service.payment_success', sid=service.id))
+        try:
+            smtpObj = smtplib.SMTP_SSL(host)
+
+            pw = input('Auth needed to send email: ')
+            smtpObj.login('outsource.automated@gmail.com', pw)    # remember delete
+
+            smtpObj.sendmail(sender, receiver, message)
+            smtpObj.quit()
+            flash('A confirmation email has been sent to ' + user.email, 'success')
+
+        except smtplib.SMTPResponseException as e:
+            print(e.smtp_code)
+            print(e.smtp_error)
+            flash('Unable to send email', 'error')
 
     return render_template('service/payment.html', client=user, freelancer=freelancer, service=service)
 
@@ -224,18 +229,26 @@ def payment(sid=None, id=None):
 @service_bp.route('/paymentSuccess/<sid>')
 @is_auth
 def payment_success(sid=None):
-    # token = str.encode(request.args.get('token'))
+    token = str.encode(request.args.get('token'))
     service = Service.get_by_id(sid)
     user = User.get_by_id(session['user_id'])
 
-    # token = decrypt(token)
-    # if user.token != token:
-    #     flash('Invalid token', 'error')
-    #     return redirect(url_for('service.req'))
-    #
-    # if int(time.time()) - user.token_expiry >= 0:
-    #     flash('Token has expired, please resend email to continue', 'error')
-    #     return redirect(url_for('service.payment'))
+    if decrypt(str.encode(user.token)) != decrypt(token):
+        flash('Invalid token', 'error')
+        return redirect(url_for('service.req'))
+
+    if int(time.time()) - user.token_expiry >= 0:
+        flash('Token has expired, please resend email to continue', 'error')
+        return redirect(url_for('service.payment'))
+
+    client_id = input('Client id: ')
+    client_secret = input('Client secret: ')
+
+    paypalrestsdk.configure({
+        "mode": "sandbox",  # sandbox or live
+        "client_id": client_id,
+        "client_secret": client_secret
+    })
 
     payment = paypalrestsdk.Payment({
         "intent": "sale",
