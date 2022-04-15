@@ -309,3 +309,30 @@ section.home-hero .carousel-caption {
 .object-fit-img{
     object-fit: cover;
 }
+
+.profile .classic-tabs .nav li a,
+.submit-projects .classic-tabs .nav li a,
+.view-notification .classic-tabs .nav li a{
+    display: block;
+    padding: 20px 24px;
+    font-size: 13px;
+    text-transform: uppercase;
+    color: rgba(92, 92, 92, 0.7);
+    text-align: center;
+    border-radius: 0;
+    font-weight: 500;
+}
+
+.profile .classic-tabs .nav li a:not(.active),
+.submit-projects .classic-tabs .nav li a:not(.active),
+.view-notification .classic-tabs .nav li a:not(.active) {
+    margin-bottom: 3px
+}
+
+.profile .classic-tabs .nav li a.active,
+.submit-projects .classic-tabs .nav li a.active,
+.view-notification .classic-tabs .nav li a.active {
+    border-bottom: 3px solid;
+    color: #000;
+}
+
