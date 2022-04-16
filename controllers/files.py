@@ -18,7 +18,7 @@ mime = magic.Magic(mime=True)
 
 
 @files_bp.route('/manage')
-@files_bp.route('/manage/<file_path>')
+@files_bp.route('/manage/<file_path>')  # TODO: Maybe instead use req.args to parse directory path
 @is_auth
 def manage(file_path=None):
     user_id = session.get('user_id')
@@ -114,7 +114,7 @@ def upload_file():
         url = request.referrer
         full_path = os.path.join(directory, file.filename) if url[35:] == '' else \
             os.path.join(directory, unquote(url[35:]).replace('+', '/'))
-
+        # TODO: replace url[35:] with something (potentially req.args.get)
         Path(directory).mkdir(exist_ok=True)
         if os.path.exists(full_path):
             os.remove(full_path)

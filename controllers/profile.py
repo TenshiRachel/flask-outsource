@@ -8,27 +8,6 @@ profile_bp = Blueprint('profile', __name__, template_folder=config.constants.tem
                        static_folder=config.constants.static_dir, static_url_path='public', url_prefix='/user')
 
 
-@profile_bp.route('/profile')
-@is_auth
-def profile():
-    user_id = session['user_id']
-    user = User.get_by_id(user_id)
-    social_medias = user.social_medias.split(',')
-    follower_ids = user.followers.split(',')
-    following_ids = user.following.split(',')
-    followers = []
-    if follower_ids[0] != '':
-        for id in follower_ids:
-            followers.append(User.get_by_id(id))
-    following = []
-    if following_ids[0] != '':
-        for id in following_ids:
-            following.append(User.get_by_id(id))
-    skills = user.skills.split(',')
-    return render_template('profile/index.html', user=user, social_medias=social_medias,
-                           followers=followers, following=following, skills=skills)
-
-
 @profile_bp.route('/view/<id>')
 def view(id):
     user_id = session.get('user_id')
@@ -47,6 +26,10 @@ def view(id):
         for id in following_ids:
             following.append(User.get_by_id(id))
     skills = viewuser.skills.split(',')
+
+    if str(user_id) == id and user is not None:
+        return render_template('profile/index.html', user=user, social_medias=social_medias,
+                               followers=followers, following=following, skills=skills)
 
     return render_template('profile/view.html', user=user, viewuser=viewuser, social_medias=social_medias,
                            followers=followers, following=following, skills=skills)
@@ -97,3 +80,5 @@ def delete(id):
 
     flash('Account deleted successfully', 'success')
     return redirect(url_for('index.index'))
+
+# TODO: Portfolios
