@@ -27,12 +27,78 @@ def view(id):
             following.append(User.get_by_id(id))
     skills = viewuser.skills.split(',')
 
-    if str(user_id) == id and user is not None:
-        return render_template('profile/index.html', user=user, social_medias=social_medias,
-                               followers=followers, following=following, skills=skills)
-
     return render_template('profile/view.html', user=user, viewuser=viewuser, social_medias=social_medias,
                            followers=followers, following=following, skills=skills)
+
+
+@profile_bp.route('/follow/<uid>')
+@is_auth
+def follow(uid):
+    if uid is None:
+        flash('User not found', 'error')
+        return redirect(url_for('profile.view'))
+
+    user_id = session['user_id']
+    user = User.get_by_id(user_id)
+
+    if uid == user_id:
+        flash('You cannot follow yourself', 'error')
+        return redirect(url_for('profile.view'))
+
+    viewed_user = User.get_by_id(uid)
+
+    user_follow_list = user.following.split(',')
+
+    if uid in user_follow_list:
+        flash('You are already following this user', 'error')
+        return redirect(url_for('profile.view'))
+
+    user_follow_list.append(uid)
+
+    viewed_user_list = viewed_user.followers.split(',')
+    viewed_user_list.append(user_id)
+
+    query = User.update(following=','.join(user_follow_list)).where(User.id == user_id)
+    query.execute()
+
+    query = User.update(followers=','.join(viewed_user_list)).where(User.id == uid)
+    query.execute()
+
+    flash('User followed successfully', 'success')
+    return redirect(url_for('profile.view'))
+
+
+@profile_bp.route('/unfollow/<uid>')
+@is_auth
+def unfollow(uid):
+    if uid is None:
+        flash('User not found', 'error')
+        return redirect(url_for('profile.view'))
+
+    user_id = session['user_id']
+    user = User.get_by_id(user_id)
+
+    viewed_user = User.get_by_id(uid)
+
+    user_follow_list = user.following.split(',')
+
+    if uid not in user_follow_list:
+        flash('You are not following this user', 'error')
+        return redirect(url_for('profile.view'))
+
+    user_follow_list.remove(uid)
+
+    viewed_user_list = viewed_user.followers.split(',')
+    viewed_user_list.remove(user_id)
+
+    query = User.update(following=','.join(user_follow_list)).where(User.id == user_id)
+    query.execute()
+
+    query = User.update(followers=','.join(viewed_user_list)).where(User.id == uid)
+    query.execute()
+
+    flash('User unfollowed successfully', 'success')
+    return redirect(url_for('profile.view'))
 
 
 @profile_bp.route('/profile/edit', methods=['GET', 'POST'])
@@ -59,7 +125,7 @@ def edit():
         pic.save(config.constants.uploads_dir + '/' + str(user_id) + '/profile/profilePic.png')
 
         flash('Changes saved successfully', 'success')
-        return redirect(url_for('profile.profile'))
+        return redirect(url_for('profile.view'))
 
     user = User.get_by_id(user_id)
     social_medias = user.social_medias.split(',')
@@ -73,7 +139,7 @@ def delete(id):
     user_id = session['user_id']
     if user_id != id:
         flash('You are not authorized to perform this action', 'error')
-        return redirect(url_for('profile.profile'))
+        return redirect(url_for('profile.view'))
 
     query = User.delete().where(User.id == user_id)
     query.execute()
