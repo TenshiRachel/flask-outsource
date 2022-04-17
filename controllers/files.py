@@ -1,3 +1,5 @@
+import shutil
+
 import config.constants
 import magic
 import os
@@ -18,21 +20,42 @@ mime = magic.Magic(mime=True)
 
 
 @files_bp.route('/manage')
-@files_bp.route('/manage/<file_path>')  # TODO: Maybe instead use req.args to parse directory path
 @is_auth
-def manage(file_path=None):
+def manage():
     user_id = session.get('user_id')
     user = User.get_by_id(user_id)
     files = []
     share = {'uids': [], 'usernames': [], 'emails': []}
 
-    root = config.constants.uploads_dir + '/' + str(user_id) + '/files/'
+    file_path = request.args.get('path')
     breadcrumbs = [{'name': 'My Drive'}]
 
+    root = config.constants.uploads_dir + '/' + str(user_id) + '/files/'
+
+    Path(root).mkdir(exist_ok=True)
     user_dir_items = [os.path.splitext(file_name)[0] for file_name in os.listdir(root)]
     user_files = File.select().where((File.uid == user_id) & (File.name << user_dir_items))
 
     user_files = [model_to_dict(file) for file in user_files]
+
+    if file_path is not None:
+        links = file_path.split(',')
+        full_link = ''
+        breadcrumbs[0]['link'] = '/files/manage'
+        for link in links:
+            full_link += link + ','
+            print(full_link)
+            breadcrumbs.append({'name': link, 'link': '/files/manage?path=' + full_link})
+
+        user_files.clear()
+        selected = os.listdir(root + file_path.replace(',', '/'))
+
+        for item in selected:
+            item = item[:item.index('.')] if '.' in item else item
+
+            file = File.get(File.name == item)
+            file = model_to_dict(file)
+            user_files.append(file)
 
     for file in user_files:
         share_uids = file['shareUid'].split(',')
@@ -54,50 +77,10 @@ def manage(file_path=None):
                 file['size'] = str(round(size/1000, 2)) + ' mb'
 
             if file['type'] == 'folder':
-                file['link'] = '/files/manage/' + file['fullPath'][file['fullPath'].index('files/') + 6:]\
-                    .replace('\\', '+')
+                file['link'] = '/files/manage?path=' + file['fullPath'][file['fullPath'].index('files/') + 6:]\
+                    .replace('\\', ',').replace('/', ',')
 
             files.append(file)
-
-    if file_path is not None:
-        links = file_path.split('+')
-        full_link = ''
-        breadcrumbs[0]['link'] = '/files/manage'
-        for link in links:
-            full_link += link + '/'
-            breadcrumbs.append({'name': link, 'link': '/files/manage/' + full_link})
-
-        files.clear()
-        files_folders = os.listdir(root + file_path.replace('+', '/'))
-        for selected in files_folders:
-            selected = selected[:selected.index('.')] if '.' in selected else selected
-            file = File.get(File.name == selected)
-
-            file = model_to_dict(file)
-            share_uids = file['shareUid'].split(',')
-
-            for share_uid in share_uids:
-                share_users = User.select().where(User.id << share_uid.split(','))
-
-                if share_users:
-                    for share_user in share_users:
-                        share_user = model_to_dict(share_user)
-
-                        share['uids'].append(str(share_user['id']))
-                        share['usernames'].append(share_user['username'])
-                        share['emails'].append(share_user['email'])
-                        file['share'] = share
-
-                size = round(os.path.getsize(file['fullPath']) / 1000, 2)
-                file['size'] = str(size) + ' kb'
-                if size >= 1000:
-                    file['size'] = str(round(size / 1000, 2)) + ' mb'
-
-                if file['type'] == 'folder':
-                    file['link'] = '/files/manage/' + file['fullPath'][file['fullPath'].index('files/') + 6:]\
-                        .replace('\\', '+')
-
-                files.append(file)
 
     return render_template('files/index.html', user=user, files=files, breadcrumbs=breadcrumbs)
 
@@ -112,11 +95,12 @@ def upload_file():
 
     for file in files:
         url = request.referrer
-        full_path = os.path.join(directory, file.filename) if url[35:] == '' else \
-            os.path.join(directory, unquote(url[35:]).replace('+', '/'))
-        # TODO: replace url[35:] with something (potentially req.args.get)
+
+        full_path = os.path.join(directory, file.filename) if url.split('=')[1] is None else \
+            os.path.join(directory, unquote(url.split('=')[1]).replace(',', '/'), file.filename)
+
         Path(directory).mkdir(exist_ok=True)
-        if os.path.exists(full_path):
+        if os.path.exists(full_path) and url.split('=')[1] is None:
             os.remove(full_path)
 
         file.save(full_path)
@@ -130,6 +114,24 @@ def upload_file():
                     directory=directory, fullPath=full_path)
 
     flash('File(s) uploaded successfully', 'success')
+    return redirect(url_for('files.manage'))
+
+
+@files_bp.route('/delete/<id>')
+@is_auth    # TODO: Find way to delete all selected files/folders
+def delete(id):
+    query = File.delete().where(File.id == id)
+    query.execute()
+
+    file = File.get_or_none(id)
+
+    if file is None:
+        flash('File could not be found', 'error')
+        return redirect(url_for('files.manage'))
+
+    shutil.rmtree(file.fullPath) if file.type == 'folder' else os.remove(file.fullPath)
+
+    flash('File/Folder deleted successfully', 'success')
     return redirect(url_for('files.manage'))
 
 
@@ -153,7 +155,8 @@ def share():
         query = File.update(shareUid=share_user).where(File.id == fid)
         query.execute()
 
-        Notification.create(uid=int(user_id), username=user.username, title=file.name, category='file_share', user=share_id)
+        Notification.create(uid=int(user_id), username=user.username, title=file.name, category='file_share',
+                            user=share_id)
 
         flash('Successfully shared with ' + share_username, 'success')
 
@@ -253,8 +256,8 @@ def create_folder():
         flash('File or folder name only allow alphanumeric, underscore and dash', 'error')
 
     url = request.referrer
-    full_path = os.path.join(root, name) if url[35:] == '' else os.path.join(root, unquote(url[35:]).replace('+', '/'),
-                                                                             name)
+    full_path = os.path.join(root, name) if url.split('=')[1] is None else \
+        os.path.join(root, unquote(url.split('=')[1]).replace('+', '/'), name)
 
     if os.path.exists(full_path):
         flash('Folder already exists in current directory', 'error')
