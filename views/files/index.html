@@ -201,9 +201,11 @@
 <!--                                <button class="list-group-item list-group-item-action copy-action" data-toggle="modal" data-target="#copy-modal">-->
 <!--                                    <i class="far fa-copy mr-1"></i>Copy-->
 <!--                                </button>-->
-                                <a class="list-group-item list-group-item-action delete-action" href="/files/delete/{{ files.id }}">
-                                    <i class="far fa-trash-alt mr-1"></i>Delete
-                                </a>
+                                <form class="deleteForm" action="/files/manage" method="post">
+                                    <button class="list-group-item list-group-item-action delete-action">
+                                        <i class="far fa-trash-alt mr-1"></i>Delete
+                                    </button>
+                                </form>
 <!--                            /ifCond-->
                         </div>
                     </div>

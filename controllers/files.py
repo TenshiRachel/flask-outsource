@@ -1,9 +1,9 @@
 import shutil
-
 import config.constants
 import magic
 import os
 import re
+import ast
 from flask import Blueprint, render_template, request, url_for, redirect, flash, session, send_from_directory
 from pathlib import Path
 from urllib.parse import unquote
@@ -19,9 +19,12 @@ files_bp = Blueprint('files', __name__, template_folder=config.constants.templat
 mime = magic.Magic(mime=True)
 
 
-@files_bp.route('/manage')
+@files_bp.route('/manage', methods=['GET', 'POST'])
 @is_auth
 def manage():
+    if request.get_json() is not None and request.method == 'POST':
+        return redirect(url_for('files.delete', selected_ids=request.get_json()))
+
     user_id = session.get('user_id')
     user = User.get_by_id(user_id)
     files = []
@@ -96,11 +99,11 @@ def upload_file():
     for file in files:
         url = request.referrer
 
-        full_path = os.path.join(directory, file.filename) if url.split('=')[1] is None else \
+        full_path = os.path.join(directory, file.filename) if len(url.split('=')) == 1 else \
             os.path.join(directory, unquote(url.split('=')[1]).replace(',', '/'), file.filename)
 
         Path(directory).mkdir(exist_ok=True)
-        if os.path.exists(full_path) and url.split('=')[1] is None:
+        if os.path.exists(full_path) and len(url.split('=')) == 1:
             os.remove(full_path)
 
         file.save(full_path)
@@ -117,21 +120,24 @@ def upload_file():
     return redirect(url_for('files.manage'))
 
 
-@files_bp.route('/delete/<id>')
-@is_auth    # TODO: Find way to delete all selected files/folders
-def delete(id):
-    query = File.delete().where(File.id == id)
-    query.execute()
+@files_bp.route('/delete')
+@is_auth
+def delete():
+    selected_ids = request.args.get('selected_ids')
+    selected_ids = ast.literal_eval(selected_ids)
 
-    file = File.get_or_none(id)
+    for id in selected_ids.values():
+        file = File.get_or_none(id)
 
-    if file is None:
-        flash('File could not be found', 'error')
-        return redirect(url_for('files.manage'))
+        if file is None:    # TODO: Figure out why toast not showing
+            flash('File/Folder could not be found', 'error')
+            return redirect(url_for('files.manage'))
+        shutil.rmtree(file.fullPath) if file.type == 'folder' else os.remove(file.fullPath)
 
-    shutil.rmtree(file.fullPath) if file.type == 'folder' else os.remove(file.fullPath)
+        query = File.delete().where(File.id == id)
+        query.execute()
 
-    flash('File/Folder deleted successfully', 'success')
+    flash('File/Folder(s) deleted successfully', 'success')
     return redirect(url_for('files.manage'))
 
 
@@ -256,8 +262,8 @@ def create_folder():
         flash('File or folder name only allow alphanumeric, underscore and dash', 'error')
 
     url = request.referrer
-    full_path = os.path.join(root, name) if url.split('=')[1] is None else \
-        os.path.join(root, unquote(url.split('=')[1]).replace('+', '/'), name)
+    full_path = os.path.join(root, name) if len(url.split('=')) == 1 else \
+        os.path.join(root, unquote(url.split('=')[1]).replace(',', '/'), name)
 
     if os.path.exists(full_path):
         flash('Folder already exists in current directory', 'error')
