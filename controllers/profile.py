@@ -2,6 +2,7 @@ import config.constants
 from flask import Blueprint, render_template, request, url_for, redirect, flash, session
 from middlewares.auth import is_auth
 from models.service import Service
+from models.portfolio import Portfolio
 from models.user import User
 
 profile_bp = Blueprint('profile', __name__, template_folder=config.constants.template_dir,
