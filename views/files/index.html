@@ -201,9 +201,11 @@
 <!--                                <button class="list-group-item list-group-item-action copy-action" data-toggle="modal" data-target="#copy-modal">-->
 <!--                                    <i class="far fa-copy mr-1"></i>Copy-->
 <!--                                </button>-->
-                                <button class="list-group-item list-group-item-action delete-action">
-                                    <i class="far fa-trash-alt mr-1"></i>Delete
-                                </button>
+                                <form class="deleteForm" action="/files/manage" method="post">
+                                    <button class="list-group-item list-group-item-action delete-action">
+                                        <i class="far fa-trash-alt mr-1"></i>Delete
+                                    </button>
+                                </form>
 <!--                            /ifCond-->
                         </div>
                     </div>
@@ -593,7 +595,7 @@
             </div>
 
             <div class="modal-body">
-                <form class="files-upload" action="/files/upload" method="post" enctype="multipart/form-data">
+                <form class="files-upload" action="/files/upload?path={{ files.fullPath }}" method="post" enctype="multipart/form-data">
                     <div class="wrapper">
                         <div class="card-text">
                             <i class="fas fa-5x fa-file"></i>

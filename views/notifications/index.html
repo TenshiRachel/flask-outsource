@@ -98,7 +98,7 @@
                 <div class="row justify-content-center mx-auto p-2 col-12">
                     {% if like_notifications %}
                     <div class="col-12 row justify-content-end mx-auto">
-                        <a class="ml-auto" href="/profile/deleteAllNotifications/Likes"><button
+                        <a class="ml-auto" href="/notifications/deleteAll/likes"><button
                                 class="btn btn-secondary">
                                 Clear All </button></a>
                     </div>
@@ -106,12 +106,12 @@
                     <div id="notif{{notif.id}}" class="col-12 row justify-content-between z-depth-1 my-2">
                         <div class="col-8 row mx-auto my-3">
                             <img loading="lazy" class=" border rounded-circle" style="width:50px; height:50px;"
-                                onerror='this.src = "/img/profile/default.png"'
-                                src="/uploads/profile/{{notif.uid}}/profilePic.png" alt="">
+                                onerror='this.src = "/public/img/profile/default.png"'
+                                src="/public/uploads/profile/{{notif.uid}}/profilePic.png" alt="">
 
                             <div class="pl-2 align-self-center pt-1">
                                 <h5 class="">
-                                    <a href="/profile/view/{{notif.uid}}">{{notif.username}}</a> liked
+                                    <a href="/user/view/{{notif.uid}}">{{notif.username}}</a> liked
                                     <a href="/profile/openProject/{{notif.pid}}">{{notif.title}}</a>
 
                                 </h5>
@@ -123,9 +123,9 @@
                             </h6>
 
                         </div>
-                        <button type="button" class="close mx-auto" onclick="deleteNotif({{notif.id}})">
+                        <a type="button" class="close mx-auto" href="/notifications/delete/{{notif.id}}">
                             <span aria-hidden="true">&times;</span>
-                        </button>
+                        </a>
 
                     </div>
                     {% endfor %}
@@ -142,19 +142,19 @@
                     {% if comment_notifications %}
                     <div class="col-12 row justify-content-end mx-auto">
 
-                        <a class="ml-auto" href="/profile/deleteAllNotifications/Comments"><button
+                        <a class="ml-auto" href="/notifications/deleteAll/comments"><button
                                 class="btn btn-secondary"> Clear All </button></a>
                     </div>
                     {% for notif in comment_notifications %}
                     <div id="notif{{notif.id}}" class="col-12 row justify-content-between z-depth-1 my-2">
                         <div class="col-8 row mx-auto my-3">
                             <img loading="lazy" class=" border rounded-circle" style="width:50px; height:50px;"
-                                onerror='this.src = "/img/profile/default.png"'
-                                src="/uploads/profile/{{notif.uid}}/profilePic.png" alt="">
+                                onerror='this.src = "/public/img/profile/default.png"'
+                                src="/public/uploads/profile/{{notif.uid}}/profilePic.png" alt="">
 
                             <div class="pl-2 align-self-center pt-1">
                                 <h5 class="">
-                                    <a href="/profile/view/{{notif.uid}}">{{notif.username}}</a> commented on
+                                    <a href="/user/view/{{notif.uid}}">{{notif.username}}</a> commented on
                                     <a href="/profile/openProject/{{notif.pid}}/">{{notif.title}}</a>
 
                                 </h5>
@@ -166,9 +166,9 @@
                             </h6>
 
                         </div>
-                        <button type="button" class="close mx-auto" onclick="deleteNotif({{notif.id}})">
+                        <a type="button" class="close mx-auto" href="/notifications/delete/{{notif.id}}">
                             <span aria-hidden="true">&times;</span>
-                        </button>
+                        </a>
 
                     </div>
                     {% endfor %}
@@ -185,7 +185,7 @@
                     {% if followers_notifications %}
                     <div class="col-12 row justify-content-end mx-auto">
 
-                        <a class="ml-auto" href="/profile/deleteAllNotifications/Follow"><button
+                        <a class="ml-auto" href="/notifications/deleteAll/follow"><button
                                 class="btn btn-secondary">
                                 Clear All </button></a>
                     </div>
@@ -193,12 +193,12 @@
                     <div id="notif{{notif.id}}" class="col-12 row justify-content-between z-depth-1 my-2">
                         <div class="col-8 row mx-auto my-3">
                             <img loading="lazy" class=" border rounded-circle" style="width:50px; height:50px;"
-                                onerror='this.src = "/img/profile/default.png"'
-                                src="/uploads/profile/{{notif.uid}}/profilePic.png" alt="">
+                                onerror='this.src = "/public/img/profile/default.png"'
+                                src="/public/uploads/profile/{{notif.uid}}/profilePic.png" alt="">
 
                             <div class="pl-2 align-self-center pt-1">
                                 <h5 class="">
-                                    <a href="/profile/view/{{notif.uid}}">{{notif.username}}</a> followed you.
+                                    <a href="/user/view/{{notif.uid}}">{{notif.username}}</a> followed you.
                                 </h5>
                             </div>
                         </div>
@@ -208,9 +208,9 @@
                             </h6>
 
                         </div>
-                        <button type="button" class="close mx-auto" onclick="deleteNotif({{notif.id}})">
+                        <a type="button" class="close mx-auto" href="/notifications/delete/{{notif.id}}">
                             <span aria-hidden="true">&times;</span>
-                        </button>
+                        </a>
 
                     </div>
                     {% endfor %}
@@ -227,7 +227,7 @@
                 <div class="row justify-content-center mx-auto p-2 col-12">
                     {% if paid_jobs_notifications %}
                     <div class="col-12 row justify-content-end mx-auto">
-                        <a class="ml-auto" href="/profile/deleteAllNotifications/Jobs_Paid"><button
+                        <a class="ml-auto" href="/notifications/deleteAll/job_paid"><button
                                 class="btn btn-secondary">
                                 Clear All </button></a>
                     </div>
@@ -235,13 +235,13 @@
                     <div id="notif{{notif.id}}" class="col-12 row justify-content-between z-depth-1 my-2">
                         <div class="col-8 row mx-auto my-3">
                             <img loading="lazy" class=" border rounded-circle" style="width:50px; height:50px;"
-                                onerror='this.src = "/img/profile/default.png"'
-                                src="/uploads/profile/{{notif.uid}}/profilePic.png" alt="">
+                                onerror='this.src = "/public/img/profile/default.png"'
+                                src="/public/uploads/profile/{{notif.uid}}/profilePic.png" alt="">
 
                             <div class="pl-2 align-self-center pt-1">
                                 <h5 class="">
-                                    <a href="/profile/view/{{notif.uid}}">{{notif.username}}</a> paid for <a
-                                        href="/services/view/{{notif.uid}}/{{notif.pid}}">{{notif.title}}</a>.
+                                    <a href="/user/view/{{notif.uid}}">{{notif.username}}</a> paid for <a
+                                        href="/service/view/{{notif.uid}}/{{notif.pid}}">{{notif.title}}</a>.
                                 </h5>
                             </div>
                         </div>
@@ -251,30 +251,30 @@
                             </h6>
 
                         </div>
-                        <button type="button" class="close mx-auto" onclick="deleteNotif({{notif.id}})">
+                        <a type="button" class="close mx-auto" href="/notifications/delete/{{notif.id}}">
                             <span aria-hidden="true">&times;</span>
-                        </button>
+                        </a>
                     </div>
                     {% endfor %}
                     {% endif %}
 
-                    {% if jobs_reject_notifications%}
+                    {% if job_reject_notifications%}
                     <div class="col-12 row justify-content-end mx-auto">
-                        <a class="ml-auto" href="/profile/deleteAllNotifications/Jobs_Reject"><button
+                        <a class="ml-auto" href="/notifications/deleteAll/job_reject"><button
                                 class="btn btn-secondary">
                                 Clear All </button></a>
                     </div>
-                    {% for notif in jobs_reject_notifications %}
+                    {% for notif in job_reject_notifications %}
                     <div id="notif{{notif.id}}" class="col-12 row justify-content-between z-depth-1 my-2">
                         <div class="col-8 row mx-auto my-3">
                             <img loading="lazy" class=" border rounded-circle" style="width:50px; height:50px;"
-                                onerror='this.src = "/img/profile/default.png"'
-                                src="/uploads/profile/{{notif.uid}}/profilePic.png" alt="">
+                                onerror='this.src = "/public/img/profile/default.png"'
+                                src="/public/uploads/profile/{{notif.uid}}/profilePic.png" alt="">
 
                             <div class="pl-2 align-self-center pt-1">
                                 <h5 class="">
-                                    <a href="/profile/view/{{notif.uid}}">{{notif.username}}</a> cancelled your service of <a
-                                        href="/services/view/{{notif.uid}}/{{notif.pid}}">{{notif.title}}</a>.
+                                    <a href="/user/view/{{notif.uid}}">{{notif.username}}</a> cancelled your service of <a
+                                        href="/service/view/{{notif.uid}}/{{notif.pid}}">{{notif.title}}</a>.
                                 </h5>
                             </div>
                         </div>
@@ -284,31 +284,31 @@
                             </h6>
 
                         </div>
-                        <button type="button" class="close mx-auto" onclick="deleteNotif({{notif.id}})">
+                        <a type="button" class="close mx-auto" href="/notifications/delete/{{notif.id}}">
                             <span aria-hidden="true">&times;</span>
-                        </button>
+                        </a>
                     </div>
                     {% endfor %}
                     {% endif %}
 
-                    {% if jobs_notifications %}
+                    {% if job_notifications %}
                     <div class="col-12 row justify-content-end mx-auto">
-                        <a class="ml-auto" href="/profile/deleteAllNotifications/Jobs"><button
+                        <a class="ml-auto" href="/notifications/deleteAll/job"><button
                                 class="btn btn-secondary">
                                 Clear All </button></a>
                     </div>
-                    {% for notif in jobs_notifications %}
+                    {% for notif in job_notifications %}
                     <div id="notif{{notif.id}}" class="col-12 row justify-content-between z-depth-1 my-2">
                         <div class="col-8 row mx-auto my-3">
                             <img loading="lazy" class=" border rounded-circle" style="width:50px; height:50px;"
-                                onerror='this.src = "/img/profile/default.png"'
-                                src="/uploads/profile/{{notif.uid}}/profilePic.png" alt="">
+                                onerror='this.src = "/public/img/profile/default.png"'
+                                src="/public/uploads/profile/{{notif.uid}}/profilePic.png" alt="">
 
                             <div class="pl-2 align-self-center pt-1">
                                 <h5 class="">
-                                    <a href="/profile/view/{{notif.uid}}">{{notif.username}}</a> requested your service of <a
-                                        href="/services/view/{{notif.uid}}/{{notif.pid}}">{{notif.title}}</a>.
-                                    <br><a class="small" href="/jobs">Please check Job Dashboard</a>
+                                    <a href="/user/view/{{notif.uid}}">{{notif.username}}</a> requested your service of <a
+                                        href="/service/view/{{notif.uid}}/{{notif.pid}}">{{notif.title}}</a>.
+                                    <br><a class="small" href="/job/index">Please check Job Dashboard</a>
                                 </h5>
                             </div>
                         </div>
@@ -318,14 +318,14 @@
                             </h6>
 
                         </div>
-                        <button type="button" class="close mx-auto" onclick="deleteNotif({{notif.id}})">
+                        <a type="button" class="close mx-auto" href="/notifications/delete/{{notif.id}}">
                             <span aria-hidden="true">&times;</span>
-                        </button>
+                        </a>
                     </div>
                     {% endfor %}
                     {% endif %}
 
-                    {% if jobs_reject_notifications|length == 0 and jobs_notifications|length == 0 and paid_jobs_notifications|length == 0 %}
+                    {% if job_reject_notifications|length == 0 and job_notifications|length == 0 and paid_jobs_notifications|length == 0 %}
                     <h4 class="col-12 text-center text-muted my-5"> You have no notifications</h4>
                     {% endif %}
                 </div>
@@ -338,7 +338,7 @@
 
                     {% if complete_requests_notifications %}
                     <div class="col-12 row justify-content-end mx-auto">
-                        <a class="ml-auto" href="/profile/deleteAllNotifications/Complete_requests"><button
+                        <a class="ml-auto" href="/notifications/deleteAll/complete_requests"><button
                                 class="btn btn-secondary">
                                 Clear All </button></a>
                     </div>
@@ -346,12 +346,12 @@
                     <div id="notif{{notif.id}}" class="col-12 row justify-content-between z-depth-1 my-2">
                         <div class="col-8 row mx-auto my-3">
                             <img loading="lazy" class=" border rounded-circle" style="width:50px; height:50px;"
-                                onerror='this.src = "/img/profile/default.png"'
-                                src="/uploads/profile/{{notif.uid}}/profilePic.png" alt="">
+                                onerror='this.src = "/public/img/profile/default.png"'
+                                src="/public/uploads/profile/{{notif.uid}}/profilePic.png" alt="">
 
                             <div class="pl-2 align-self-center pt-1">
                                 <h5 class="">
-                                    <a href="/profile/view/{{uid}}">{{notif.username}}</a> completed your request of <a
+                                    <a href="/user/view/{{uid}}">{{notif.username}}</a> completed your request of <a
                                         href="/services/view/{{notif.uid}}/{{notif.pid}}">{{notif.title}}</a>.
                                 </h5>
                             </div>
@@ -362,9 +362,9 @@
                             </h6>
 
                         </div>
-                        <button type="button" class="close mx-auto" onclick="deleteNotif({{notif.id}})">
+                        <a type="button" class="close mx-auto" href="/notifications/delete/{{notif.id}}">
                             <span aria-hidden="true">&times;</span>
-                        </button>
+                        </a>
                     </div>
                     {% endfor %}
                     {% endif %}
@@ -372,7 +372,7 @@
 
                     {% if requests_cancelled_notifications %}
                     <div class="col-12 row justify-content-end mx-auto">
-                        <a class="ml-auto" href="/profile/deleteAllNotifications/Requests_Cancel"><button
+                        <a class="ml-auto" href="/notifications/deleteAll/requests_Cancel"><button
                                 class="btn btn-secondary">
                                 Clear All </button></a>
                     </div>
@@ -380,12 +380,12 @@
                     <div id="notif{{notif.id}}" class="col-12 row justify-content-between z-depth-1 my-2">
                         <div class="col-8 row mx-auto my-3">
                             <img loading="lazy" class=" border rounded-circle" style="width:50px; height:50px;"
-                                onerror='this.src = "/img/profile/default.png"'
-                                src="/uploads/profile/{{notif.uid}}/profilePic.png" alt="">
+                                onerror='this.src = "/public/img/profile/default.png"'
+                                src="/public/uploads/profile/{{notif.uid}}/profilePic.png" alt="">
 
                             <div class="pl-2 align-self-center pt-1">
                                 <h5 class="">
-                                    <a href="/profile/view/{{notif.uid}}">{{notif.username}}</a> cancelled your request of <a
+                                    <a href="/user/view/{{notif.uid}}">{{notif.username}}</a> cancelled your request of <a
                                         href="/services/view/{{notif.uid}}/{{notif.pid}}">{{notif.title}}</a>.
                                 </h5>
                             </div>
@@ -396,16 +396,16 @@
                             </h6>
 
                         </div>
-                        <button type="button" class="close mx-auto" onclick="deleteNotif({{notif.id}})">
+                        <a type="button" class="close mx-auto" href="/notifications/delete/{{notif.id}}">
                             <span aria-hidden="true">&times;</span>
-                        </button>
+                        </a>
                     </div>
                     {% endfor %}
                     {% endif %}
 
                     {% if requests_notifications %}
                     <div class="col-12 row justify-content-end mx-auto">
-                        <a class="ml-auto" href="/profile/deleteAllNotifications/Requests"><button
+                        <a class="ml-auto" href="/notifications/deleteAll/requests"><button
                                 class="btn btn-secondary">
                                 Clear All </button></a>
                     </div>
@@ -413,12 +413,12 @@
                     <div id="notif{{notif.id}}" class="col-12 row justify-content-between z-depth-1 my-2">
                         <div class="col-8 row mx-auto my-3">
                             <img loading="lazy" class=" border rounded-circle" style="width:50px; height:50px;"
-                                onerror='this.src = "/img/profile/default.png"'
-                                src="/uploads/profile/{{notif.uid}}/profilePic.png" alt="">
+                                onerror='this.src = "/public/img/profile/default.png"'
+                                src="/public/uploads/profile/{{notif.uid}}/profilePic.png" alt="">
 
                             <div class="pl-2 align-self-center pt-1">
                                 <h5 class="">
-                                    <a href="/profile/view/{{notif.uid}}">{{notif.username}}</a> accepted your request of <a
+                                    <a href="/user/view/{{notif.uid}}">{{notif.username}}</a> accepted your request of <a
                                         href="/services/view/{{notif.uid}}/{{notif.pid}}">{{notif.title}}</a>.
                                     <br><a class="small" href="/services/requests">Please pay at Requests Dashboard to get
                                         started</a>
@@ -432,9 +432,9 @@
                             </h6>
 
                         </div>
-                        <button type="button" class="close mx-auto" onclick="deleteNotif({{notif.id}})">
+                        <a type="button" class="close mx-auto" href="/notifications/delete/{{notif.id}}">
                             <span aria-hidden="true">&times;</span>
-                        </button>
+                        </a>
                     </div>
                     {% endfor %}
                     {% else %}
@@ -453,7 +453,7 @@
                 <div class="row justify-content-center mx-auto p-2 col-12">
                     {% if file_share_notifications %}
                     <div class="col-12 row justify-content-end mx-auto">
-                        <a class="ml-auto" href="/profile/deleteAllNotifications/Share"><button
+                        <a class="ml-auto" href="/notifications/deleteAll/file_share"><button
                                 class="btn btn-secondary">
                                 Clear All </button></a>
                     </div>
@@ -461,12 +461,12 @@
                     <div id="notif{{notif.id}}" class="col-12 row justify-content-between z-depth-1 my-2">
                         <div class="col-8 row mx-auto my-3">
                             <img loading="lazy" class=" border rounded-circle" style="width:50px; height:50px;"
-                                onerror='this.src = "/img/profile/default.png"'
-                                src="/uploads/profile/{{notif.uid}}/profilePic.png" alt="">
+                                onerror='this.src = "/public/img/profile/default.png"'
+                                src="/public/uploads/profile/{{notif.uid}}/profilePic.png" alt="">
 
                             <div class="pl-2 align-self-center pt-1">
                                 <h5 class="">
-                                    <a href="/profile/view/{{notif.uid}}">{{notif.username}}</a> shared <a
+                                    <a href="/user/view/{{notif.uid}}">{{notif.username}}</a> shared <a
                                         href="/files/share-drive">{{notif.title}}</a>
                                 </h5>
                             </div>
@@ -477,9 +477,9 @@
                             </h6>
 
                         </div>
-                        <button type="button" class="close mx-auto" onclick="deleteNotif({{notif.id}})">
+                        <a type="button" class="close mx-auto" href="/notifications/delete/{{notif.id}}">
                             <span aria-hidden="true">&times;</span>
-                        </button>
+                        </a>
                     </div>
                     {% endfor %}
                     {% endif %}
@@ -487,7 +487,7 @@
 
                     {% if file_unshare_notifications %}
                     <div class="col-12 row justify-content-end mx-auto">
-                        <a class="ml-auto" href="/profile/deleteAllNotifications/Unshare"><button
+                        <a class="ml-auto" href="/notifications/deleteAll/file_unshare"><button
                                 class="btn btn-secondary">
                                 Clear All </button></a>
                     </div>
@@ -495,12 +495,12 @@
                     <div id="notif{{notif.id}}" class="col-12 row justify-content-between z-depth-1 my-2">
                         <div class="col-8 row mx-auto my-3">
                             <img loading="lazy" class=" border rounded-circle" style="width:50px; height:50px;"
-                                onerror='this.src = "/img/profile/default.png"'
-                                src="/uploads/profile/{{notif.uid}}/profilePic.png" alt="">
+                                onerror='this.src = "/public/img/profile/default.png"'
+                                src="/public/uploads/profile/{{notif.uid}}/profilePic.png" alt="">
 
                             <div class="pl-2 align-self-center pt-1">
                                 <h5 class="">
-                                    <a href="/profile/view/{{notif.uid}}">{{notif.username}}</a> unshared <a
+                                    <a href="/user/view/{{notif.uid}}">{{notif.username}}</a> unshared <a
                                         href="/files/share-drive">{{notif.title}}</a>.
                                 </h5>
                             </div>
@@ -511,9 +511,9 @@
                             </h6>
 
                         </div>
-                        <button type="button" class="close mx-auto" onclick="deleteNotif({{notif.id}})">
+                        <a type="button" class="close mx-auto" href="/notifications/delete/{{notif.id}}">
                             <span aria-hidden="true">&times;</span>
-                        </button>
+                        </a>
                     </div>
                     {% endfor %}
                     {% endif %}
@@ -531,7 +531,7 @@
                 <div class="row justify-content-center mx-auto p-2 col-12">
                     {% if project_notifications %}
                     <div class="col-12 row justify-content-end mx-auto">
-                        <a class="ml-auto" href="/profile/deleteAllNotifications/Projects"><button
+                        <a class="ml-auto" href="/notifications/deleteAll/projects"><button
                                 class="btn btn-secondary">
                                 Clear All </button></a>
                     </div>
@@ -539,12 +539,12 @@
                     <div id="notif{{notif.id}}" class="col-12 row justify-content-between z-depth-1 my-2">
                         <div class="col-8 row mx-auto my-3">
                             <img loading="lazy" class=" border rounded-circle" style="width:50px; height:50px;"
-                                onerror='this.src = "/img/profile/default.png"'
-                                src="/uploads/profile/{{notif.uid}}/profilePic.png" alt="">
+                                onerror='this.src = "/public/img/profile/default.png"'
+                                src="/public/uploads/profile/{{notif.uid}}/profilePic.png" alt="">
 
                             <div class="pl-2 align-self-center pt-1">
                                 <h5 class="">
-                                    <a href="/profile/view/{{notif.uid}}">{{notif.username}}</a> has posted a new project,
+                                    <a href="/user/view/{{notif.uid}}">{{notif.username}}</a> has posted a new project,
                                     <a href="/profile/view/{{notif.uid}}/{{notif.pid}}">{{notif.title}}</a>
 
                                 </h5>
@@ -556,9 +556,9 @@
                             </h6>
 
                         </div>
-                        <button type="button" class="close mx-auto" onclick="deleteNotif({{notif.id}})">
+                        <a type="button" class="close mx-auto" href="/notifications/delete/{{notif.id}}">
                             <span aria-hidden="true">&times;</span>
-                        </button>
+                        </a>
 
                     </div>
                     {% endfor %}
@@ -575,7 +575,7 @@
                     {% if service_notifications %}
                     <div class="col-12 row justify-content-end mx-auto">
 
-                        <a class="ml-auto" href="/profile/deleteAllNotifications/Services"><button
+                        <a class="ml-auto" href="/notifications/deleteAll/services"><button
                                 class="btn btn-secondary">
                                 Clear All </button></a>
                     </div>
@@ -583,12 +583,12 @@
                     <div id="notif{{notif.id}}" class="col-12 row justify-content-between z-depth-1 my-2">
                         <div class="col-8 row mx-auto my-3">
                             <img loading="lazy" class=" border rounded-circle" style="width:50px; height:50px;"
-                                onerror='this.src = "/img/profile/default.png"'
-                                src="/uploads/profile/{{notif.uid}}/profilePic.png" alt="">
+                                onerror='this.src = "/public/img/profile/default.png"'
+                                src="/public/uploads/profile/{{notif.uid}}/profilePic.png" alt="">
 
                             <div class="pl-2 align-self-center pt-1">
                                 <h5 class="">
-                                    <a href="/profile/view/{{notif.uid}}">{{notif.username}}</a> has posted a new service,
+                                    <a href="/user/view/{{notif.uid}}">{{notif.username}}</a> has posted a new service,
                                     <a href="/services/view/{{notif.uid}}/{{notif.pid}}">{{notif.title}}</a>
 
                                 </h5>
@@ -600,9 +600,9 @@
                             </h6>
 
                         </div>
-                        <button type="button" class="close mx-auto" onclick="deleteNotif({{notif.id}})">
+                        <a type="button" class="close mx-auto" href="/notifications/delete/{{notif.id}}">
                             <span aria-hidden="true">&times;</span>
-                        </button>
+                        </a>
 
                     </div>
                     {% endfor %}

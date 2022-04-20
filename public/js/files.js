@@ -571,3 +571,37 @@ $(function() {
         return false;
     });
 });
+
+(function () {
+function get_selected(){
+    let fileRows = $('.fileRow')
+    let selectedIds = {}
+
+    for (let row of fileRows){
+        if (row.checked){
+            if (Object.values(selectedIds).indexOf(row.getAttribute('id')) == -1){
+                selectedIds.id = row.getAttribute('id')
+            }
+        }
+    }
+    let s = JSON.stringify(selectedIds)
+    console.log(JSON.stringify(selectedIds))
+
+    $.ajax({
+        url: "/files/manage",
+        type: 'POST',
+        contentType: "application/json",
+        data: JSON.stringify(s),   // converts js value to JSON string
+        dataType: 'json',
+        success: function(response) {
+            console.log(response);
+        }
+    })
+}
+
+rows = document.querySelectorAll('.fileRow')
+for (let i = 0; i < rows.length; i++){
+    console.log('added')
+    rows[i].addEventListener('click', get_selected)
+}
+})()

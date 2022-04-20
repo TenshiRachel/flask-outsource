@@ -51,6 +51,11 @@
                     <div class="profile-margin">
                         <!-- Card -->
                         <div class="card testimonial-card ">
+                            {% if user.id == viewuser.id and user %}
+                                <a href="/user/profile/edit" class="m-2 ml-auto text-secondary">
+                                    <i class="fas fa-edit fa-lg"></i>
+                                </a>
+                            {% endif %}
 
                             <!-- Background color -->
                             <div style="height:auto;" class="card-up indigo lighten-1 rounded-0">
@@ -69,23 +74,23 @@
                                 <h3 class="card-title">{{viewuser.username}}</h3>
 
                                 <h5 class="card-title text-muted">
-                                    {% if viewuser.accType == "service" %}
+                                    {% if viewuser.acc_type == "service" %}
                                     Service Provider
                                     {% else %}
                                     Client
                                     {% endif %}
                                 </h5>
 
-                                {% if user %}
+                                {% if viewuser and viewuser.id != user.id %}
                                 <div class="">
                                     {% if followedUser %}
-                                    <p onclick="unfollowUser({{viewuser.id}})" id="followButton"
+                                    <a href="/profile/follow/{{ viewuser.id }}" id="followButton"
                                         class="btn btn-secondary btn-rounded active">
-                                        Followed </p>
+                                        Followed </a>
                                     {% else %}
-                                    <p onclick="followUser({{viewuser.id}})" id="followButton"
+                                    <a href="/profile/unfollow{{ viewuser.id }}" id="followButton"
                                         class="btn btn-secondary btn-rounded">
-                                        Follow </p>
+                                        Follow </a>
                                     {% endif %}
                                 </div>
                                 {% endif %}

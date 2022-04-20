@@ -3,8 +3,8 @@
         <tr class="animated faster d-none">
             <td headers="select">
                 <div class="form-check">
-                    <input id="ff-{{ file.id }}"
-                        class="form-check-input" type="checkbox"
+                    <input id="{{ file.id }}"
+                        class="form-check-input fileRow" type="checkbox"
                         data-id="{{ file.id }}"
                         data-name="{{ file.name }}"
                         {% if file.share %} data-share-uids="{{ ','.join(file.share.uids) }}" {% endif %}
@@ -13,9 +13,8 @@
                         {% if file.shareCode %} data-share-code="{{ file.shareCode }}" {% endif %}
                         {% if file.type %} data-type="{{ file.type }}" {% endif %}
                         name="fid"
-                        {% if file.id %} value="{{ file.id }}" {% endif %}
-                    >
-                    <label for="ff-{{ file.id }}" class="form-check-label"></label>
+                        {% if file.id %} value="{{ file.id }}" {% endif %}>
+                    <label for="{{ file.id }}" class="form-check-label"></label>
                 </div>
             </td>
             <td headers="name">
