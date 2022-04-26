@@ -148,4 +148,51 @@ def delete(id):
     flash('Account deleted successfully', 'success')
     return redirect(url_for('index.index'))
 
-# TODO: Portfolios
+
+@profile_bp.route('/project/add', methods=['GET', 'POST'])
+@is_auth
+def create_project():
+    user_id = session['user_id']
+    user = User.get_by_id(user_id)
+
+    if request.method == 'POST':
+        req = request.form
+        title = req.title
+        content = req.content
+        category = req.getlist('projectCategory')
+        category = ','.join(category)
+
+        query = Portfolio.create(title=title, content=content, category=category, uid=user_id)
+        query.exeute()
+
+        flash('Project added successfully', 'success')
+        return redirect(url_for('profile.view'))
+
+    return render_template('profile/add_project.html', user=user)
+
+
+@profile_bp.route('/project/edit/<id>', methods=['GET', 'POST'])
+@is_auth
+def edit_project(id):
+    user_id = session['user_id']
+    user = User.get_by_id(user_id)
+    if id is None:
+        flash('Project could not be found', 'error')
+        return redirect(url_for('profile.view'))
+
+    project = Portfolio.get_by_id(id)
+
+    if request.method == 'POST':
+        req = request.form
+        title = req.title
+        content = req.content
+        category = req.getlist('projectCategory')
+        category = ','.join(category)
+
+        query = Portfolio.update(title=title, content=content, category=category).where(Portfolio.id == id)
+        query.execute()
+
+        flash('Project updated successfully', 'success')
+        return redirect(url_for('profile.view'))
+
+    return render_template('profile/edit_project.html', user=user, project=project)
