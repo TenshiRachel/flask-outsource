@@ -8,8 +8,7 @@
             <div class="card-body">
                 {% if projects %}
                 <div class="row justify-content-start">
-                    {% if viewuser.id %}
-                    {% else %}
+                    {% if user.id == viewuser.id %}
                     <div class="col-sm-5 col-lg-4 py-0 px-1">
                         <div class="portoflio-img-sm view overlay mb-1 rounded border border-depth-2 p-0">
 
@@ -20,7 +19,7 @@
 
                                 </div>
                             </div>
-                            <a href="/profile/submit">
+                            <a href="/user/project/add">
                                 <div class="mask flex-center waves-effect waves-light rgba-black-light">
                                     <h2 class="text-white">Add Project</h2>
 
@@ -35,7 +34,7 @@
                         <div class="portoflio-img-sm view overlay mb-1 rounded border p-0" data-toggle="modal"
                             data-target="#project{{project.id}}">
 
-                            <img loading="lazy" src="/uploads/profile/{{project.uid}}/projects/{{project.id}}.png"
+                            <img loading="lazy" src="/uploads/{{project.uid}}/profile/projects/{{project.id}}.png"
                                 class="h-100 mx-auto d-block" alt="">
 
                             <div id="viewproject{{project.id}}" onclick="viewProject({{project.id}})"
@@ -48,24 +47,15 @@
                                             {{project.title}}
                                         </h5>
                                         <h6 style="font-size:2vh;" class="col-6 white-text text-left font-weight-bold">
-                                            {% if viewuser.id %}
                                             {{viewuser.username}}
-                                            {% else %}
-                                            {{user.username}}
-                                            {% endif %}
                                         </h6>
 
                                         <h6 class="white-text text-right col-6">
 
                                             <i class="far fa-heart"></i>
-                                            {% if project.likes %}
-                                            {%  project.likes %}
-                                            {% else %}
-                                            0
-                                            {% endif %}&nbsp;
-
+                                            {{  project.likes }}
                                             <i class="fas fa-comment"></i>
-                                            {% if project.comments %}
+                                            {% if project.comments|length > 0 %}
                                             {{project.comments|length}}
                                             {% else %}
                                             0
@@ -87,10 +77,8 @@
                 {% else %}
 
                 <div class="row justify-content-center">
-                    {% if viewuser.id %}
+                    {% if projects is none %}
                     <h1 class="my-5 py-5">This user has no Projects</h1>
-                    {% else %}
-                    <h1></h1>
                     {% endif %}
                 </div>
 
@@ -104,7 +92,7 @@
 
                                 </div>
                             </div>
-                            <a href="/profile/submit">
+                            <a href="/user/project/add">
                                 <div class="mask flex-center waves-effect waves-light rgba-black-light">
                                     <h2 class="text-white">Add Project</h2>
 
@@ -145,7 +133,7 @@
 
                             <div class="col-2 align-self-center p-0 h-100">
                                 <img loading="lazy" onerror='this.src = "/img/profile/default.png"'
-                                    src="/uploads/profile/{{project.uid}}/profilePic.png"
+                                    src="/uploads/{{project.uid}}/profile/profilePic.png"
                                     class="white img-fluid rounded-circle  " alt="">
                             </div>
 
@@ -153,19 +141,9 @@
                                 <div class="row m-auto h-100 p-0">
                                     <h5 class="col-12 p-0 align-self-start text-left font-weight-bold">
                                         {{project.title}}</h5>
-                                    <a href="
-                                        {% if viewuser %}
-                                        /profile/view/{{viewuser.id}}
-                                    {% else %}
-                                    /profile/view/{{user.id}}
-                                    {% endif %}
-                                    ">
+                                    <a href="/user/profile/view/{{viewuser.id}}">
                                         <h6 class="col-12 p-0 align-self-end text-left">
-                                            {% if viewuser %}
                                             {{viewuser.username}}
-                                            {% else %}
-                                            {{user.username}}
-                                            {% endif %}
                                         </h6>
                                     </a>
                                 </div>
@@ -174,21 +152,20 @@
 
                         </div>
                         {% if user %}
-                        {% if viewuser %}
+                        {% if project.uid != viewuser.id %}
                         <div class="col-lg-2 col-sm-12 row justify-content-end px-0">
                             <div class="col-lg-8 col-sm-12 align-self-center pr-0">
                                 {% if project.liked %}
 
-                                <button onclick="unlikeProject({{project.id}})" id="likeButton{{project.id}}"
+                                <a href="/user/project/unlike/{{project.id}}"
                                     class="btn btn-danger btn-block btn-rounded">
                                     <i class="far fa-heart"></i> Liked
-                                </button>
+                                </a>
 
                                 {% else %}
-                                <button onclick="likeProject({{project.id}})" id="likeButton{{project.id}}"
-                                    class="btn btn-outline-danger btn-block btn-rounded">
+                                <a href="/user/project/like/{{project.id}}" class="btn btn-outline-danger btn-block btn-rounded">
                                     <i class="far fa-heart"></i> Like
-                                </button>
+                                </a>
 
                                 {% endif %}
                             </div>
@@ -196,7 +173,7 @@
                         {% else %}
                         <div class="col-lg-3 col-sm-12 row justify-content-end px-0">
                             <div id="deleteButton" class="row justify-content-between">
-                                <a href="/profile/editProject/{{project.id}}">
+                                <a href="/user/project/edit/{{project.id}}">
                                     <button type="button" class="btn btn-success justify-content-center">
                                         <i class="fas fa-edit fa-lg"></i> &nbsp; Edit
                                     </button>
@@ -226,15 +203,11 @@
 
                         <div class="row justify-content-center">
                             <img loading="lazy" onerror='this.src = "/img/profile/default.png"'
-                                src="/uploads/profile/{% if viewuser %}{{viewuser.id}}{% else %}{{user.id}}{% endif %}/profilePic.png"
+                                src="/uploads/profile/{{viewuser.id}}/profilePic.png"
                                 class="white img-fluid rounded-circle w-20" style="">
                             <h3 class="col-12 text-center white-text font-weight-bold my-3">
                                 Services by
-                                {% if viewuser %}
                                 {{viewuser.username}}
-                                {% else %}
-                                {{user.username}}
-                                {% endif %}
                             </h3>
                         </div>
                         {% if services %}
@@ -246,12 +219,12 @@
                                     <div class="card">
                                         <div class="view overlay">
                                             <img loading="lazy" class="card-img-top service-img w-100"
-                                                src="/uploads/services/{{service.uid}}/{{service.id}}.png">
+                                                src="/uploads/{{viewuser.id}}/services/{{service.id}}.png">
                                         </div>
 
                                         <a class="btn-floating btn-action btn-deep-purple ml-auto mr-4 material-tooltip-sm"
                                             data-tooltip="tooltip" data-placement="top" title="View More Details"
-                                            href="/services/view/{{service.uid}}/{{service.id}}">
+                                            href="/service/view/{{service.uid}}/{{service.id}}">
                                             <i class="far fa-eye"></i>
                                         </a>
 
@@ -296,7 +269,7 @@
 
                             {% if user %}
                             <form class="chat-message flex-fill" id="commentForm{{user.id}}" method="POST"
-                                action="/profile/commentProject/{{user.id}}">
+                                action="/user/project/comment/{{user.id}}">
                                 <ul class="list-unstyled chat">
 
                                     <li class="row mb-4">
@@ -305,7 +278,7 @@
                                             <img loading="lazy"
                                                 class="avatar white img-fluid rounded-circle accent-3 z-depth-1"
                                                 id="profileimg" onerror='this.src = "/img/profile/default.png"'
-                                                src="/uploads/profile/{{user.id}}/profilePic.png">
+                                                src="/uploads/{{user.id}}/profile/profilePic.png">
                                         </div>
 
                                         <div class="col-11 pl-2">
@@ -320,14 +293,13 @@
                                                 <hr class="w-100">
 
 
-                                                <textarea class="form-control" name="commentContent"
-                                                    id="commentContent{{project.id}}" maxlength="300"></textarea>
+                                                <textarea class="form-control" name="comment"
+                                                    id="comment" maxlength="300"></textarea>
 
 
                                             </div>
                                             <div class="row justify-content-end mx-auto">
-                                                <button class="btn btn-secondary" onclick="submitComment({{project.id}})">
-                                                    Submit
+                                                <button class="btn btn-secondary">
                                                     Comment </button>
                                             </div>
                                         </div>
@@ -341,7 +313,7 @@
 
                             <hr class="hr-primary">
 
-                            {% if project.comments %}
+                            {% if project.comments|length > 0 %}
                             <div class="chat-message flex-fill">
                                 <ul class="list-unstyled chat" id="hrAfter{{project.id}}">
                                     {% for comment in comments %}
@@ -351,14 +323,14 @@
                                             <img loading="lazy"
                                                 class="avatar white img-fluid rounded-circle accent-3 z-depth-1"
                                                 onerror='this.src = "/img/profile/default.png"'
-                                                src="/uploads/profile/{{ comment.uid }}/profilePic.png">
+                                                src="/uploads/{{ comment.uid }}/profile/profilePic.png">
                                         </div>
 
                                         <div class="col-11 pl-2">
                                             <div class="chat-body rounded white p-3 z-depth-1">
                                                 <div class="header d-flex">
                                                     <div class="flex-fill text-left">
-                                                        <a href="/profile/view/{{comment.uid}}">
+                                                        <a href="/user/profile/view/{{comment.uid}}">
                                                             <strong class="primary-font">{{ comment.username }}</strong>
                                                         </a>
                                                     </div>
@@ -412,15 +384,10 @@
                                     <div class="col-6">
                                         <p class="text-left"> {{project.date}}</p>
                                         <p class="text-left"> {{project.views}}</p>
+                                        <p class="text-left">{{project.likes}}</p>
                                         <p class="text-left">
-                                            {% if project.likes %}
-                                            {{project.likes}}
-                                            {%else%}
-                                            0
-                                            {% endif %}</p>
-                                        <p class="text-left">
-                                            {% if project.comments %}
-                                            {% project.comments|length %}
+                                            {% if project.comments|length > 0 %}
+                                            {{ project.comments|length }}
                                             {% else %}
                                             0
                                             {% endif %}
@@ -436,30 +403,30 @@
 
 <!--                                <div class="btn-group btn-group-sm btn-block" role="group" aria-label="Basic example">-->
 <!--                                    <a target="_blank" class="btn btn-tw btn-md btn-sm"-->
-<!--                                        href="https://twitter.com/intent/tweet?text=Check+out+{{title}}+at+&url=http://{{../hostURL}}/profile/view/{{uid}}/{{id}}">-->
+<!--                                        href="https://twitter.com/intent/tweet?text=Check+out+at+&url=http:///profile/view/">-->
 <!--                                        <i class="fab fa-twitter pr-1"></i>-->
 
 <!--                                    </a>-->
 
 <!--                                    <a target="_blank" class="btn btn-fb btn-md btn-sm"-->
-<!--                                        href="https://www.facebook.com/sharer/sharer.php?u=http://{{../hostURL}}/profile/view/{{uid}}/{{id}}">-->
+<!--                                        href="https://www.facebook.com/sharer/sharer.php?u=http://profile/view/">-->
 <!--                                        <i class="fab fa-facebook-f pr-1"></i>-->
 <!--                                    </a>-->
 
 <!--                                    <a target="_blank" class="btn btn-li btn-md btn-sm"-->
-<!--                                        href="https://www.linkedin.com/shareArticle?mini=true&url=http://{{../hostURL}}/profile/view/{{uid}}/{{id}}&title={{title}}&summary=Check+out+{{title}}+at+&source=http://{{../hostURL}}/profile/view/{{uid}}/{{id}}">-->
+<!--                                        href="https://www.linkedin.com/shareArticle?mini=true&url=http://}/profile/view/}&title=&summary=Check+out++at+&source=http://profile/view/">-->
 <!--                                        <i class="fab fa-linkedin-in pr-1"></i>-->
 
 <!--                                    </a>-->
 
 <!--                                    <a target="_blank" class="btn btn-reddit btn-md btn-sm"-->
-<!--                                        href="http://www.reddit.com/submit?url=http://{{../hostURL}}/profile/view/{{uid}}/{{id}}&title={{title}}">-->
+<!--                                        href="http://www.reddit.com/submit?url=http://profile/view/&title=">-->
 <!--                                        <i class="fab fa-reddit-alien pr-1"></i>-->
 
 <!--                                    </a>-->
 
 <!--                                    <a target="_blank" class="btn btn-tmblr btn-md btn-sm"-->
-<!--                                        href="http://www.tumblr.com/share/link?url=http://{{../hostURL}}/profile/view/{{uid}}/{{id}}&description=Check+out+{{title}}+at+Outsource">-->
+<!--                                        href="http://www.tumblr.com/share/link?url=http://profile/view/&description=Check+out+at+Outsource">-->
 <!--                                        <i class="fab fa-tumblr"></i>-->
 <!--                                    </a>-->
 <!--                                </div>-->
@@ -491,7 +458,7 @@
                 </div>
                 <div class="modal-footer py-1">
                     <div class="row justify-content-between mx-auto w-100">
-                        <a href="/profile/delete/{{project.id}}">
+                        <a href="/user/project/delete/{{project.id}}">
                             <button type="button" class="btn btn-danger">
                                 Yes
 
@@ -506,4 +473,5 @@
     </div>
 
     {% endfor %}
+    {% endif %}
 </section>

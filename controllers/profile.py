@@ -28,8 +28,12 @@ def view(id):
             following.append(User.get_by_id(id))
     skills = viewuser.skills.split(',')
 
+    projects = Portfolio.select().where(Portfolio.uid == viewuser.id)
+    services = Service.select().where(Service.uid == viewuser.id)
+
     return render_template('profile/view.html', user=user, viewuser=viewuser, social_medias=social_medias,
-                           followers=followers, following=following, skills=skills)
+                           followers=followers, following=following, skills=skills, projects=projects,
+                           services=services)
 
 
 @profile_bp.route('/follow/<uid>')
