@@ -1,4 +1,7 @@
-<section class="submit-projects my-n5 mx-n2">
+{% extends 'layouts/base.html' %}
+{% block body %}
+
+<section class="submit-projects mx-n2">
 
     <form method="POST" enctype="multipart/form-data">
         <div class="classic-tabs p-3">
@@ -209,10 +212,10 @@
                                         <div class="dropdown-menu" aria-labelledby="fontFamily">
                                             <h6 class="dropdown-header text-center">Font</h6>
                                             <div class="dropdown-divider"></div>
-                                            {{#each fonts}}
-                                            <p href="#" onclick="execFunc('fontName', false, '{{replaceQuotes this}}')"
-                                                class="dropdown-item" value="H1">{{replaceQuotes this}}</p>
-                                            {{/each}}
+<!--                                            each fonts-->
+<!--                                            <p href="#" onclick="execFunc('fontName', false, 'replaceQuotes this')"-->
+<!--                                                class="dropdown-item" value="H1">replaceQuotes this</p>-->
+<!--                                            /each-->
                                         </div>
                                     </div>
 
@@ -340,7 +343,7 @@
 </section>
 
 <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
-<script src="/js/submitProject.js"></script>
+<script src="/public/js/submitProject.js"></script>
 
 <!-- Modal -->
 <div class="modal fade" id="insertImageModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
@@ -478,3 +481,5 @@
         </div>
     </div>
 </div>
+
+{% endblock %}

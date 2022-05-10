@@ -34,7 +34,7 @@
                         <div class="portoflio-img-sm view overlay mb-1 rounded border p-0" data-toggle="modal"
                             data-target="#project{{project.id}}">
 
-                            <img loading="lazy" src="/uploads/{{project.uid}}/profile/projects/{{project.id}}.png"
+                            <img loading="lazy" src="/public/uploads/{{project.uid}}/projects/{{project.id}}.png"
                                 class="h-100 mx-auto d-block" alt="">
 
                             <div id="viewproject{{project.id}}" onclick="viewProject({{project.id}})"
@@ -77,7 +77,8 @@
                 {% else %}
 
                 <div class="row justify-content-center">
-                    {% if projects is none %}
+                    {% if projects %}
+                    {% else %}
                     <h1 class="my-5 py-5">This user has no Projects</h1>
                     {% endif %}
                 </div>

@@ -161,16 +161,17 @@ def create_project():
 
     if request.method == 'POST':
         req = request.form
-        title = req.title
-        content = req.content
+        title = req.get('title')
+        content = req.get('content')
         category = req.getlist('projectCategory')
         category = ','.join(category)
+        cover = request.files['coverPicture']
 
-        query = Portfolio.create(title=title, content=content, category=category, uid=user_id)
-        query.exeute()
+        project = Portfolio.create(title=title, content=content, category=category, uid=int(user_id))
+        cover.save(config.constants.uploads_dir + '/' + str(user_id) + '/projects/' + str(project.id) + '.png')
 
         flash('Project added successfully', 'success')
-        return redirect(url_for('profile.view'))
+        return redirect(url_for('profile.view', id=user_id))
 
     return render_template('profile/add_project.html', user=user)
 
@@ -188,15 +189,17 @@ def edit_project(id):
 
     if request.method == 'POST':
         req = request.form
-        title = req.title
-        content = req.content
+        title = req.get('title')
+        content = req.get('content')
         category = req.getlist('projectCategory')
         category = ','.join(category)
+        cover = request.files['coverPicture']
 
         query = Portfolio.update(title=title, content=content, category=category).where(Portfolio.id == id)
         query.execute()
+        cover.save(config.constants.uploads_dir + '/' + str(user_id) + '/projects/' + str(project.id) + '.png')
 
         flash('Project updated successfully', 'success')
-        return redirect(url_for('profile.view'))
+        return redirect(url_for('profile.view', id=user_id))
 
     return render_template('profile/edit_project.html', user=user, project=project)

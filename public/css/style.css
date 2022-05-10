@@ -336,3 +336,80 @@ section.home-hero .carousel-caption {
     color: #000;
 }
 
+.profile .portoflio-img-sm {
+    /* width: 32%; */
+    height: 30vh;
+}
+
+.profile .portoflio-img {
+    width: 49%;
+    height: 40vh;
+}
+
+.profile .portoflio-img-lg {
+    width: 99%;
+    height: 80vh;
+}
+
+.profile-modal .modal-dialog-project {
+    max-width: 90vw;
+}
+
+/* Submit Projects */
+
+section.submit-projects .files-upload,
+section.submit-projects .file-upload {
+    min-height: 100px;
+}
+
+section.submit-projects .files-upload > .wrapper,
+section.submit-projects .file-upload > .wrapper{
+    min-height: 200px;
+    min-width: 400px;
+}
+
+section.submit-projects .files-upload>.wrapper>.card-text,
+section.submit-projects .file-upload>.wrapper>.card-text {
+    color: #ffffff;
+    position: relative;
+    top: 60px;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+section.submit-projects .file-upload > .wrapper > .preview {
+    display: none;
+    position: absolute;
+    z-index: 1;
+    background-color: #fff;
+    padding: 5px;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    overflow: hidden;
+    text-align: center;
+    padding: 0;
+}
+
+[id^="confirmDelete"]{
+    z-index: 1070;
+}
+
+/* Edit Profile */
+
+.modal-dialog-banner {
+    max-width: 90vw;
+}
+
+.files-upload-circle,
+.file-upload-circle {
+    /* min-height: 0px; */
+    /* height:100%; */
+    width:100%;
+
+}
+

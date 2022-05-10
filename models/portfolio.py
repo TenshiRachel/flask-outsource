@@ -1,7 +1,6 @@
 from peewee import *
 from datetime import date
 from config.dbConfig import Base
-from models.user import User
 
 
 class Portfolio(Base):
@@ -12,7 +11,7 @@ class Portfolio(Base):
     category = CharField()
     views = IntegerField(default=0)
     likes = IntegerField(default=0)
-    uid = ForeignKeyField(User)
+    uid = IntegerField()
 
     class Meta:
         database = Base._meta.db
