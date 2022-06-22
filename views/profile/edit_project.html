@@ -42,33 +42,33 @@
                                 <!-- Material inline 1 -->
                                 <div class="form-check form-check-inline">
                                     <input type="checkbox" class="form-check-input" value="Graphics"
-                                        name="projectCategory" id="Graphics" {{radioCheck project.category "Graphics"}}>
+                                        name="projectCategory" id="Graphics">
                                     <label class="form-check-label" for="Graphics">Graphics & Design </label>
                                 </div>
 
                                 <!-- Material inline 2 -->
                                 <div class="form-check form-check-inline">
                                     <input type="checkbox" class="form-check-input" value="Writing"
-                                        name="projectCategory" id="Writing"  {{radioCheck project.category "Writing"}}>
+                                        name="projectCategory" id="Writing">
                                     <label class="form-check-label" for="Writing">Writing & Translation</label>
                                 </div>
 
                                 <!-- Material inline 3 -->
                                 <div class="form-check form-check-inline">
                                     <input type="checkbox" class="form-check-input" value="Video" name="projectCategory"
-                                        id="Video"  {{radioCheck project.category "Video"}}>
+                                        id="Video">
                                     <label class="form-check-label" for="Video">Video & Animation</label>
                                 </div>
 
                                 <div class="form-check form-check-inline">
                                     <input type="checkbox" class="form-check-input" value="Music" name="projectCategory"
-                                        id="Music"  {{radioCheck project.category "Music"}}>
+                                        id="Music">
                                     <label class="form-check-label" for="Music">Music & Audio </label>
                                 </div>
 
                                 <div class="form-check form-check-inline">
                                     <input type="checkbox" class="form-check-input" value="Programming"
-                                        name="projectCategory" id="Programming" {{radioCheck project.category "Programming"}}>
+                                        name="projectCategory" id="Programming">
                                     <label class="form-check-label" for="Programming">Programming & Tech</label>
                                 </div>
                             </div>
@@ -213,10 +213,10 @@
                                         <div class="dropdown-menu" aria-labelledby="fontFamily">
                                             <h6 class="dropdown-header text-center">Font</h6>
                                             <div class="dropdown-divider"></div>
-                                            {{#each fonts}}
-                                            <p href="#" onclick="execFunc('fontName', false, '{{replaceQuotes this}}')"
-                                                class="dropdown-item" value="H1">{{replaceQuotes this}}</p>
-                                            {{/each}}
+<!--                                            each fonts-->
+<!--                                            <p href="#" onclick="execFunc('fontName', false, 'replaceQuotes this')"-->
+<!--                                                class="dropdown-item" value="H1">replaceQuotes this</p>-->
+<!--                                            each-->
                                         </div>
                                     </div>
 
@@ -350,11 +350,11 @@
 
 
 <script src="/js/submitProject.js"></script>
-{{#if img}}
-<script id ="img-script" type="text/javascript">
-	let img = {{{ json img }}}
-</script>
-{{/if}}
+<!--if img-->
+<!--<script id ="img-script" type="text/javascript">-->
+<!--	let img =  json img -->
+<!--</script>-->
+<!--if-->
 
 
 <!-- Modal -->

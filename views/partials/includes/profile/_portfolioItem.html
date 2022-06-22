@@ -118,22 +118,16 @@
     {% for project in projects %}
     <!-- Portfolio Modal -->
     <div class="modal fade project" id="project{{project.id}}" tabindex="-1" role="dialog" aria-labelledby="project{{project.id}}Label"
-        aria-hidden="true">
-
-
-        <button type="button" class="close m-2" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true" class="text-white">&times;</span>
-        </button>
+         data-backdrop="false" aria-hidden="true">
 
         <div class="modal-dialog-project modal-dialog" role="document">
-            <div class="modal-content mt-5 p-0">
-
+            <div class="modal-content p-0">
                 <div class="modal-header">
                     <div class="col-12 row justify-content-between">
                         <div class="col-lg-3 col-sm-12 row justify-content-start pl-4">
 
                             <div class="col-2 align-self-center p-0 h-100">
-                                <img loading="lazy" onerror='this.src = "/img/profile/default.png"'
+                                <img loading="lazy" onerror='this.src = "/public/img/profile/default.png"'
                                     src="/uploads/{{project.uid}}/profile/profilePic.png"
                                     class="white img-fluid rounded-circle  " alt="">
                             </div>
@@ -154,7 +148,7 @@
                         </div>
                         {% if user %}
                         {% if project.uid != viewuser.id %}
-                        <div class="col-lg-2 col-sm-12 row justify-content-end px-0">
+                        <div class="col-lg-8 col-sm-12 row justify-content-end px-0">
                             <div class="col-lg-8 col-sm-12 align-self-center pr-0">
                                 {% if project.liked %}
 
@@ -172,7 +166,7 @@
                             </div>
                         </div>
                         {% else %}
-                        <div class="col-lg-3 col-sm-12 row justify-content-end px-0">
+                        <div class="col-lg-8 col-sm-12 row justify-content-end px-0">
                             <div id="deleteButton" class="row justify-content-between">
                                 <a href="/user/project/edit/{{project.id}}">
                                     <button type="button" class="btn btn-success justify-content-center">
@@ -189,6 +183,11 @@
                         </div>
                         {% endif %}
                         {% endif %}
+                        <div class="col-lg-1 col-sm-12">
+                            <button type="button" class="close mt-1" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -203,7 +202,7 @@
                     <div class="container black w-100 row justify-content-center mx-0 py-5">
 
                         <div class="row justify-content-center">
-                            <img loading="lazy" onerror='this.src = "/img/profile/default.png"'
+                            <img loading="lazy" onerror='this.src = "/public/img/profile/default.png"'
                                 src="/uploads/profile/{{viewuser.id}}/profilePic.png"
                                 class="white img-fluid rounded-circle w-20" style="">
                             <h3 class="col-12 text-center white-text font-weight-bold my-3">
@@ -278,7 +277,7 @@
                                         <div class="col-1 pr-2">
                                             <img loading="lazy"
                                                 class="avatar white img-fluid rounded-circle accent-3 z-depth-1"
-                                                id="profileimg" onerror='this.src = "/img/profile/default.png"'
+                                                id="profileimg" onerror='this.src = "/public/img/profile/default.png"'
                                                 src="/uploads/{{user.id}}/profile/profilePic.png">
                                         </div>
 
@@ -445,7 +444,7 @@
 
     <!-- Delete Project Modal -->
     <div class="modal fade" id="confirmDelete{{project.id}}" tabindex="-1" role="dialog"
-        aria-labelledby="confirmDelete{{project.id}}Label" aria-hidden="true">
+        aria-labelledby="confirmDelete{{project.id}}Label" aria-hidden="true" data-backdrop="false">
         <div class="modal-dialog modal-sm" role="document">
             <div class="modal-content">
 

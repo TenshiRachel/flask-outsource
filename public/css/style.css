@@ -413,3 +413,6 @@ section.submit-projects .file-upload > .wrapper > .preview {
 
 }
 
+.modal-content{
+    margin-top: 60px;
+}
