@@ -1,0 +1,485 @@
+{% extends 'layouts/base.html' %}
+{% block body %}
+
+<section class="submit-projects mx-n2">
+
+    <form method="POST" enctype="multipart/form-data">
+        <div class="classic-tabs p-3">
+            <ul class="nav tabs-white rounded-0" id="myClassicTabShadow" role="tablist">
+                <li class="nav-item m-0">
+                    <a class="nav-link waves-light active show px-5" id="services-tab-classic-shadow" data-toggle="tab"
+                        href="#CoverTab" role="tab" aria-controls="CoverTab" aria-selected="false">1: Cover</a>
+                </li>
+
+                <li class="nav-item m-0">
+                    <a class="nav-link waves-light px-5 disabled muted" id="portfolio-tab-classic-shadow" data-toggle="tab"
+                        href="#ContentTab" role="tab" aria-controls="ContentTab" aria-selected="true">2: Content</a>
+                </li>
+            </ul>
+
+            <div class="tab-content min-vh-0 p-0" id="myClassicTabContentShadow">
+<!--                 ================================== Cover ================================== -->
+                <div class="tab-pane fade active show vh-70" id="CoverTab" role="tabpanel"
+                    aria-labelledby="portfolio-tab-classic-shadow">
+
+                    <div class="row justify-content-center mx-auto h-100">
+                        <div class="col-10 form-group p-0 align-self-center mt-5">
+
+                            <label for="title" class="h3"> Title of Project </label>
+                            <input type="text" class="form-control mb-4" name="title" id="title"
+                                aria-describedby="helpId" placeholder="Project Title">
+
+
+                            <h3>Cover Image</h3>
+                            <div class="file-upload" data-autosubmit="false">
+                                <input type="file" name="coverPicture" id="coverPicture" />
+                            </div>
+                            <p class="text-muted mt-1"> This will be the cover image that will be shown in your profile
+                            </p>
+
+                            <div class="my-3 row justify-content-between mx-auto col-12 p-0">
+                                <h3 class="col-12 text-left p-0 mb-3"> Category </h3>
+                                <!-- Material inline 1 -->
+                                <div class="form-check form-check-inline">
+                                    <input type="checkbox" class="form-check-input" value="Graphics"
+                                        name="projectCategory" id="Graphics">
+                                    <label class="form-check-label" for="Graphics">Graphics & Design </label>
+                                </div>
+
+                                <!-- Material inline 2 -->
+                                <div class="form-check form-check-inline">
+                                    <input type="checkbox" class="form-check-input" value="Writing"
+                                        name="projectCategory" id="Writing">
+                                    <label class="form-check-label" for="Writing">Writing & Translation</label>
+                                </div>
+
+                                <!-- Material inline 3 -->
+                                <div class="form-check form-check-inline">
+                                    <input type="checkbox" class="form-check-input" value="Video" name="projectCategory"
+                                        id="Video">
+                                    <label class="form-check-label" for="Video">Video & Animation</label>
+                                </div>
+
+                                <div class="form-check form-check-inline">
+                                    <input type="checkbox" class="form-check-input" value="Music" name="projectCategory"
+                                        id="Music">
+                                    <label class="form-check-label" for="Music">Music & Audio </label>
+                                </div>
+
+                                <div class="form-check form-check-inline">
+                                    <input type="checkbox" class="form-check-input" value="Programming"
+                                        name="projectCategory" id="Programming">
+                                    <label class="form-check-label" for="Programming">Programming & Tech</label>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                </div>
+
+<!--                 ================================== Content ================================== -->
+                <div class="tab-pane fade" id="ContentTab" role="tabpanel"
+                    aria-labelledby="portfolio-tab-classic-shadow">
+
+                    <div class="col-12">
+                        <h1 class="text-center"> Content </h1>
+                    </div>
+
+                    <div class="mx-auto row justify-content-center pb-0 mb-0 overflow-auto mt-3">
+
+                        <div class="secondary-color row mx-auto justify-content-between w-90 rounded-top py-1">
+                            <div class="col-9 row mx-auto p-0">
+                                <div id="editTools" class="col-4 row mr-2 show">
+<!--                                     Text Change -->
+                                    <button class="btn btn-secondary btn-sm shadow-none" data-toggle="tooltip"
+                                        title="Bold" onclick="execFunc('bold');">
+                                        <i class=" fas fa-bold"></i>
+                                    </button></a>
+                                    <button class="btn btn-secondary btn-sm shadow-none" data-toggle="tooltip"
+                                        title="Italic" onclick="execFunc('italic');">
+                                        <i class="fas fa-italic"></i>
+                                    </button>
+                                    <button class="btn btn-secondary btn-sm shadow-none" data-toggle="tooltip"
+                                        title="Underline" onclick="execFunc('underline');">
+                                        <i class="fas fa-underline"></i>
+                                    </button>
+                                    <a data-toggle="tooltip" title="More Text Option">
+                                        <button class="btn btn-secondary btn-sm shadow-none" id="moreTextEditButton"
+                                            onclick="event.preventDefault();" data-toggle="collapse"
+                                            data-target="#moreTextEdit" aria-expanded="false">
+
+                                            <span class="">𝐓</span>
+
+                                            <i class="fas fa-ellipsis-v"></i>
+
+                                        </button>
+                                    </a>
+                                </div>
+
+                                <div id="editTools" class="col-4 row mr-2 show">
+                                    <button class="btn btn-secondary btn-sm shadow-none" data-toggle="tooltip"
+                                        title="Justify Left" onclick="execFunc('justifyLeft');">
+                                        <i class="fas fa-align-left"></i>
+                                    </button>
+                                    <button class="btn btn-secondary btn-sm shadow-none" data-toggle="tooltip"
+                                        title="Justify Center" onclick="execFunc('justifyCenter');">
+                                        <i class="fas fa-align-center"></i>
+                                    </button>
+                                    <button class="btn btn-secondary btn-sm shadow-none" data-toggle="tooltip"
+                                        title="Bullet Point" onclick="execFunc('insertUnorderedList');">
+                                        <i class="fas fa-list-ul"></i>
+                                    </button>
+                                    <a href="#" data-toggle="tooltip" title="More Pharagraph Options">
+                                        <button id="moreParagraphEditButton"
+                                            class="btn btn-secondary btn-sm shadow-none"
+                                            onclick="event.preventDefault();" data-toggle="collapse"
+                                            data-target="#moreParagraphEdit" aria-expanded="false">
+                                            <i class="fas fa-paragraph"></i><i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                    </a>
+                                </div>
+
+                                <div id="editTools" class="col-4 row show">
+                                    <button class="btn btn-secondary btn-sm shadow-none" data-toggle="tooltip"
+                                        title="Create Link" onclick="createLink();">
+                                        <i class="fas fa-link"></i>
+                                    </button>
+                                    <a href="#" data-toggle="tooltip" title="Insert Image">
+                                        <button class="btn btn-secondary btn-sm shadow-none" data-toggle="modal"
+                                            data-target="#insertImageModal" onclick="event.preventDefault();">
+                                            <i class="fas fa-image"></i>
+                                        </button>
+                                    </a>
+                                    <a href="#" data-toggle="tooltip" title="More Media Options">
+                                        <button id="moreMediaButton" class="btn btn-secondary btn-sm shadow-none"
+                                            onclick="event.preventDefault();" data-toggle="collapse"
+                                            data-target="#moreMedia" aria-expanded="false">
+                                            <i class="fas fa-plus"></i> <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="col-3 row justify-content-end mx-auto">
+                                <button class="btn btn-secondary btn-sm shadow-none" data-toggle="tooltip" title="Undo"
+                                    onclick="execFunc('undo');">
+                                    <i class="fas fa-undo"></i>
+                                </button>
+                                <button class="btn btn-secondary btn-sm shadow-none" data-toggle="tooltip" title="Redo"
+                                    onclick="execFunc('redo');">
+                                    <i class="fas fa-redo"></i>
+                                </button>
+                                <a href="#" data-toggle="tooltip" title="HTML Mode">
+                                    <button id="sourceCodeBtn" class="btn btn-secondary btn-sm shadow-none"
+                                        data-target="#editTools" data-toggle="collapse" onclick="toggleSource();">
+                                        <i class="fas fa-code"></i>
+                                    </button>
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                        <div id="editTools" class="w-90 row mx-auto justify-content-between secondary-color-dark show">
+                            <div class="col-12 row">
+                                <div class="collapse col-12 row justify-content-start" id="moreTextEdit">
+                                    <button class="btn btn-secondary-dark text-white btn-sm shadow-none"
+                                        data-toggle="tooltip" title="Strikethrough"
+                                        onclick="execFunc('strikeThrough');">
+                                        <i class="fas fa-strikethrough"></i>
+                                    </button>
+
+                                    <button class="btn btn-secondary-dark text-white btn-sm shadow-none"
+                                        data-toggle="tooltip" title="Superscript" onclick="execFunc('superscript');">
+                                        <i class="fas fa-superscript"></i>
+                                    </button>
+
+                                    <button class="btn btn-secondary-dark text-white btn-sm shadow-none"
+                                        data-toggle="tooltip" title="Subscript" onclick="execFunc('subscript');">
+                                        <i class="fas fa-subscript"></i>
+                                    </button>
+
+                                    <div class="dropdown" data-toggle="tooltip" title="Fonts">
+                                        <button
+                                            class="btn btn-secondary-dark text-white btn-sm shadow-none dropdown-toggle"
+                                            type="button" id="fontFamily" data-toggle="dropdown" aria-haspopup="true"
+                                            aria-expanded="false">
+                                            <i class="fas fa-font m-0"></i>
+                                        </button>
+
+                                        <div class="dropdown-menu" aria-labelledby="fontFamily">
+                                            <h6 class="dropdown-header text-center">Font</h6>
+                                            <div class="dropdown-divider"></div>
+<!--                                            each fonts-->
+<!--                                            <p href="#" onclick="execFunc('fontName', false, 'replaceQuotes this')"-->
+<!--                                                class="dropdown-item" value="H1">replaceQuotes this</p>-->
+<!--                                            /each-->
+                                        </div>
+                                    </div>
+
+                                    <div class="dropdown" data-toggle="tooltip" title="Headings">
+                                        <button
+                                            class="btn btn-secondary-dark text-white btn-sm shadow-none dropdown-toggle"
+                                            type="button" id="fontHeading" data-toggle="dropdown" aria-haspopup="true"
+                                            aria-expanded="false">
+                                            <i class="fas fa-heading m-0"></i>
+                                        </button>
+
+                                        <div class="dropdown-menu" aria-labelledby="fontHeading">
+                                            <h6 class="dropdown-header text-center">Text Heading</h6>
+                                            <div class="dropdown-divider"></div>
+                                            <p href="#" onclick="execFunc('formatBlock', false, 'H1')"
+                                                class="dropdown-item" value="H1">Heading 1</p>
+                                            <p href="#" onclick="execFunc('formatBlock', false, 'H2')"
+                                                class="dropdown-item" value="H2">Heading 2</p>
+                                            <p href="#" onclick="execFunc('formatBlock', false, 'H3')"
+                                                class="dropdown-item" value="H3">Heading 3</p>
+                                            <p href="#" onclick="execFunc('formatBlock', false, 'H4')"
+                                                class="dropdown-item" value="H4">Heading 4</p>
+                                            <p href="#" onclick="execFunc('formatBlock', false, 'H5')"
+                                                class="dropdown-item" value="H5">Heading 5</p>
+                                            <p href="#" onclick="execFunc('formatBlock', false, 'H6')"
+                                                class="dropdown-item" value="H6">Heading 6</p>
+                                            <p href="#" onclick="execFunc('formatBlock', false, 'p')"
+                                                class="dropdown-item" value="p">Normal</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 row">
+                                <div class="col-3 row mr-3"></div>
+                                <div class="col-8 row p-0">
+                                    <div class="collapse col-12 mx-auto row" id="moreParagraphEdit">
+                                        <button class="btn btn-secondary-dark text-white btn-sm shadow-none"
+                                            data-toggle="tooltip" title="Justify Right"
+                                            onclick="execFunc('justifyRight');">
+                                            <i class="fas fa-align-right"></i>
+                                        </button>
+                                        <button class="btn btn-secondary-dark text-white btn-sm shadow-none"
+                                            data-toggle="tooltip" title="Justify Full"
+                                            onclick="execFunc('justifyFull');">
+                                            <i class="fas fa-align-justify"></i>
+                                        </button>
+                                        <button class="btn btn-secondary-dark text-white btn-sm shadow-none"
+                                            data-toggle="tooltip" title="Number List"
+                                            onclick="execFunc('insertOrderedList');">
+                                            <i class="fas fa-list-ol"></i>
+                                        </button>
+                                        <button class="btn btn-secondary-dark text-white btn-sm shadow-none"
+                                            data-toggle="tooltip" title="Indent" onclick="execFunc('indent');">
+                                            <i class="fas fa-indent"></i>
+                                        </button>
+                                        <button class="btn btn-secondary-dark text-white btn-sm shadow-none"
+                                            data-toggle="tooltip" title="Outdent" onclick="execFunc('outdent');">
+                                            <i class="fas fa-outdent"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-12 row">
+                                <div class="col-3 row mr-2"></div>
+                                <div class="col-3 row mr-1"></div>
+                                <div class="col-4 row">
+                                    <div class="collapse col-12 mx-auto row" id="moreMedia">
+                                        <a href="#" data-toggle="tooltip" title="Insert Audio">
+                                        <button class="btn btn-secondary-dark text-white btn-sm shadow-none"
+                                            data-toggle="modal" data-target="#insertAudioModal"
+                                            onclick="event.preventDefault();">
+                                            <i class="fas fa-music"></i>
+                                        </button></a>
+
+                                        <a href="#" data-toggle="tooltip" title="Insert Video">
+                                            <button class="btn btn-secondary-dark text-white btn-sm shadow-none"
+                                                data-toggle="modal" data-target="#insertVideoModal"
+                                                onclick="event.preventDefault();">
+
+                                                <i class="fas fa-video"></i>
+                                            </button></a>
+
+                                        <a href="#" data-toggle="tooltip" title="Insert Horizontal Line">
+                                            <button class="btn btn-secondary-dark text-white btn-sm shadow-none"
+                                                onclick="execFunc('insertHorizontalRule');">
+                                                <i class="fas fa-minus"></i>
+                                            </button></a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-2 row ">
+
+                            </div>
+                        </div>
+
+                        <iframe name="projectContent" id="projectContent"
+                            class="form-control min-vh-80 w-90 m-0 rounded-0 p-0" onkeydown="getHTML()"
+                            onkeyup="updateTextArea();">
+                        </iframe>
+
+                        <textarea name="content" id="content" cols="30" rows="10" style="display: none"
+                            required></textarea>
+
+
+                    </div>
+
+
+                    <div class="w-90 mx-auto">
+                        <button type="submit" class="btn btn-block btn-secondary" onclick="updateTextArea()"> Submit
+                        </button>
+                    </div>
+
+
+                </div>
+            </div>
+
+        </div>
+
+    </form>
+
+
+
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
+<script src="/public/js/submitProject.js"></script>
+
+<!-- Modal -->
+<div class="modal fade" id="insertImageModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Insert Image</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row justify-content-start">
+                    <div class="form-group col-12">
+                        <input type="text" name="imageSrc" id="imageSrc" class="form-control" placeholder="Image Source"
+                            aria-describedby="helpId">
+
+                    </div>
+
+                    <div class="form-group col-5">
+                        <input type="text" name="imgWidth" id="imgWidth" class="form-control" placeholder="Image Width"
+                            aria-describedby="helpId">
+                    </div>
+
+                    <div class="col-1 p-0 row justify-content-center">
+                        <i class="fas fa-times fa-2x"></i>
+                    </div>
+
+                    <div class="form-group col-5">
+                        <input type="text" name="imgHeight" id="imgHeight" class="form-control"
+                            placeholder="Image Height" aria-describedby="helpId">
+                    </div>
+                </div>
+
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="uploadImage()">Insert Image</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="insertAudioModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Insert Audio</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row justify-content-start">
+                    <div class="form-group col-12">
+                        <input type="text" name="audioSrc" id="audioSrc" class="form-control" placeholder="Audio Source"
+                            aria-describedby="helpId">
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="uploadAudio()">Insert Audio</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="insertVideoModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Insert Video</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row justify-content-start">
+                    <div class="form-group col-12">
+                        <input type="text" name="videoSrc" id="videoSrc" class="form-control" placeholder="Video Source"
+                            aria-describedby="helpId">
+
+                    </div>
+
+                    <div class="form-group col-5">
+                        <input type="text" name="vidWidth" id="vidWidth" class="form-control" placeholder="Video Width"
+                            aria-describedby="helpId">
+                    </div>
+
+                    <div class="col-1 p-0 row justify-content-center">
+                        <i class="fas fa-times fa-2x"></i>
+                    </div>
+
+                    <div class="form-group col-5">
+                        <input type="text" name="vidHeight" id="vidHeight" class="form-control"
+                            placeholder="Video Height" aria-describedby="helpId">
+                    </div>
+                </div>
+
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="uploadVideo()">Insert Video</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Error Modal -->
+<div class="modal fade" id="contentEmpty" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">You have an empty content</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Please add some content for your portfolio ;-;
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -2,7 +2,10 @@ import config.constants
 from flask import Blueprint, render_template, request, url_for, redirect, flash, session
 from middlewares.auth import is_auth
 from models.service import Service
+from models.portfolio import Portfolio
+from models.comment import Comment
 from models.user import User
+from models.notifications import Notification
 
 profile_bp = Blueprint('profile', __name__, template_folder=config.constants.template_dir,
                        static_folder=config.constants.static_dir, static_url_path='public', url_prefix='/user')
@@ -27,23 +30,28 @@ def view(id):
             following.append(User.get_by_id(id))
     skills = viewuser.skills.split(',')
 
+    projects = Portfolio.select().where(Portfolio.uid == viewuser.id)
+    comments = Comment.select()
+    services = Service.select().where(Service.uid == viewuser.id)
+
     return render_template('profile/view.html', user=user, viewuser=viewuser, social_medias=social_medias,
-                           followers=followers, following=following, skills=skills)
+                           followers=followers, following=following, skills=skills, projects=projects,
+                           comments=comments, services=services)
 
 
 @profile_bp.route('/follow/<uid>')
 @is_auth
 def follow(uid):
-    if uid is None:
-        flash('User not found', 'error')
-        return redirect(url_for('profile.view'))
-
     user_id = session['user_id']
     user = User.get_by_id(user_id)
 
+    if uid is None:
+        flash('User not found', 'error')
+        return redirect(url_for('profile.view', id=user_id))
+
     if uid == user_id:
         flash('You cannot follow yourself', 'error')
-        return redirect(url_for('profile.view'))
+        return redirect(url_for('profile.view', id=user_id))
 
     viewed_user = User.get_by_id(uid)
 
@@ -51,7 +59,7 @@ def follow(uid):
 
     if uid in user_follow_list:
         flash('You are already following this user', 'error')
-        return redirect(url_for('profile.view'))
+        return redirect(url_for('profile.view', id=user_id))
 
     user_follow_list.append(uid)
 
@@ -64,19 +72,21 @@ def follow(uid):
     query = User.update(followers=','.join(viewed_user_list)).where(User.id == uid)
     query.execute()
 
+    Notification.create(uid=int(user_id), username=user.username, category='follow', user=viewed_user.id)
+
     flash('User followed successfully', 'success')
-    return redirect(url_for('profile.view'))
+    return redirect(url_for('profile.view', id=user_id))
 
 
 @profile_bp.route('/unfollow/<uid>')
 @is_auth
 def unfollow(uid):
-    if uid is None:
-        flash('User not found', 'error')
-        return redirect(url_for('profile.view'))
-
     user_id = session['user_id']
     user = User.get_by_id(user_id)
+
+    if uid is None:
+        flash('User not found', 'error')
+        return redirect(url_for('profile.view', id=user_id))
 
     viewed_user = User.get_by_id(uid)
 
@@ -84,7 +94,7 @@ def unfollow(uid):
 
     if uid not in user_follow_list:
         flash('You are not following this user', 'error')
-        return redirect(url_for('profile.view'))
+        return redirect(url_for('profile.view', id=user_id))
 
     user_follow_list.remove(uid)
 
@@ -98,7 +108,7 @@ def unfollow(uid):
     query.execute()
 
     flash('User unfollowed successfully', 'success')
-    return redirect(url_for('profile.view'))
+    return redirect(url_for('profile.view', id=user_id))
 
 
 @profile_bp.route('/profile/edit', methods=['GET', 'POST'])
@@ -125,7 +135,7 @@ def edit():
         pic.save(config.constants.uploads_dir + '/' + str(user_id) + '/profile/profilePic.png')
 
         flash('Changes saved successfully', 'success')
-        return redirect(url_for('profile.view'))
+        return redirect(url_for('profile.view', id=user_id))
 
     user = User.get_by_id(user_id)
     social_medias = user.social_medias.split(',')
@@ -139,7 +149,7 @@ def delete(id):
     user_id = session['user_id']
     if user_id != id:
         flash('You are not authorized to perform this action', 'error')
-        return redirect(url_for('profile.view'))
+        return redirect(url_for('profile.view', id=user_id))
 
     query = User.delete().where(User.id == user_id)
     query.execute()
@@ -147,4 +157,96 @@ def delete(id):
     flash('Account deleted successfully', 'success')
     return redirect(url_for('index.index'))
 
-# TODO: Portfolios
+
+@profile_bp.route('/project/add', methods=['GET', 'POST'])
+@is_auth
+def create_project():
+    user_id = session['user_id']
+    user = User.get_by_id(user_id)
+
+    if request.method == 'POST':
+        req = request.form
+        title = req.get('title')
+        content = req.get('content')
+        category = req.getlist('projectCategory')
+        category = ','.join(category)
+        cover = request.files['coverPicture']
+
+        project = Portfolio.create(title=title, content=content, category=category, uid=int(user_id))
+        cover.save(config.constants.uploads_dir + '/' + str(user_id) + '/projects/' + str(project.id) + '.png')
+
+        flash('Project added successfully', 'success')
+        return redirect(url_for('profile.view', id=user_id))
+
+    return render_template('profile/add_project.html', user=user)
+
+
+@profile_bp.route('/project/edit/<id>', methods=['GET', 'POST'])
+@is_auth
+def edit_project(id):
+    user_id = session['user_id']
+    user = User.get_by_id(user_id)
+    if id is None:
+        flash('Project could not be found', 'error')
+        return redirect(url_for('profile.view', id=user_id))
+
+    project = Portfolio.get_by_id(id)
+
+    if user.id != project.uid:
+        flash('You are unauthorized to perform actions on this project', 'error')
+        return redirect(url_for('profile.view', id=user_id))
+
+    if request.method == 'POST':
+        req = request.form
+        title = req.get('title')
+        content = req.get('content')
+        category = req.getlist('projectCategory')
+        category = ','.join(category)
+        cover = request.files['coverPicture']
+
+        query = Portfolio.update(title=title, content=content, category=category).where(Portfolio.id == id)
+        query.execute()
+        cover.save(config.constants.uploads_dir + '/' + str(user_id) + '/projects/' + str(project.id) + '.png')
+
+        flash('Project updated successfully', 'success')
+        return redirect(url_for('profile.view', id=user_id))
+
+    return render_template('profile/edit_project.html', user=user, project=project)
+
+
+@profile_bp.route('/project/delete/<id>')
+@is_auth
+def delete_project(id):
+    user_id = session['user_id']
+
+    if id is None:
+        flash('Please select a project to delete', 'error')
+        return redirect(url_for('profile.view', id=user_id))
+
+    project = Portfolio.get_by_id(id)
+    if user_id != project.uid:
+        flash('You are unauthorized to perform actions on this project', 'error')
+        return redirect(url_for('profile.view', id=user_id))
+
+    query = Portfolio.delete().where(Portfolio.id == id)
+    query.execute()
+
+    flash('Project deleted successfully', 'success')
+    return redirect(url_for('profile.view', id=user_id))
+
+
+@profile_bp.route('/project/comment/<vid>/<pid>/<uid>', methods=['POST'])
+@is_auth
+def comment(vid, pid, uid):
+    user = User.get_by_id(uid)
+    portfolio = Portfolio.get_by_id(pid)
+    viewed = User.get_by_id(vid)
+
+    Comment.create(uid=uid, username=user.username, content=request.form.get('comment'), pid=pid)
+    query = Portfolio.update(comments=portfolio.comments + 1).where(Portfolio.id == pid)
+    query.execute()
+    Notification.create(uid=vid, username=viewed.username, pid=pid, title=portfolio.title,
+                        category='comment', user=uid)
+
+    flash('Comment added', 'success')
+    return redirect(url_for('profile.view', id=uid))

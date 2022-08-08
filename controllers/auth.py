@@ -50,6 +50,7 @@ def register():
 
         os.makedirs(config.constants.uploads_dir + '/' + str(user.id) + '/services', exist_ok=True)
         os.makedirs(config.constants.uploads_dir + '/' + str(user.id) + '/profile', exist_ok=True)
+        os.makedirs(config.constants.uploads_dir + '/' + str(user.id) + '/projects', exist_ok=True)
 
         flash('You have registered successfully and can now log in', 'success')
         return redirect(url_for('index.index'))

@@ -97,9 +97,9 @@
 
                                 <br>
                                 <p class="text-left"> <a href="#" class="font-weight-bold" data-toggle="modal"
-                                        data-target="#followersModal">Followers:</a> {{followers.length}} </p>
+                                        data-target="#followersModal">Followers:</a> {{followers|length}} </p>
                                 <p class="text-left"> <a href="#" class="font-weight-bold" data-toggle="modal"
-                                        data-target="#followingModal">Following:</a> {{following.length}}</p>
+                                        data-target="#followingModal">Following:</a> {{following|length}}</p>
                                 <hr class="hr-primary">
 
 
@@ -222,7 +222,7 @@
                         <!-- =============================== Portfolio =============================== -->
                         <div class="tab-pane fade active show profile-content" id="portfolio-classic-shadow"
                             role="tabpanel" aria-labelledby="portfolio-tab-classic-shadow">
-<!--                            > profile/_portfolioItem-->
+                            {% include 'partials/includes/profile/_portfolioItem.html' %}
                         </div>
                         {% if viewuser.accType == "service" %}
                         <!-- =============================== Services =============================== -->

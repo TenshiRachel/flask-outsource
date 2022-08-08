@@ -16,6 +16,5 @@ Change directory to flask-outsource and enter the following
 # install requirements
 pip install -r requirements.txt
 # run app
-flask run
-# alternatively, run app.py
+python app.py
 ```

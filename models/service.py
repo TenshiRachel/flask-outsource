@@ -13,7 +13,7 @@ class Service(Base):
     views = IntegerField()
     favs = IntegerField()
     username = CharField()
-    uid = ForeignKeyField(User)
+    uid = IntegerField()
 
     class Meta:
         database = Base._meta.db

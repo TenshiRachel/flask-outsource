@@ -1,0 +1,448 @@
+<div class="accordion md-accordion" id="accordionEx4" role="tablist" aria-multiselectable="true">
+    <div class="card">
+
+        <!-- Card body -->
+        <div id="collapsePortfolio4" class="collapse show" role="tabpanel" aria-labelledby="headingPortfolio4"
+            data-parent="#accordionEx4">
+
+            <div class="card-body">
+                <div class="row justify-content-start">
+                {% if user.id == viewuser.id %}
+                    <div class="col-sm-5 col-lg-4 py-0 px-1">
+                        <div class="portoflio-img-sm view overlay mb-1 rounded border border-depth-2 p-0">
+
+
+                            <div class="h-100 row mx-auto">
+                                <div class="col align-self-center">
+                                    <i class="fa fa-plus fa-7x" aria-hidden="true"></i>
+
+                                </div>
+                            </div>
+                            <a href="/user/project/add">
+                                <div class="mask flex-center waves-effect waves-light rgba-black-light">
+                                    <h2 class="text-white">Add Project</h2>
+
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    {% else %}
+
+                    <div class="row justify-content-center">
+                        {% if projects %}
+                        {% else %}
+                        <h1 class="my-5 py-5">This user has no Projects</h1>
+                        {% endif %}
+                    </div>
+                {% endif %}
+                {% if projects %}
+                    {% for project in projects %}
+                    <div class="col-sm-5 col-lg-4 py-0 px-1">
+                        <div class="portoflio-img-sm view overlay mb-1 rounded border p-0" data-toggle="modal"
+                            data-target="#project{{project.id}}">
+
+                            <img loading="lazy" src="/public/uploads/{{project.uid}}/projects/{{project.id}}.png"
+                                class="h-100 mx-auto d-block" alt="">
+
+                            <div id="viewproject{{project.id}}" onclick="viewProject({{project.id}})"
+                                class="mask flex-center waves-effect waves-light rgba-black-strong">
+                                <div
+                                    class="row col-12 align-items-end justify-content-end justify-content-around p-0 h-100">
+
+                                    <div class="row col-12 justify-content-between p-0">
+                                        <h5 class="col-12 text-white text-left font-weight-bold">
+                                            {{project.title}}
+                                        </h5>
+                                        <h6 style="font-size:2vh;" class="col-6 white-text text-left font-weight-bold">
+                                            {{viewuser.username}}
+                                        </h6>
+
+                                        <h6 class="white-text text-right col-6">
+
+                                            <i class="far fa-heart"></i>
+                                            {{  project.likes }}
+                                            <i class="fas fa-comment"></i>
+                                            {{project.comments}}
+                                        </h6>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% endif %}
+                </div>
+
+
+                <script src="/js/displayPortfolio.js"></script>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!--=================================================== Modals ===================================================-->
+
+{% if projects %}
+<section class="profile-modal">
+    {% for project in projects %}
+    <!-- Portfolio Modal -->
+    <div class="modal fade project" id="project{{project.id}}" tabindex="-1" role="dialog" aria-labelledby="project{{project.id}}Label"
+         data-backdrop="false" aria-hidden="true">
+
+        <div class="modal-dialog-project modal-dialog" role="document">
+            <div class="modal-content p-0">
+                <div class="modal-header">
+                    <div class="col-12 row justify-content-between">
+                        <div class="col-lg-3 col-sm-12 row justify-content-start pl-4">
+
+                            <div class="col-2 align-self-center p-0 h-100">
+                                <img loading="lazy" onerror='this.src = "/public/img/profile/default.png"'
+                                    src="/uploads/{{project.uid}}/profile/profilePic.png"
+                                    class="white img-fluid rounded-circle  " alt="">
+                            </div>
+
+                            <div class="col-8 align-self-center pl-3 h-100">
+                                <div class="row m-auto h-100 p-0">
+                                    <h5 class="col-12 p-0 align-self-start text-left font-weight-bold">
+                                        {{project.title}}</h5>
+                                    <a href="/user/profile/view/{{viewuser.id}}">
+                                        <h6 class="col-12 p-0 align-self-end text-left">
+                                            {{viewuser.username}}
+                                        </h6>
+                                    </a>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        {% if user %}
+                        {% if project.uid != viewuser.id %}
+                        <div class="col-lg-8 col-sm-12 row justify-content-end px-0">
+                            <div class="col-lg-8 col-sm-12 align-self-center pr-0">
+                                {% if project.liked %}
+
+                                <a href="/user/project/unlike/{{project.id}}"
+                                    class="btn btn-danger btn-block btn-rounded">
+                                    <i class="far fa-heart"></i> Liked
+                                </a>
+
+                                {% else %}
+                                <a href="/user/project/like/{{project.id}}" class="btn btn-outline-danger btn-block btn-rounded">
+                                    <i class="far fa-heart"></i> Like
+                                </a>
+
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% else %}
+                        <div class="col-lg-8 col-sm-12 row justify-content-end px-0">
+                            <div id="deleteButton" class="row justify-content-between">
+                                <a href="/user/project/edit/{{project.id}}">
+                                    <button type="button" class="btn btn-success justify-content-center">
+                                        <i class="fas fa-edit fa-lg"></i> &nbsp; Edit
+                                    </button>
+                                </a>
+
+                                <a data-toggle="modal" data-target="#confirmDelete{{project.id}}">
+                                    <button type="button" class="btn btn-danger justify-content-center">
+                                        <i class="fas fa-trash-alt fa-lg"></i> &nbsp; Delete
+                                    </button>
+                                </a>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% endif %}
+                        <div class="col-lg-1 col-sm-12">
+                            <button type="button" class="close mt-1" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-body black p-0">
+<!--                    ======================= Content =======================-->
+                    <div id="contentTest" class="col-12 overflow-auto white p-4 min-vh-80">
+                        {{project.content}}
+                    </div>
+
+
+<!--                    ======================= Services =======================-->
+                    <div class="container black w-100 row justify-content-center mx-0 py-5">
+
+                        <div class="row justify-content-center">
+                            <img loading="lazy" onerror='this.src = "/public/img/profile/default.png"'
+                                src="/uploads/profile/{{viewuser.id}}/profilePic.png"
+                                class="white img-fluid rounded-circle w-20" style="">
+                            <h3 class="col-12 text-center white-text font-weight-bold my-3">
+                                Services by
+                                {{viewuser.username}}
+                            </h3>
+                        </div>
+                        {% if services %}
+                        <div class="row col-12 justify-content-around">
+                            {% for service in services %}
+                            <div class="card-body border-purple white col-lg-3 col-sm-12 rounded mx-2">
+                                <div class="row justify-content-around">
+
+                                    <div class="card">
+                                        <div class="view overlay">
+                                            <img loading="lazy" class="card-img-top service-img w-100"
+                                                src="/uploads/{{viewuser.id}}/services/{{service.id}}.png">
+                                        </div>
+
+                                        <a class="btn-floating btn-action btn-deep-purple ml-auto mr-4 material-tooltip-sm"
+                                            data-tooltip="tooltip" data-placement="top" title="View More Details"
+                                            href="/service/view/{{service.uid}}/{{service.id}}">
+                                            <i class="far fa-eye"></i>
+                                        </a>
+
+                                        <div class="card-body">
+                                            <h4 class="card-title name" data-names="Service Title">
+                                                {{service.name}}</h4>
+
+                                            <hr>
+
+                                            <p class="card-text">
+                                                {{service.desc}}
+                                            </p>
+                                        </div>
+
+                                        <div class="card-footer deep-purple accent-2 white-text text-center mt-4">
+                                            <h5 class="m-0">
+                                                ${{service.price}}
+                                            </h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        <div class="row col-12 justify-content-around">
+                            <h4 class="text-white my-5"> This user has no services </h4>
+
+                        </div>
+                        {% endif %}
+                    </div>
+
+
+                </div>
+
+                <div class="modal-footer blue-grey lighten-5">
+                    <div class="row mx-auto justify-content-around col-12">
+<!--                         Comments -->
+                        <div id="commentSection" class="col-lg-8 col-sm-12 border p-4 white">
+                            <h4 class="text-center"> Comments </h4>
+                            <hr class="hr-primary">
+
+                            {% if user %}
+                            <form class="chat-message flex-fill" id="commentForm{{user.id}}" method="POST"
+                                action="/user/project/comment/{{project.id}}/{{user.id}}">
+                                <ul class="list-unstyled chat">
+
+                                    <li class="row mb-4">
+
+                                        <div class="col-1 pr-2">
+                                            <img loading="lazy"
+                                                class="avatar white img-fluid rounded-circle accent-3 z-depth-1"
+                                                id="profileimg" onerror='this.src = "/public/img/profile/default.png"'
+                                                src="/uploads/{{user.id}}/profile/profilePic.png">
+                                        </div>
+
+                                        <div class="col-11 pl-2">
+                                            <div class="chat-body rounded white p-3 z-depth-1">
+                                                <div class="header d-flex">
+                                                    <div class="flex-fill text-left">
+                                                        <strong class="primary-font"
+                                                            id="formUsername">{{user.username}}</strong>
+                                                    </div>
+                                                </div>
+
+                                                <hr class="w-100">
+
+
+                                                <textarea class="form-control" name="comment"
+                                                    id="comment" maxlength="300"></textarea>
+
+
+                                            </div>
+                                            <div class="row justify-content-end mx-auto">
+                                                <button class="btn btn-secondary">
+                                                    Comment </button>
+                                            </div>
+                                        </div>
+                                    </li>
+
+                                </ul>
+                            </form>
+                            {% else %}
+                            <h5 class="text-center flex-fill text-muted my-5">You must be logged in to comment.</h5>
+                            {% endif %}
+
+                            <hr class="hr-primary">
+
+                            {% if project.comments > 0 %}
+                            <div class="chat-message flex-fill">
+                                <ul class="list-unstyled chat" id="hrAfter{{project.id}}">
+                                    {% for comment in comments %}
+                                    {% if project.id == comment.pid %}
+                                    <li class="row mb-4">
+
+                                        <div class="col-1 pr-2">
+                                            <img loading="lazy"
+                                                class="avatar white img-fluid rounded-circle accent-3 z-depth-1"
+                                                onerror='this.src = "/public/img/profile/default.png"'
+                                                src="/uploads/{{ comment.uid }}/profile/profilePic.png">
+                                        </div>
+
+                                        <div class="col-11 pl-2">
+                                            <div class="chat-body rounded white p-3 z-depth-1">
+                                                <div class="header d-flex">
+                                                    <div class="flex-fill text-left">
+                                                        <a href="/user/profile/view/{{comment.uid}}">
+                                                            <strong class="primary-font">{{ comment.username }}</strong>
+                                                        </a>
+                                                    </div>
+                                                    <div class="flex-fill text-right">
+                                                        <small class="pull-right text-muted">
+                                                            <i class="far fa-clock mr-1"></i>{{ comment.date }}
+                                                        </small>
+                                                    </div>
+                                                </div>
+
+                                                <hr class="w-100">
+
+                                                <p class="text-left mb-0">
+                                                    {{ comment.content }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    {% endif %}
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            {% else %}
+                            <ul class="list-unstyled chat" id="hrAfter{{project.id}}"></ul>
+                            <div id="noComments">
+                                <h5 class="text-center mb-3 text-muted">
+                                    <i class="far fa-comment-times fa-3x"></i>
+                                </h5>
+                                <h5 class="text-center text-muted">
+                                    No Comments
+                                </h5>
+                            </div>
+                            {% endif %}
+
+
+
+                        </div>
+
+<!--                         Details -->
+                        <div class="col-lg-3 col-sm-12 p-0">
+                            <div class="border p-4 white">
+                                <h4 class="text-center"> Details </h4>
+                                <hr class="hr-primary w-100">
+
+                                <div class="row justify-content-between">
+                                    <div class="col-6">
+                                        <p class="text-right font-weight-bold"> Last Update:</p>
+                                        <p class="text-right font-weight-bold"> Views: </p>
+                                        <p class="text-right font-weight-bold"> Likes: </p>
+                                        <p class="text-right font-weight-bold"> Comments: </p>
+                                    </div>
+                                    <div class="col-6">
+                                        <p class="text-left"> {{project.date}}</p>
+                                        <p class="text-left"> {{project.views}}</p>
+                                        <p class="text-left">{{project.likes}}</p>
+                                        <p class="text-left">
+                                            {{ project.comments }}
+                                        </p>
+                                    </div>
+                                </div>
+
+                            </div>
+
+<!--                            <div class="border p-4 white mt-4">-->
+<!--                                <h4 class="text-center ">Share</h4>-->
+<!--                                <hr class="hr-primary w-100">-->
+
+<!--                                <div class="btn-group btn-group-sm btn-block" role="group" aria-label="Basic example">-->
+<!--                                    <a target="_blank" class="btn btn-tw btn-md btn-sm"-->
+<!--                                        href="https://twitter.com/intent/tweet?text=Check+out+at+&url=http:///profile/view/">-->
+<!--                                        <i class="fab fa-twitter pr-1"></i>-->
+
+<!--                                    </a>-->
+
+<!--                                    <a target="_blank" class="btn btn-fb btn-md btn-sm"-->
+<!--                                        href="https://www.facebook.com/sharer/sharer.php?u=http://profile/view/">-->
+<!--                                        <i class="fab fa-facebook-f pr-1"></i>-->
+<!--                                    </a>-->
+
+<!--                                    <a target="_blank" class="btn btn-li btn-md btn-sm"-->
+<!--                                        href="https://www.linkedin.com/shareArticle?mini=true&url=http://}/profile/view/}&title=&summary=Check+out++at+&source=http://profile/view/">-->
+<!--                                        <i class="fab fa-linkedin-in pr-1"></i>-->
+
+<!--                                    </a>-->
+
+<!--                                    <a target="_blank" class="btn btn-reddit btn-md btn-sm"-->
+<!--                                        href="http://www.reddit.com/submit?url=http://profile/view/&title=">-->
+<!--                                        <i class="fab fa-reddit-alien pr-1"></i>-->
+
+<!--                                    </a>-->
+
+<!--                                    <a target="_blank" class="btn btn-tmblr btn-md btn-sm"-->
+<!--                                        href="http://www.tumblr.com/share/link?url=http://profile/view/&description=Check+out+at+Outsource">-->
+<!--                                        <i class="fab fa-tumblr"></i>-->
+<!--                                    </a>-->
+<!--                                </div>-->
+<!--                            </div>-->
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+
+    </div>
+
+    <!-- Delete Project Modal -->
+    <div class="modal fade" id="confirmDelete{{project.id}}" tabindex="-1" role="dialog"
+        aria-labelledby="confirmDelete{{project.id}}Label" aria-hidden="true" data-backdrop="false">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title text-center col-12">Confirmation</h5>
+                </div>
+                <div class="modal-body">
+                    <p class="my-3 text-center">
+                        Are you sure you want to delete <br>{{project.title}}?
+                    </p>
+                </div>
+                <div class="modal-footer py-1">
+                    <div class="row justify-content-between mx-auto w-100">
+                        <a href="/user/project/delete/{{project.id}}">
+                            <button type="button" class="btn btn-danger">
+                                Yes
+
+                            </button>
+                        </a>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% endfor %}
+    {% endif %}
+</section>
