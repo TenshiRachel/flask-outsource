@@ -11,6 +11,7 @@ class Portfolio(Base):
     category = CharField()
     views = IntegerField(default=0)
     likes = IntegerField(default=0)
+    comments = IntegerField(default=0)
     uid = IntegerField()
 
     class Meta:

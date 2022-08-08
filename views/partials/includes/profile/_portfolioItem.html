@@ -6,9 +6,8 @@
             data-parent="#accordionEx4">
 
             <div class="card-body">
-                {% if projects %}
                 <div class="row justify-content-start">
-                    {% if user.id == viewuser.id %}
+                {% if user.id == viewuser.id %}
                     <div class="col-sm-5 col-lg-4 py-0 px-1">
                         <div class="portoflio-img-sm view overlay mb-1 rounded border border-depth-2 p-0">
 
@@ -27,8 +26,16 @@
                             </a>
                         </div>
                     </div>
-                    {% endif %}
+                    {% else %}
 
+                    <div class="row justify-content-center">
+                        {% if projects %}
+                        {% else %}
+                        <h1 class="my-5 py-5">This user has no Projects</h1>
+                        {% endif %}
+                    </div>
+                {% endif %}
+                {% if projects %}
                     {% for project in projects %}
                     <div class="col-sm-5 col-lg-4 py-0 px-1">
                         <div class="portoflio-img-sm view overlay mb-1 rounded border p-0" data-toggle="modal"
@@ -55,11 +62,7 @@
                                             <i class="far fa-heart"></i>
                                             {{  project.likes }}
                                             <i class="fas fa-comment"></i>
-                                            {% if project.comments|length > 0 %}
-                                            {{project.comments|length}}
-                                            {% else %}
-                                            0
-                                            {% endif %}
+                                            {{project.comments}}
                                         </h6>
                                     </div>
 
@@ -69,42 +72,12 @@
                         </div>
                     </div>
                     {% endfor %}
+                {% endif %}
                 </div>
 
 
                 <script src="/js/displayPortfolio.js"></script>
 
-                {% else %}
-
-                <div class="row justify-content-center">
-                    {% if projects %}
-                    {% else %}
-                    <h1 class="my-5 py-5">This user has no Projects</h1>
-                    {% endif %}
-                </div>
-
-                {% if viewuser.id == user.id %}
-                <div class="row justify-content-start">
-                    <div class="col-sm-5 col-lg-4 py-0 px-1">
-                        <div class="portoflio-img-sm view overlay mb-1 rounded border border-depth-2 p-0">
-                            <div class="h-100 row mx-auto">
-                                <div class="col align-self-center">
-                                    <i class="fa fa-plus fa-7x" aria-hidden="true"></i>
-
-                                </div>
-                            </div>
-                            <a href="/user/project/add">
-                                <div class="mask flex-center waves-effect waves-light rgba-black-light">
-                                    <h2 class="text-white">Add Project</h2>
-
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                {% endif %}
-
-                {% endif %}
             </div>
 
         </div>
@@ -269,7 +242,7 @@
 
                             {% if user %}
                             <form class="chat-message flex-fill" id="commentForm{{user.id}}" method="POST"
-                                action="/user/project/comment/{{user.id}}">
+                                action="/user/project/comment/{{project.id}}/{{user.id}}">
                                 <ul class="list-unstyled chat">
 
                                     <li class="row mb-4">
@@ -313,16 +286,17 @@
 
                             <hr class="hr-primary">
 
-                            {% if project.comments|length > 0 %}
+                            {% if project.comments > 0 %}
                             <div class="chat-message flex-fill">
                                 <ul class="list-unstyled chat" id="hrAfter{{project.id}}">
                                     {% for comment in comments %}
+                                    {% if project.id == comment.pid %}
                                     <li class="row mb-4">
 
                                         <div class="col-1 pr-2">
                                             <img loading="lazy"
                                                 class="avatar white img-fluid rounded-circle accent-3 z-depth-1"
-                                                onerror='this.src = "/img/profile/default.png"'
+                                                onerror='this.src = "/public/img/profile/default.png"'
                                                 src="/uploads/{{ comment.uid }}/profile/profilePic.png">
                                         </div>
 
@@ -349,6 +323,7 @@
                                             </div>
                                         </div>
                                     </li>
+                                    {% endif %}
                                     {% endfor %}
                                 </ul>
                             </div>
@@ -386,11 +361,7 @@
                                         <p class="text-left"> {{project.views}}</p>
                                         <p class="text-left">{{project.likes}}</p>
                                         <p class="text-left">
-                                            {% if project.comments|length > 0 %}
-                                            {{ project.comments|length }}
-                                            {% else %}
-                                            0
-                                            {% endif %}
+                                            {{ project.comments }}
                                         </p>
                                     </div>
                                 </div>

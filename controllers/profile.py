@@ -3,6 +3,7 @@ from flask import Blueprint, render_template, request, url_for, redirect, flash,
 from middlewares.auth import is_auth
 from models.service import Service
 from models.portfolio import Portfolio
+from models.comment import Comment
 from models.user import User
 from models.notifications import Notification
 
@@ -30,11 +31,12 @@ def view(id):
     skills = viewuser.skills.split(',')
 
     projects = Portfolio.select().where(Portfolio.uid == viewuser.id)
+    comments = Comment.select()
     services = Service.select().where(Service.uid == viewuser.id)
 
     return render_template('profile/view.html', user=user, viewuser=viewuser, social_medias=social_medias,
                            followers=followers, following=following, skills=skills, projects=projects,
-                           services=services)
+                           comments=comments, services=services)
 
 
 @profile_bp.route('/follow/<uid>')
@@ -231,3 +233,20 @@ def delete_project(id):
 
     flash('Project deleted successfully', 'success')
     return redirect(url_for('profile.view', id=user_id))
+
+
+@profile_bp.route('/project/comment/<vid>/<pid>/<uid>', methods=['POST'])
+@is_auth
+def comment(vid, pid, uid):
+    user = User.get_by_id(uid)
+    portfolio = Portfolio.get_by_id(pid)
+    viewed = User.get_by_id(vid)
+
+    Comment.create(uid=uid, username=user.username, content=request.form.get('comment'), pid=pid)
+    query = Portfolio.update(comments=portfolio.comments + 1).where(Portfolio.id == pid)
+    query.execute()
+    Notification.create(uid=vid, username=viewed.username, pid=pid, title=portfolio.title,
+                        category='comment', user=uid)
+
+    flash('Comment added', 'success')
+    return redirect(url_for('profile.view', id=uid))

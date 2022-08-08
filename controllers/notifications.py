@@ -21,6 +21,9 @@ def index():
     followers_notifications = Notification.select().where((Notification.user == user_id) & (Notification.category == 'follow'))\
         .order_by(Notification.date.desc())
 
+    comment_notifications = Notification.select().where((Notification.user == user_id) & (Notification.category == 'comment'))\
+        .order_by(Notification.date.desc())
+
     job_reject_notifications = Notification.select().\
         where((Notification.user == user_id) & (Notification.category == 'job_reject')).order_by(Notification.date.desc())
 
@@ -45,7 +48,7 @@ def index():
         where((Notification.user == user_id) & (Notification.category == 'file_unshare')).order_by(Notification.date.desc())
 
     return render_template('notifications/index.html', user=user, like_notifications=like_notifications,
-                           followers_notifications=followers_notifications,
+                           followers_notifications=followers_notifications, comment_notifications=comment_notifications,
                            job_reject_notifications=job_reject_notifications, job_notifications=job_notifications,
                            request_cancelled_notifications=request_cancelled_notifications,
                            file_share_notifications=file_share_notifications,
