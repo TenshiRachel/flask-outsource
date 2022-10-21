@@ -33,6 +33,12 @@ def register():
         elif len(password) < 8:
             errors['password'] = 'Password must be at least 8 characters'
 
+        elif not any(c.isdigit() for c in password):
+            errors['password'] = 'Password must contain at least 1 number'
+
+        elif not any(c.isalnum() for c in password):
+            errors['password'] = 'Password must contain at least 1 special character'
+
         if password != cfm_pass:
             errors['cfmPassword'] = 'Passwords do not match'
 
