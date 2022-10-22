@@ -20,6 +20,8 @@ def view(id):
     social_medias = viewuser.social_medias.split(',')
     follower_ids = viewuser.followers.split(',')
     following_ids = viewuser.following.split(',')
+    notifications = Notification.select().where(Notification.user == viewuser.id)
+
     followers = []
     if follower_ids[0] != '':
         for id in follower_ids:
@@ -36,7 +38,7 @@ def view(id):
 
     return render_template('profile/view.html', user=user, viewuser=viewuser, social_medias=social_medias,
                            followers=followers, following=following, skills=skills, projects=projects,
-                           comments=comments, services=services)
+                           comments=comments, services=services, notifications=notifications)
 
 
 @profile_bp.route('/follow/<uid>')
@@ -44,14 +46,15 @@ def view(id):
 def follow(uid):
     user_id = session['user_id']
     user = User.get_by_id(user_id)
+    notifications = Notification.select().where(Notification.user == user.id)
 
     if uid is None:
         flash('User not found', 'error')
-        return redirect(url_for('profile.view', id=user_id))
+        return redirect(url_for('profile.view', id=user_id, notifications=notifications))
 
     if uid == user_id:
         flash('You cannot follow yourself', 'error')
-        return redirect(url_for('profile.view', id=user_id))
+        return redirect(url_for('profile.view', id=user_id, notifications=notifications))
 
     viewed_user = User.get_by_id(uid)
 
@@ -59,7 +62,7 @@ def follow(uid):
 
     if uid in user_follow_list:
         flash('You are already following this user', 'error')
-        return redirect(url_for('profile.view', id=user_id))
+        return redirect(url_for('profile.view', id=user_id, notifications=notifications))
 
     user_follow_list.append(uid)
 
@@ -75,7 +78,7 @@ def follow(uid):
     Notification.create(uid=int(user_id), username=user.username, category='follow', user=viewed_user.id)
 
     flash('User followed successfully', 'success')
-    return redirect(url_for('profile.view', id=user_id))
+    return redirect(url_for('profile.view', id=user_id, notifications=notifications))
 
 
 @profile_bp.route('/unfollow/<uid>')
@@ -83,10 +86,11 @@ def follow(uid):
 def unfollow(uid):
     user_id = session['user_id']
     user = User.get_by_id(user_id)
+    notifications = Notification.select().where(Notification.user == user.id)
 
     if uid is None:
         flash('User not found', 'error')
-        return redirect(url_for('profile.view', id=user_id))
+        return redirect(url_for('profile.view', id=user_id, notifications=notifications))
 
     viewed_user = User.get_by_id(uid)
 
@@ -94,7 +98,7 @@ def unfollow(uid):
 
     if uid not in user_follow_list:
         flash('You are not following this user', 'error')
-        return redirect(url_for('profile.view', id=user_id))
+        return redirect(url_for('profile.view', id=user_id, notifications=notifications))
 
     user_follow_list.remove(uid)
 
@@ -108,13 +112,15 @@ def unfollow(uid):
     query.execute()
 
     flash('User unfollowed successfully', 'success')
-    return redirect(url_for('profile.view', id=user_id))
+    return redirect(url_for('profile.view', id=user_id, notifications=notifications))
 
 
 @profile_bp.route('/profile/edit', methods=['GET', 'POST'])
 @is_auth
 def edit():
     user_id = session['user_id']
+    notifications = Notification.select().where(Notification.user == user_id)
+
     if request.method == 'POST':
         req = request.form
         bio = req.get('bio')
@@ -140,22 +146,24 @@ def edit():
     user = User.get_by_id(user_id)
     social_medias = user.social_medias.split(',')
     skills = user.skills.split(',')
-    return render_template('profile/edit.html', user=user, social_medias=social_medias, skills=skills)
+    return render_template('profile/edit.html', user=user, social_medias=social_medias, skills=skills,
+                           notifications=notifications)
 
 
 @profile_bp.route('/profile/delete/<id>')
 @is_auth
 def delete(id):
     user_id = session['user_id']
+    notifications = Notification.select().where(Notification.user == user_id)
     if user_id != id:
         flash('You are not authorized to perform this action', 'error')
-        return redirect(url_for('profile.view', id=user_id))
+        return redirect(url_for('profile.view', id=user_id, notifications=notifications))
 
     query = User.delete().where(User.id == user_id)
     query.execute()
 
     flash('Account deleted successfully', 'success')
-    return redirect(url_for('index.index'))
+    return redirect(url_for('index.index', notifications=notifications))
 
 
 @profile_bp.route('/project/add', methods=['GET', 'POST'])
@@ -163,6 +171,7 @@ def delete(id):
 def create_project():
     user_id = session['user_id']
     user = User.get_by_id(user_id)
+    notifications = Notification.select().where(Notification.user == user.id)
 
     if request.method == 'POST':
         req = request.form
@@ -176,9 +185,9 @@ def create_project():
         cover.save(config.constants.uploads_dir + '/' + str(user_id) + '/projects/' + str(project.id) + '.png')
 
         flash('Project added successfully', 'success')
-        return redirect(url_for('profile.view', id=user_id))
+        return redirect(url_for('profile.view', id=user_id, notifications=notifications))
 
-    return render_template('profile/add_project.html', user=user)
+    return render_template('profile/add_project.html', user=user, notifications=notifications)
 
 
 @profile_bp.route('/project/edit/<id>', methods=['GET', 'POST'])
@@ -186,15 +195,17 @@ def create_project():
 def edit_project(id):
     user_id = session['user_id']
     user = User.get_by_id(user_id)
+    notifications = Notification.select().where(Notification.user == user.id)
+
     if id is None:
         flash('Project could not be found', 'error')
-        return redirect(url_for('profile.view', id=user_id))
+        return redirect(url_for('profile.view', id=user_id, notifications=notifications))
 
     project = Portfolio.get_by_id(id)
 
     if user.id != project.uid:
         flash('You are unauthorized to perform actions on this project', 'error')
-        return redirect(url_for('profile.view', id=user_id))
+        return redirect(url_for('profile.view', id=user_id, notifications=notifications))
 
     if request.method == 'POST':
         req = request.form
@@ -211,28 +222,29 @@ def edit_project(id):
         flash('Project updated successfully', 'success')
         return redirect(url_for('profile.view', id=user_id))
 
-    return render_template('profile/edit_project.html', user=user, project=project)
+    return render_template('profile/edit_project.html', user=user, project=project, notifications=notifications)
 
 
 @profile_bp.route('/project/delete/<id>')
 @is_auth
 def delete_project(id):
     user_id = session['user_id']
+    notifications = Notification.select().where(Notification.user == user_id)
 
     if id is None:
         flash('Please select a project to delete', 'error')
-        return redirect(url_for('profile.view', id=user_id))
+        return redirect(url_for('profile.view', id=user_id, notifications=notifications))
 
     project = Portfolio.get_by_id(id)
     if user_id != project.uid:
         flash('You are unauthorized to perform actions on this project', 'error')
-        return redirect(url_for('profile.view', id=user_id))
+        return redirect(url_for('profile.view', id=user_id, notifications=notifications))
 
     query = Portfolio.delete().where(Portfolio.id == id)
     query.execute()
 
     flash('Project deleted successfully', 'success')
-    return redirect(url_for('profile.view', id=user_id))
+    return redirect(url_for('profile.view', id=user_id, notifications=notifications))
 
 
 @profile_bp.route('/project/comment/<vid>/<pid>/<uid>', methods=['POST'])
@@ -241,6 +253,7 @@ def comment(vid, pid, uid):
     user = User.get_by_id(uid)
     portfolio = Portfolio.get_by_id(pid)
     viewed = User.get_by_id(vid)
+    notifications = Notification.select().where(Notification.user == user.id)
 
     Comment.create(uid=uid, username=user.username, content=request.form.get('comment'), pid=pid)
     query = Portfolio.update(comments=portfolio.comments + 1).where(Portfolio.id == pid)
@@ -249,4 +262,4 @@ def comment(vid, pid, uid):
                         category='comment', user=uid)
 
     flash('Comment added', 'success')
-    return redirect(url_for('profile.view', id=uid))
+    return redirect(url_for('profile.view', id=uid, notifications=notifications))
