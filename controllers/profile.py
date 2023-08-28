@@ -6,6 +6,7 @@ from models.portfolio import Portfolio
 from models.comment import Comment
 from models.user import User
 from models.notifications import Notification
+from models.followers import Follower
 
 profile_bp = Blueprint('profile', __name__, template_folder=config.constants.template_dir,
                        static_folder=config.constants.static_dir, static_url_path='public', url_prefix='/user')
@@ -15,21 +16,17 @@ profile_bp = Blueprint('profile', __name__, template_folder=config.constants.tem
 def view(id):
     user_id = session.get('user_id')
     user = User.get_or_none(User.id == user_id)
-
     viewuser = User.get_by_id(id)
     social_medias = viewuser.social_medias.split(',')
-    follower_ids = viewuser.followers.split(',')
-    following_ids = viewuser.following.split(',')
     notifications = Notification.select().where(Notification.user == viewuser.id)
 
-    followers = []
-    if follower_ids[0] != '':
-        for id in follower_ids:
-            followers.append(User.get_by_id(id))
-    following = []
-    if following_ids[0] != '':
-        for id in following_ids:
-            following.append(User.get_by_id(id))
+    # TODO:Shorten follower and following method
+
+    followers = User.select().join(Follower, on=(User.id == Follower.follower_id))\
+        .where(Follower.following_id == viewuser.id)
+
+    following = User.select().join(Follower, on=(User.id == Follower.following_id))\
+        .where(Follower.follower_id == viewuser.id)
     skills = viewuser.skills.split(',')
 
     projects = Portfolio.select().where(Portfolio.uid == viewuser.id)
@@ -58,24 +55,14 @@ def follow(uid):
 
     viewed_user = User.get_by_id(uid)
 
-    user_follow_list = user.following.split(',')
-
-    if uid in user_follow_list:
+    if Follower.get_or_none((Follower.follower_id == user_id) & (Follower.following_id == viewed_user.id))\
+            is not None:
         flash('You are already following this user', 'error')
         return redirect(url_for('profile.view', id=user_id, notifications=notifications))
 
-    user_follow_list.append(uid)
+    Follower.create(follower_id=user.id, following_id=viewed_user.id)
 
-    viewed_user_list = viewed_user.followers.split(',')
-    viewed_user_list.append(user_id)
-
-    query = User.update(following=','.join(user_follow_list)).where(User.id == user_id)
-    query.execute()
-
-    query = User.update(followers=','.join(viewed_user_list)).where(User.id == uid)
-    query.execute()
-
-    Notification.create(uid=int(user_id), username=user.username, category='follow', user=viewed_user.id)
+    Notification.create(uid=user.id, username=user.username, category='follow', user=viewed_user.id)
 
     flash('User followed successfully', 'success')
     return redirect(url_for('profile.view', id=user_id, notifications=notifications))
@@ -94,21 +81,12 @@ def unfollow(uid):
 
     viewed_user = User.get_by_id(uid)
 
-    user_follow_list = user.following.split(',')
-
-    if uid not in user_follow_list:
+    if Follower.get_or_none((Follower.follower_id == user_id) & (Follower.following_id == viewed_user.id))\
+            is None:
         flash('You are not following this user', 'error')
         return redirect(url_for('profile.view', id=user_id, notifications=notifications))
 
-    user_follow_list.remove(uid)
-
-    viewed_user_list = viewed_user.followers.split(',')
-    viewed_user_list.remove(user_id)
-
-    query = User.update(following=','.join(user_follow_list)).where(User.id == user_id)
-    query.execute()
-
-    query = User.update(followers=','.join(viewed_user_list)).where(User.id == uid)
+    query = Follower.delete().where((Follower.follower_id == user.id) & (Follower.following_id == viewed_user.id))
     query.execute()
 
     flash('User unfollowed successfully', 'success')
