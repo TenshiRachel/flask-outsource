@@ -1,5 +1,5 @@
 import config.constants
-from flask import Blueprint, render_template, request, url_for, redirect, flash, session
+from flask import Blueprint, render_template, url_for, redirect, flash, session
 from middlewares.auth import is_auth
 from models.user import User
 from models.notifications import Notification
@@ -14,6 +14,8 @@ notifications_bp = Blueprint('notifications', __name__, template_folder=config.c
 def index():
     user_id = session.get('user_id')
     user = User.get_by_id(user_id)
+
+    notifications = Notification.select().where(Notification.user == user.id)
 
     like_notifications = Notification.select().where((Notification.user == user_id) & (Notification.category == 'likes'))\
         .order_by(Notification.date.desc())
@@ -33,6 +35,10 @@ def index():
     paid_jobs_notifications = Notification.select().\
         where((Notification.user == user_id) & (Notification.category == 'job_paid')).order_by(Notification.date.desc())
 
+    requests_notifications = Notification.select().\
+        where((Notification.user == user_id) & (Notification.category == 'request'))\
+        .order_by(Notification.date.desc())
+
     request_cancelled_notifications = Notification.select().\
         where((Notification.user == user_id) & (Notification.category == 'request_cancel'))\
         .order_by(Notification.date.desc())
@@ -47,9 +53,11 @@ def index():
     file_unshare_notifications = Notification.select().\
         where((Notification.user == user_id) & (Notification.category == 'file_unshare')).order_by(Notification.date.desc())
 
-    return render_template('notifications/index.html', user=user, like_notifications=like_notifications,
+    return render_template('notifications/index.html', user=user, notifications=notifications,
+                           like_notifications=like_notifications,
                            followers_notifications=followers_notifications, comment_notifications=comment_notifications,
                            job_reject_notifications=job_reject_notifications, job_notifications=job_notifications,
+                           requests_notifications=requests_notifications,
                            request_cancelled_notifications=request_cancelled_notifications,
                            file_share_notifications=file_share_notifications,
                            file_unshare_notifications=file_unshare_notifications,
@@ -76,6 +84,7 @@ def delete(id):
 def delete_all(category):
     user_id = session['user_id']
     count = len(Notification.select().where((Notification.user == user_id) & (Notification.category == category)))
+    notifications = Notification.select().where(Notification.user == user_id)
 
     if count <= 0:
         flash('Notifications could not be found', 'error')
@@ -85,4 +94,4 @@ def delete_all(category):
     query.execute()
 
     flash('Notification(s) deleted successfully', 'success')
-    return redirect(url_for('notifications.index'))
+    return redirect(url_for('notifications.index', notifications=notifications))

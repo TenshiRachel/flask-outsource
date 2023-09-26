@@ -12,6 +12,7 @@ from utilities.auth import encrypt, decrypt
 from models.service import Service
 from models.user import User
 from models.job import Job
+from models.notifications import Notification
 
 
 service_bp = Blueprint('service', __name__, template_folder=config.constants.template_dir,
@@ -23,7 +24,8 @@ def list_service():
     user_id = session.get('user_id')
     user = User.get_or_none(User.id == user_id)
     services = Service.select()
-    return render_template('service/list.html', services=services, user=user)
+    notifications = Notification.select().where(Notification.user == user.id)
+    return render_template('service/list.html', services=services, user=user, notifications=notifications)
 
 
 @service_bp.route('/view/<uid>/<id>')
@@ -31,6 +33,8 @@ def view(uid, id):
     user_id = session.get('user_id')
     user = User.get_or_none(User.id == user_id)
     service = Service.get_or_none(Service.id == id)
+    notifications = Notification.select().where(Notification.user == user.id)
+
     if service is None:
         flash('Service not found', 'error')
         return redirect(url_for('service.list_service'))
@@ -39,12 +43,14 @@ def view(uid, id):
 
     query = Service.update(views=service.views + 1).where(Service.id == id)
     query.execute()
-    return render_template('service/index.html', services=service, service_user=service_user, user=user, job=job)
+    return render_template('service/index.html', services=service, service_user=service_user, user=user, job=job,
+                           notifications=notifications)
 
 
 @service_bp.route('/fav/<id>', methods=['POST'])
 @is_auth
 def fav(id):
+    notifications = Notification.select().where(Notification.user == user.id)
     if request.method == 'POST':
         service = Service.get_or_none(Service.id == id)
 
@@ -53,7 +59,7 @@ def fav(id):
             return redirect(url_for('service.list_service'))
 
         flash('Service favorited', 'success')
-        return redirect(url_for('service.list_service'))
+        return redirect(url_for('service.list_service', notifications=notifications))
 
 
 @service_bp.route('/manage')
@@ -61,13 +67,14 @@ def fav(id):
 def manage():
     user_id = session['user_id']
     user = User.get_by_id(user_id)
+    notifications = Notification.select().where(Notification.user == user.id)
 
     if user.acc_type == 'client':
         flash('You need a service provider account to manage services', 'error')
         return redirect(url_for('index.index'))
 
     services = Service.select().where(Service.uid == user_id)
-    return render_template('service/manage.html', services=services, user=user)
+    return render_template('service/manage.html', services=services, user=user, notifications=notifications)
 
 
 @service_bp.route('/request')
@@ -76,12 +83,13 @@ def req():
     user_id = session['user_id']
     user = User.get_by_id(user_id)
     jobs = Job.select().where(Job.cid == user_id)
+    notifications = Notification.select().where(Notification.user == user.id)
 
     if user.acc_type != 'client':
         flash('You need a client account to request a service', 'error')
         redirect(url_for('service.list_service'))
 
-    return render_template('service/request.html', jobs=jobs, user=user)
+    return render_template('service/request.html', jobs=jobs, user=user, notifications=notifications)
 
 
 @service_bp.route('/add', methods=['GET', 'POST'])
@@ -89,6 +97,7 @@ def req():
 def add():
     user_id = session['user_id']
     user = User.get_by_id(user_id)
+    notifications = Notification.select().where(Notification.user == user.id)
 
     if user.acc_type == 'client':
         flash('You need a service provider account to add services', 'error')
@@ -114,7 +123,7 @@ def add():
         flash('Service created successfully', 'success')
         return redirect(url_for('service.manage'))
 
-    return render_template('service/add.html', user=user)
+    return render_template('service/add.html', user=user, notifications=notifications)
 
 
 @service_bp.route('/edit/<id>', methods=['GET', 'POST'])
@@ -123,6 +132,7 @@ def edit(id):
     services = Service.get_or_none(Service.id == id)
     user_id = session['user_id']
     user = User.get_by_id(user_id)
+    notifications = Notification.select().where(Notification.user == user.id)
 
     if user.acc_type == 'client':
         flash('You need a service provider account to edit services', 'error')
@@ -149,12 +159,13 @@ def edit(id):
         flash('Changes saved successfully', 'success')
         return redirect(url_for('service.manage'))
 
-    return render_template('service/edit.html', services=services, user=user)
+    return render_template('service/edit.html', services=services, user=user, notifications=notifications)
 
 
 @service_bp.route('/delete/<id>')
 @is_auth
 def delete(id):
+    notifications = Notification.select().where(Notification.user == user.id)
     if Service.get_or_none(Service.id == id) is None:
         flash('Service not found', 'error')
         return redirect(url_for('service.manage'))
@@ -162,7 +173,7 @@ def delete(id):
     query = Service.delete().where(Service.id == id)
     query.execute()
     flash('Service deleted successfully', 'success')
-    return redirect(url_for('service.manage'))
+    return redirect(url_for('service.manage', notifications=notifications))
 
 
 @service_bp.route('/payment/<sid>/<id>', methods=['GET', 'POST'])
@@ -180,6 +191,7 @@ def payment(sid=None, id=None):
 
     freelancer = User.get_by_id(job.uid)
     service = Service.get_by_id(sid)
+    notifications = Notification.select().where(Notification.user == user.id)
 
     if request.method == 'POST':
         token = str(uuid4())
@@ -223,7 +235,8 @@ def payment(sid=None, id=None):
             print(e.smtp_error)
             flash('Unable to send email', 'error')
 
-    return render_template('service/payment.html', client=user, freelancer=freelancer, service=service)
+    return render_template('service/payment.html', client=user, freelancer=freelancer, service=service,
+                           notifications=notifications)
 
 
 @service_bp.route('/paymentSuccess/<sid>')
@@ -232,6 +245,7 @@ def payment_success(sid=None):
     token = str.encode(request.args.get('token'))
     service = Service.get_by_id(sid)
     user = User.get_by_id(session['user_id'])
+    notifications = Notification.select().where(Notification.user == user.id)
 
     if decrypt(str.encode(user.token)) != decrypt(token):
         flash('Invalid token', 'error')
@@ -288,19 +302,20 @@ def payment_success(sid=None):
     else:
         flash("Error while creating payment: " + payment.error, 'error')
 
-    return redirect(url_for('service.req'))
+    return redirect(url_for('service.req', notifications=notifications))
 
 
 @service_bp.route('/paymentExecute')
 @is_auth
 def payment_execute():
+    notifications = Notification.select().where(Notification.user == user.id)
     payment_id = request.args.get('paymentID')
     payment = paypalrestsdk.Payment.find(payment_id)
     payer_id = request.args.get('payerID')
 
     if payment.execute({'payer_id': payer_id}):
         flash('Payment completed successfully', 'success')
-        return redirect(url_for('service.req'))
+        return redirect(url_for('service.req', notifications=notifications))
 
     else:
         flash(payment.error, 'error')

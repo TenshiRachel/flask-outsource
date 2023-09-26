@@ -27,6 +27,7 @@ def manage():
 
     user_id = session.get('user_id')
     user = User.get_by_id(user_id)
+    notifications = Notification.select().where(Notification.user == user.id)
     files = []
     share = {'uids': [], 'usernames': [], 'emails': []}
 
@@ -85,7 +86,8 @@ def manage():
 
             files.append(file)
 
-    return render_template('files/index.html', user=user, files=files, breadcrumbs=breadcrumbs)
+    return render_template('files/index.html', user=user, files=files, breadcrumbs=breadcrumbs,
+                           notifications=notifications)
 
 
 @files_bp.route('/upload', methods=['POST'])

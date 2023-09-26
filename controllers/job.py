@@ -18,8 +18,9 @@ def index():
     user_id = session['user_id']
     user = User.get_by_id(user_id)
     jobs = Job.select().where(Job.uid == user_id)
+    notifications = Notification.select().where(Notification.user == user.id)
 
-    return render_template('job/index.html', jobs=jobs, user=user)
+    return render_template('job/index.html', jobs=jobs, user=user, notifications=notifications)
 
 
 @job_bp.route('/add/<sid>', methods=['POST'])
@@ -32,6 +33,10 @@ def add(sid):
         client = User.get_by_id(user_id)
         remarks = request.form.get('remarks')
         job = Job.get_or_none(Job.cid == user_id, Job.sid == sid)
+
+        if client.acc_type != 'client':
+            flash('You need a client account to request services', 'error')
+            return redirect(url_for('service.view', uid=user_id, id=service.id))
 
         if job is not None:
             flash('Please wait for your previous request to be completed before requesting again', 'error')

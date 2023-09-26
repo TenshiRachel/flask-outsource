@@ -17,8 +17,6 @@ class User(Base):
     website = CharField(default='')
     location = CharField(default='')
     occupation = CharField(default='')
-    followers = CharField(default='')
-    following = CharField(default='')
     skills = CharField(default='')
     social_medias = CharField(default='')
 
