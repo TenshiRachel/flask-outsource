@@ -20,6 +20,8 @@ def view(id):
     social_medias = viewuser.social_medias.split(',')
     notifications = Notification.select().where(Notification.user == viewuser.id)
 
+    # TODO: Function to optimize notifications, shorten skills
+
     followers = User.select().join(Follower, on=(User.id == Follower.follower_id))\
         .where(Follower.following_id == viewuser.id)
 
