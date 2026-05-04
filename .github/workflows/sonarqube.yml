@@ -14,24 +14,37 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check SonarQube configuration
+        id: sonar-config
+        run: |
+          if [ -n "$SONAR_TOKEN" ] && [ -n "$SONAR_HOST_URL" ]; then
+            echo "configured=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::Skipping SonarQube scan — SONAR_TOKEN or SONAR_HOST_URL secret is not configured."
+          fi
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
 
       - name: Set up Python
+        if: steps.sonar-config.outputs.configured == 'true'
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"  # You can adjust this version as needed
+          python-version: "3.11"
 
       - name: Install dependencies
+        if: steps.sonar-config.outputs.configured == 'true'
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
       - name: SonarQube Scan
-        uses: sonarsource/sonarqube-scan-action@master
+        if: steps.sonar-config.outputs.configured == 'true'
+        uses: sonarsource/sonarqube-scan-action@v4
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-        with:
-          args: >
-            -Dsonar.projectKey=flask-outsource
-            -Dsonar.python.version=3
-            -Dsonar.exclusions=**/venv/**,**/.venv/**
